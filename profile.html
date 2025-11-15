@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>الملف الشخصي</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #6A11CB;
+    --secondary: #2575FC;
+    --accent: #00F5C4;
+    --error: #FF4F4F;
+    --success: #00C896;
+    --dark: #0F0F1B;
+    --darker: #1A1A2E;
+    --light: #FFFFFF;
+    --gray: #A0A0B0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: linear-gradient(135deg, var(--darker), var(--dark));
+    color: var(--light);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .profile-container {
+    background: rgba(26, 26, 46, 0.95);
+    border-radius: 20px;
+    padding: 25px 20px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+    text-align: center;
+  }
+
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: auto;
+    border: 2px solid var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .profile-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .profile-phone {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin-bottom: 15px;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.05);
+    padding: 12px;
+    border-radius: 12px;
+    margin: 8px 0;
+    text-align: right;
+    font-size: 0.95rem;
+  }
+
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+  }
+
+  .info-label {
+    color: var(--gray);
+    font-weight: 500;
+  }
+
+  .info-value {
+    font-weight: 600;
+    color: var(--light);
+  }
+
+  .status-value.active {
+    color: var(--success);
+    font-weight: 700;
+  }
+  .status-value.expired {
+    color: var(--error);
+    font-weight: 700;
+  }
+
+  /* Digital Timer */
+  .timer {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--light);
+    margin-bottom: 4px;
+    letter-spacing: 2px;
+  }
+
+  .timer-labels {
+    font-size: 0.7rem;
+    color: var(--gray);
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+
+  /* Progress Bar */
+  .progress-container {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 10px;
+    margin: 8px 0;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ff99, #ffcc00, #ff4444);
+    transition: width 1s linear;
+  }
+
+  .logout-btn {
+    margin-top: 15px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--error), #FF6B6B);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255,79,79,0.4);
+  }
+</style>
+</head>
+<body>
+
+  <div class="profile-container">
+    <div class="profile-avatar" id="profileAvatar">👤</div>
+    <h2 class="profile-name" id="profileName">-</h2>
+    <p class="profile-phone" id="profilePhone">-</p>
+
+    <!-- معلومات عامة -->
+    <div class="info-card">
+      <div class="info-item">
+        <span class="info-label">الحالة:</span>
+        <span id="profileStatus" class="status-value">-</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">الدفع:</span>
+        <span class="info-value">تم التحقق من الدفع بنجاح</span>
+      </div>
+    </div>
+
+    <!-- Digital Countdown -->
+    <div class="timer" id="profileTimer">00:00:00:00</div>
+    <div class="timer-labels">
+      <span>أيام</span>
+      <span>ساعات</span>
+      <span>دقائق</span>
+      <span>ثواني</span>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">🚪 العوده الي قائمه المواد</button>
+  </div>
+
+<script>
+  const firebaseConfig = {
+      apiKey: "AIzaSyCdhj73cKJc2J2_tDHw2-89EemZx-EGMJQ",
+      authDomain: "alamer-526ff.firebaseapp.com",
+      databaseURL: "https://alamer-526ff-default-rtdb.firebaseio.com",
+      projectId: "alamer-526ff",
+      storageBucket: "alamer-526ff.appspot.com",
+      messagingSenderId: "523879269039",
+      appId: "1:523879269039:web:634861aa34641bfebf8a5a"
+    };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  let currentUid = localStorage.getItem("localUid");
+  if (!currentUid || localStorage.getItem("approved") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  function loadProfile() {
+    db.ref("approvedStudents").orderByChild("deviceId").equalTo(currentUid).once("value")
+      .then(snap => {
+        if (snap.exists()) {
+          const key = Object.keys(snap.val())[0];
+          const data = snap.val()[key];
+
+          document.getElementById("profileName").textContent = data.name || "-";
+          document.getElementById("profilePhone").textContent = data.phone || "-";
+          if (data.name) document.getElementById("profileAvatar").textContent = data.name.charAt(0);
+
+          let statusEl = document.getElementById("profileStatus");
+          let timerEl = document.getElementById("profileTimer");
+          let progressBar = document.getElementById("progressBar");
+
+          if (data.expiry) {
+            const expiryTime = data.expiry;
+            const startTime = data.startDate || (expiryTime - 30*24*60*60*1000);
+
+            function updateCountdown() {
+              const now = Date.now();
+              const distance = expiryTime - now;
+              const totalDuration = expiryTime - startTime;
+
+              if (distance <= 0) {
+                timerEl.textContent = "00:00:00:00";
+                statusEl.textContent = "❌ منتهي";
+                statusEl.className = "status-value expired";
+                progressBar.style.width = "0%";
+                clearInterval(timer);
+                return;
+              }
+
+              const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              timerEl.textContent =
+                `${String(days).padStart(2,'0')} : ${String(hours).padStart(2,'0')} : ${String(minutes).padStart(2,'0')} : ${String(seconds).padStart(2,'0')}`;
+
+              statusEl.textContent = "✅ نشط";
+              statusEl.className = "status-value active";
+
+              // Progress
+              const percent = ((now - startTime) / totalDuration) * 100;
+              progressBar.style.width = Math.max(0, Math.min(100, 100 - percent)) + "%";
+            }
+
+            updateCountdown();
+            const timer = setInterval(updateCountdown, 1000);
+          } else {
+            timerEl.textContent = "00:00:00:00";
+            statusEl.textContent = "-";
+            progressBar.style.width = "0%";
+          }
+        } else {
+          localStorage.removeItem("approved");
+          window.location.href = "subjects.html";
+        }
+      });
+  }
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "subjects.html";
+  }
+
+  loadProfile();
+</script>
+</body>
+</html>

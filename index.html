@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>THE BEST - نظام التسجيل</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #6A11CB;
+    --secondary: #2575FC;
+    --accent: #00F5C4;
+    --success: #00C896;
+    --error: #FF4F4F;
+    --warning: #FF9800;
+    --dark: #1A1A2E;
+    --darker: #0F0F1B;
+    --light: #FFFFFF;
+    --gray: #A0A0B0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: linear-gradient(135deg, var(--darker), var(--dark));
+    color: var(--light);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    line-height: 1.6;
+  }
+
+  .glass-container {
+    background: rgba(26, 26, 46, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(106, 17, 203, 0.2),
+      inset 0 0 20px rgba(106, 17, 203, 0.1);
+  }
+
+  .app-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .app-logo {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, var(--accent), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 20px rgba(0, 245, 196, 0.3);
+  }
+
+  .app-subtitle {
+    font-size: 1.1rem;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  .form-group {
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 18px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(106, 17, 203, 0.3);
+    border-radius: 16px;
+    color: var(--light);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .form-input::placeholder {
+    color: rgba(160, 160, 176, 0.7);
+  }
+
+  .form-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 25px rgba(0, 245, 196, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .form-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(106, 17, 203, 0.6);
+  }
+
+  .btn-primary:disabled {
+    background: rgba(160, 160, 176, 0.3);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--error), #FF6B6B);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 79, 79, 0.4);
+    margin-top: 15px;
+  }
+
+  .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255, 79, 79, 0.6);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 20px 28px;
+    border-radius: 16px;
+    font-weight: 500;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    max-width: 90vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(50%) translateY(-20px);
+  }
+
+  .toast.success {
+    background: rgba(0, 200, 150, 0.9);
+    color: white;
+  }
+
+  .toast.error {
+    background: rgba(255, 79, 79, 0.9);
+    color: white;
+  }
+
+  .toast.warning {
+    background: rgba(255, 152, 0, 0.9);
+    color: white;
+  }
+
+  .loader {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+
+  .status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+  }
+
+  .status-dot.connecting {
+    background: var(--warning);
+  }
+
+  .status-dot.error {
+    background: var(--error);
+  }
+
+  .waiting-screen {
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  .waiting-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  .waiting-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .waiting-message {
+    color: var(--gray);
+    margin-bottom: 30px;
+    line-height: 1.8;
+  }
+
+  .waiting-info {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 16px;
+    margin: 20px 0;
+    text-align: right;
+  }
+
+  .info-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .info-label {
+    color: var(--gray);
+    font-weight: 500;
+  }
+
+  .info-value {
+    color: var(--light);
+    font-weight: 600;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @media (max-width: 768px) {
+    .glass-container {
+      padding: 40px 30px;
+      margin: 10px;
+    }
+    
+    .app-logo {
+      font-size: 2.8rem;
+    }
+    
+    .form-input {
+      padding: 16px 20px;
+    }
+    
+    .btn {
+      padding: 16px;
+    }
+
+    .waiting-icon {
+      font-size: 3rem;
+    }
+
+    .waiting-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .glass-container {
+      padding: 30px 25px;
+    }
+    
+    .app-logo {
+      font-size: 2.4rem;
+    }
+    
+    .app-subtitle {
+      font-size: 1rem;
+    }
+    
+    .form-input {
+      padding: 14px 18px;
+      font-size: 1rem;
+    }
+    
+    .btn {
+      font-size: 1.1rem;
+      padding: 14px;
+    }
+
+    .waiting-icon {
+      font-size: 2.5rem;
+    }
+
+    .waiting-title {
+      font-size: 1.3rem;
+    }
+
+    .waiting-info {
+      padding: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="glass-container">
+  <div class="app-header">
+    <h1 class="app-logo">الثانويه: بلس</h1>
+    <p class="app-subtitle">🏆سجل بيناتك وانتظر القبول من الادمن</p>
+  </div>
+
+  <div id="statusIndicator" class="status-indicator" style="display: none;">
+    <div class="status-dot connecting"></div>
+    <span>𝑪𝒐𝒏𝒏𝒆𝒄𝒕𝒊𝒏𝒈 𝒕𝒐 𝒔𝒆𝒓𝒗𝒆𝒓...</span>
+  </div>
+
+ <!-- Waiting Screen (hidden by default) -->
+<div id="waitingScreen" class="waiting-screen" style="display: none;">
+    <div class="waiting-icon">⏳</div>
+    <h2 class="waiting-title">𝒀𝒐𝒖𝒓 𝑹𝒆𝒒𝒖𝒆𝒔𝒕 𝒊𝒔 𝑼𝒏𝒅𝒆𝒓 𝑹𝒆𝒗𝒊𝒆𝒘</h2>
+    <p class="waiting-message">
+        𝒀𝒐𝒖𝒓 𝑹𝒆𝒒𝒖𝒆𝒔𝒕 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒆𝒄𝒆𝒊𝒗𝒆𝒅 𝒂𝒏𝒅 𝒊𝒔 𝒄𝒖𝒓𝒓𝒆𝒏𝒕𝒍𝒚 𝒖𝒏𝒅𝒆𝒓 𝑹𝒆𝒗𝒊𝒆𝒘 𝒃𝒚 𝒐𝒖𝒓 𝒕𝒆𝒂𝒎.<br>
+        𝒀𝒐𝒖 𝒘𝒊𝒍𝒍 𝒃𝒆 𝒏𝒐𝒕𝒊𝒇𝒊𝒆𝒅 𝒂𝒔 𝒔𝒐𝒐𝒏 𝒂𝒔 𝒚𝒐𝒖𝒓 𝑹𝒆𝒒𝒖𝒆𝒔𝒕 𝒊𝒔 𝒂𝒑𝒑𝒓𝒐𝒗𝒆𝒅.
+    </p>
+
+    <div id="waitingInfo" class="waiting-info">
+        <div class="info-item">
+            <span class="info-label">𝑵𝒂𝒎𝒆:</span>
+            <span id="waitingName" class="info-value">-</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">𝑷𝒉𝒐𝒏𝒆 𝑵𝒖𝒎𝒃𝒆𝒓:</span>
+            <span id="waitingPhone" class="info-value">-</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">𝑹𝒆𝒒𝒖𝒆𝒔𝒕 𝑺𝒕𝒂𝒕𝒖𝒔:</span>
+            <span class="info-value" style="color: var(--warning);">𝑷𝒂𝒚𝒎𝒆𝒏𝒕 𝑷𝒆𝒏𝒅𝒊𝒏𝒈</span>
+        </div>
+    </div>
+
+    <button id="cancelRequestBtn" class="btn btn-danger">
+        𝑪𝒂𝒏𝒄𝒆𝒍 𝑹𝒆𝒒𝒖𝒆𝒔𝒕
+    </button>
+</div>
+
+
+  <!-- نموذج التسجيل (مخفي عند وجود طلب معلق) -->
+  <div id="registrationForm">
+    <div class="form-group">
+      <label for="studentName" class="form-label">𝑺𝒕𝒖𝒅𝒆𝒏𝒕 𝒏𝒂𝒎𝒆</label>
+      <input 
+        type="text" 
+        id="studentName" 
+        class="form-input" 
+        placeholder="𝐄𝐧𝐭𝐞𝐫 𝐲𝐨𝐮𝐫 𝐟𝐮𝐥𝐥 𝐧𝐚𝐦𝐞" 
+        autocomplete="name"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="studentPhone" class="form-label">𝑺𝒕𝒖𝒅𝒆𝒏𝒕 𝒑𝒉𝒐𝒏𝒆 𝒏𝒖𝒎𝒃𝒆𝒓</label>
+      <input 
+        type="text" 
+        id="studentPhone" 
+        class="form-input" 
+        placeholder="𝑬𝒏𝒕𝒆𝒓 𝒑𝒉𝒐𝒏𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 (𝟏𝟏 𝒅𝒊𝒈𝒊𝒕𝒔)" 
+        autocomplete="tel"
+        inputmode="numeric"
+      />
+    </div>
+
+    <button id="submitBtn" class="btn btn-primary" disabled>
+      <span class="btn-content">𝑺𝒖𝒃𝒎𝒊𝒕𝒕𝒊𝒏𝒈 𝒓𝒆𝒒𝒖𝒆𝒔𝒕...</span>
+    </button>
+
+    <button id="deleteBtn" class="btn btn-danger" style="display: none;">
+      𝑪𝒂𝒏𝒄𝒆𝒍 𝑹𝒆𝒒𝒖𝒆𝒔𝒕
+    </button>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="alert"></div>
+
+  <script>
+(function() {
+  const ua = navigator.userAgent.toLowerCase();
+
+  const inAppCreator =
+    ua.includes("appcreator24") ||
+    ua.includes("wv") ||
+    ua.includes("webview");
+
+  const isBrowser =
+    ua.includes("chrome") ||
+    ua.includes("safari") ||
+    ua.includes("firefox") ||
+    ua.includes("edge") ||
+    ua.includes("facebook") ||
+    ua.includes("instagram");
+
+  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
+  if (!inAppCreator && isBrowser) {
+    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
+  }
+})();
+</script>
+
+
+  <script>
+  // تسجيل أن المستخدم فتح الصفحة الرئيسية
+  localStorage.setItem("came_from_home", "yes");
+</script>
+
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyBlGgAa0SDuvd8KM6pTalQh1J5PRXgcmSk",
+  authDomain: "plus-c3d02.firebaseapp.com",
+  databaseURL: "https://plus-c3d02-default-rtdb.firebaseio.com",
+  projectId: "plus-c3d02",
+  storageBucket: "plus-c3d02.firebasestorage.app",
+  messagingSenderId: "61620553895",
+  appId: "1:61620553895:web:c186ce886c28d269523382",
+  measurementId: "G-5EBPB2GM4L"
+};
+  
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const auth = firebase.auth();
+
+  const submitBtn = document.getElementById("submitBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
+  const cancelRequestBtn = document.getElementById("cancelRequestBtn");
+  const toast = document.getElementById("toast");
+  const studentNameInput = document.getElementById("studentName");
+  const studentPhoneInput = document.getElementById("studentPhone");
+  const statusIndicator = document.getElementById("statusIndicator");
+  const registrationForm = document.getElementById("registrationForm");
+  const waitingScreen = document.getElementById("waitingScreen");
+  const waitingName = document.getElementById("waitingName");
+  const waitingPhone = document.getElementById("waitingPhone");
+  const btnContent = submitBtn.querySelector('.btn-content');
+
+  let currentUid = localStorage.getItem("localUid") || null;
+  let pendingRequestData = null;
+
+  function validateInputs() {
+    const name = studentNameInput.value.trim();
+    const phone = studentPhoneInput.value.trim();
+    const phoneValid = /^\d{11}$/.test(phone);
+    submitBtn.disabled = !(name && phoneValid);
+  }
+
+  function updateButtonText(text, showLoader = false) {
+    if (showLoader) {
+      btnContent.innerHTML = `<span class="loader"></span> ${text}`;
+    } else {
+      btnContent.textContent = text;
+    }
+  }
+
+  function showToast(message, type = "success") {
+    toast.textContent = message;
+    toast.className = `toast ${type} show`;
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.className = `toast ${type}`;
+    }, 3500);
+  }
+
+  function showWaitingScreen(requestData) {
+    registrationForm.style.display = 'none';
+    waitingScreen.style.display = 'block';
+    
+    if (requestData) {
+      waitingName.textContent = requestData.name || '-';
+      waitingPhone.textContent = requestData.phone || '-';
+    }
+  }
+
+  function showRegistrationForm() {
+    waitingScreen.style.display = 'none';
+    registrationForm.style.display = 'block';
+  }
+
+  function initAuth() {
+    statusIndicator.style.display = 'flex';
+    updateButtonText('جاري التحضير...', true);
+    
+    auth.signInAnonymously()
+      .then(res => {
+        if (res.user && res.user.uid) {
+          currentUid = res.user.uid;
+          localStorage.setItem("localUid", currentUid);
+          statusIndicator.style.display = 'none';
+          updateButtonText('ارسال الطلب', false);
+          submitBtn.disabled = false;
+          checkIfApproved();
+          checkExistingRequest();
+          listenForDeletion();
+          listenForApproval(); // ✅ أضف هذا السطر هنا
+          
+        } else {
+          throw new Error("لم يتم الحصول على UID.");
+        }
+      })
+      .catch(err => {
+        statusIndicator.style.display = 'none';
+        updateButtonText('ارسال الطلب', false);
+        showToast("❌ فشل في الاتصال بالخادم", "error");
+        console.error("Auth Error:", err);
+      });
+  }
+
+  // ✅ الاستماع لحالة القبول التلقائي للطالب
+function listenForApproval() {
+  if (!currentUid) return;
+  
+  db.ref("approvedStudents").orderByChild("deviceId").equalTo(currentUid).on("value", snap => {
+    if (snap.exists()) {
+      const key = Object.keys(snap.val())[0];
+      const data = snap.val()[key];
+
+      // التحقق من صلاحية القبول
+      if (data.expiry && Date.now() > data.expiry) {
+        showToast("انتهت صلاحية الكود، يرجى إعادة التسجيل", "error");
+        localStorage.removeItem("approved");
+        return;
+      }
+
+      // حفظ البيانات في localStorage
+      localStorage.setItem("approved", "true");
+      localStorage.setItem("studentName", data.name || "");
+      localStorage.setItem("studentPhone", data.phone || "");
+
+      // إشعار وتحويل تلقائي
+      showToast("✅ تم قبولك! جارٍ فتح الصفحة...", "success");
+      setTimeout(() => {
+        window.location.href = "subjects.html";
+      }, 1200);
+    }
+  });
+}
+
+  function checkIfApproved() {
+    if (!currentUid) return;
+    db.ref("approvedStudents").orderByChild("deviceId").equalTo(currentUid).once("value")
+      .then(snap => {
+        if (snap.exists()) {
+          const key = Object.keys(snap.val())[0];
+          const data = snap.val()[key];
+
+          if (data.expiry && Date.now() > data.expiry) {
+            showToast("انتهت صلاحية الكود، يرجى إعادة التسجيل", "error");
+            localStorage.removeItem("approved");
+            return;
+          }
+
+          if (data.name) localStorage.setItem("studentName", data.name);
+          if (data.phone) localStorage.setItem("studentPhone", data.phone);
+
+          localStorage.setItem("approved", "true");
+          window.location.href = "subjects.html";
+        } else {
+          localStorage.removeItem("approved");
+        }
+      });
+  }
+
+  function checkExistingRequest() {
+    if (!currentUid) return;
+    db.ref("pendingStudents/" + currentUid).once("value")
+      .then(snap => {
+        if (snap.exists()) {
+          const requestData = snap.val();
+          pendingRequestData = requestData;
+          
+          // إظهار شاشة الانتظار وإخفاء النموذج
+          showWaitingScreen(requestData);
+          showToast("لديك طلب معلق قيد المراجعة", "warning");
+          
+        } else {
+          showRegistrationForm();
+          deleteBtn.style.display = "none";
+        }
+      })
+      .catch(err => {
+        console.error("Error checking existing request:", err);
+        showRegistrationForm();
+      });
+  }
+
+  function listenForDeletion() {
+    if (!currentUid) return;
+    db.ref("approvedStudents").orderByChild("deviceId").equalTo(currentUid).on("value", snap => {
+      if (snap.exists()) {
+        const key = Object.keys(snap.val())[0];
+        const data = snap.val()[key];
+
+        if (data.expiry && Date.now() > data.expiry) {
+          showToast("انتهت صلاحية الكود، يرجى إعادة التسجيل", "error");
+          localStorage.removeItem("approved");
+          setTimeout(() => { location.reload(); }, 1500);
+          return;
+        }
+
+        if (data.name) localStorage.setItem("studentName", data.name);
+        if (data.phone) localStorage.setItem("studentPhone", data.phone);
+
+        localStorage.setItem("approved", "true");
+      } else {
+        if (localStorage.getItem("approved") === "true") {
+          localStorage.removeItem("approved");
+          showToast("تم حذفك من النظام، يرجى إعادة التسجيل", "error");
+          setTimeout(() => { location.reload(); }, 1500);
+        }
+      }
+    });
+  }
+
+  studentNameInput.addEventListener("input", validateInputs);
+  studentPhoneInput.addEventListener("input", validateInputs);
+
+  submitBtn.addEventListener("click", () => {
+    if (!currentUid) {
+      showToast("خطأ في الاتصال، يرجى المحاولة مرة أخرى", "error");
+      return;
+    }
+
+    const name = studentNameInput.value.trim();
+    const phone = studentPhoneInput.value.trim();
+
+    if (!name || !phone) {
+      showToast("يرجى ملء جميع الحقول", "error");
+      return;
+    }
+
+    if (!/^\d{11}$/.test(phone)) {
+      showToast("رقم الهاتف يجب أن يكون 11 رقماً", "error");
+      return;
+    }
+
+    localStorage.setItem("studentName", name);
+    localStorage.setItem("studentPhone", phone);
+    updateButtonText('جاري الإرسال...', true);
+
+    db.ref("approvedStudents").orderByChild("phone").equalTo(phone).once("value")
+      .then(snap2 => {
+        if (snap2.exists()) {
+          const approvedKey = Object.keys(snap2.val())[0];
+          const approvedData = snap2.val()[approvedKey];
+
+          if (approvedData.deviceId && approvedData.deviceId !== currentUid) {
+            showToast("هذا الحساب مسجل من جهاز آخر", "error");
+            updateButtonText('ارسال الطلب', false);
+            return;
+          }
+
+          if (!approvedData.deviceId) {
+            db.ref("approvedStudents/"+approvedKey).update({ deviceId: currentUid });
+          }
+
+          if (approvedData.expiry && Date.now() > approvedData.expiry) {
+            showToast("انتهت صلاحية الكود، يرجى إعادة التسجيل", "error");
+            updateButtonText('ارسال الطلب', false);
+            return;
+          }
+
+          showToast("تم الموافقة مسبقاً على هذا الرقم", "success");
+          localStorage.setItem("approved","true");
+          setTimeout(() => { window.location.href="subjects.html"; }, 1000);
+        } else {
+          db.ref("pendingStudents/"+currentUid).set({
+            name, phone, deviceId: currentUid, timestamp: Date.now()
+          }).then(() => {
+            showToast("تم إرسال طلبك، انتظر الموافقة", "success");
+            updateButtonText('ارسال الطلب', false);
+            
+            // إظهار شاشة الانتظار بعد الإرسال الناجح
+            showWaitingScreen({ name, phone });
+            
+          }).catch(err => {
+            showToast("حدث خطأ أثناء الإرسال", "error");
+            updateButtonText('ارسال الطلب', false);
+            console.error(err);
+          });
+        }
+      })
+      .catch(err => {
+        showToast("خطأ في الاتصال بالخادم", "error");
+        updateButtonText('ارسال الطلب', false);
+        console.error(err);
+      });
+  });
+
+  deleteBtn.addEventListener("click", () => {
+    if (!currentUid) return;
+    db.ref("pendingStudents/"+currentUid).remove()
+      .then(() => {
+        showToast("تم حذف الطلب بنجاح", "success");
+        deleteBtn.style.display = "none";
+        showRegistrationForm();
+      })
+      .catch(err => {
+        showToast("حدث خطأ أثناء الحذف", "error");
+        console.error(err);
+      });
+  });
+
+  cancelRequestBtn.addEventListener("click", () => {
+    if (!currentUid) return;
+    db.ref("pendingStudents/"+currentUid).remove()
+      .then(() => {
+        showToast("تم إلغاء الطلب بنجاح", "success");
+        showRegistrationForm();
+      })
+      .catch(err => {
+        showToast("حدث خطأ أثناء الإلغاء", "error");
+        console.error(err);
+      });
+  });
+
+  initAuth();
+</script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>الأبواب - منصة THE BEST</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: #121212;
+    color: #fff;
+    padding: 80px 15px 30px;
+    margin: 0;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ===== الشريط العلوي ===== */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111;
+    padding: 10px 15px;
+    color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .menu-btn {
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .title {
+    font-size: 14px;
+    color: #f36;
+  }
+
+  .icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .icons img {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  .toggle-dark {
+    background: #fff;
+    border-radius: 12px;
+    width: 40px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .toggle-dark::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #111;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  .toggle-dark.active::after {
+    left: 22px;
+    background: #ff0;
+  }
+
+  h1 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px #ffd700;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  li {
+    background: #1a1a1a;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    color: #ffd700;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  li:hover {
+    background: #333;
+    transform: translateY(-3px);
+  }
+
+  #toast {
+    visibility: hidden;
+    min-width: 260px;
+    background: #1e1e1e;
+    color: #ffd700;
+    text-align: center;
+    border-radius: 12px;
+    padding: 14px;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.5s, bottom 0.5s;
+  }
+  #toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+  }
+
+  body.light-mode {
+    background: #f5f5f5;
+    color: #000;
+  }
+  body.light-mode .topbar {
+    background: #fff;
+    color: #000;
+  }
+  body.light-mode li {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+  body.light-mode #toast {
+    background: #fff;
+    color: #333;
+  }
+
+  #backBtn {
+    color: #ffd700;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ✅ الشريط العلوي -->
+  <div class="topbar">
+    <div class="menu-btn" id="backBtn">⬅</div>
+    <div class="title">𝑪𝒉𝒂𝒑𝒕𝒆𝒓𝒔 & 𝑪𝒂𝒎𝒑𝒔</div>
+    <div class="icons">
+      <div class="toggle-dark" id="darkToggle"></div>
+      <a href="" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+      </a>
+      <img id="shareBtn" src="https://cdn-icons-png.flaticon.com/512/929/929610.png" alt="Share">
+      <img id="notifyBtn" src="https://cdn-icons-png.flaticon.com/512/1827/1827272.png" alt="Notification">
+    </div>
+  </div>
+
+  <!-- ✅ Toast -->
+  <div id="toast">الإشعارات هتتفعل قريبًا 🔔✨</div>
+
+  <h1>𝑪𝒉𝒂𝒑𝒕𝒆𝒓𝒔 & 𝑪𝒂𝒎𝒑𝒔</h1>
+  <ul id="chapters-list">
+    <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
+  </ul>
+
+  <script>
+(function() {
+  const ua = navigator.userAgent.toLowerCase();
+
+  const inAppCreator =
+    ua.includes("appcreator24") ||
+    ua.includes("wv") ||
+    ua.includes("webview");
+
+  const isBrowser =
+    ua.includes("chrome") ||
+    ua.includes("safari") ||
+    ua.includes("firefox") ||
+    ua.includes("edge") ||
+    ua.includes("facebook") ||
+    ua.includes("instagram");
+
+  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
+  if (!inAppCreator && isBrowser) {
+    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
+  }
+})();
+</script>
+
+  <script>
+(function() {
+
+  // قراءة هل المستخدم جاء من الصفحة الرئيسية
+  const came = localStorage.getItem("came_from_home");
+
+  // لو لم يفتح الصفحة الرئيسية index
+  if (came !== "yes") {
+    window.location.href = "index.html"; // تحويل إجباري للصفحة الأولى
+  }
+
+})();
+</script>
+
+  <script>
+// 🎯 Toast فقط عند الخطأ
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.className = `custom-toast ${type}`;
+  toast.innerHTML = `<span>${message}</span>`;
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .custom-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-family: "Cairo", sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.4s forwards;
+      z-index: 9999;
+    }
+    .custom-toast.error { background: linear-gradient(135deg,#e74c3c,#c0392b); }
+
+    @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } 
+                          to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateX(120%); } }
+  `;
+  document.head.appendChild(style);
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// 🌟 تحقق صامت من الفايربيس عند كل تحميل صفحة
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const isApproved = localStorage.getItem("approved");
+    const uid        = localStorage.getItem("localUid");
+
+    // لو أصلاً مش متسجل — طرده بدون توست
+    if (isApproved !== "true" || !uid) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    // 🔥 تحقق فوري من الفايربيس بدون أي توست
+    const dbUrl = "https://plus-c3d02-default-rtdb.firebaseio.com/approvedStudents.json";
+    const res = await fetch(dbUrl);
+    const data = await res.json();
+
+    const exists = Object.values(data || {}).some(v => v.deviceId === uid);
+
+    // لو الحساب اتحذف — هنا فقط نستخدم التوست
+    if (!exists) {
+      localStorage.clear();
+      showToast("⚠️ تم حذف حسابك — أعد التسجيل", "error");
+      setTimeout(() => window.location.href = "index.html", 1500);
+      return;
+    }
+
+    // 🟢 الحساب سليم — بدون أي توست
+    document.dispatchEvent(new Event("authReady"));
+
+  } catch (err) {
+    console.error(err);
+    // خطأ في الاتصال — ارجع للصفحة الرئيسية بدون أي رسالة
+    setTimeout(() => window.location.href = "index.html", 1500);
+  }
+});
+</script>
+
+
+<script type="module">
+const urlParams = new URLSearchParams(window.location.search);
+const subject = urlParams.get("subject");
+const teacher = urlParams.get("teacher");
+
+const chaptersList = document.getElementById("chapters-list");
+const backBtn = document.getElementById("backBtn");
+
+// دالة لتوحيد النص (إزالة الفروقات)
+function normalize(str) {
+  return (str || "")
+    .trim()
+    .replace(/[.\s]/g, "")
+    .replace(/[أإآا]/g, "ا")
+    .toLowerCase();
+}
+
+// زر العودة
+backBtn.onclick = () => {
+  window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
+};
+
+// تحميل الأبواب
+async function loadChapters() {
+  if (!subject || !teacher) {
+    chaptersList.innerHTML = '<li>⚠️ لم يتم تحديد المادة أو المدرس.</li>';
+    return;
+  }
+
+  try {
+    // 🔥 جلب البيانات من API
+    const res = await fetch("https://pluso-one.vercel.app/api/courses");
+    const json = await res.json();
+    const data = json.data || json;
+
+    const wantedSubject = normalize(subject);
+    const wantedTeacher = normalize(teacher);
+
+    const foundChapters = [];
+
+    (data || []).forEach((year) => {
+      (year.subjects || []).forEach((sub) => {
+        if (normalize(sub.subject_name) === wantedSubject) {
+          (sub.teachers || []).forEach((t) => {
+            if (normalize(t.teacher_name) === wantedTeacher) {
+              (t.chapters || []).forEach((ch) => {
+                if (ch.chapter_name) foundChapters.push(ch.chapter_name);
+              });
+            }
+          });
+        }
+      });
+    });
+
+    chaptersList.innerHTML = "";
+
+    if (foundChapters.length === 0) {
+      chaptersList.innerHTML = '<li>⚠️ لا يوجد أبواب لهذا المدرس.</li>';
+      return;
+    }
+
+    // عرض الأبواب
+    foundChapters.forEach((chapter) => {
+      const li = document.createElement("li");
+      li.textContent = chapter;
+
+      li.onclick = () => {
+        const url = `lecture_name.html?subject=${encodeURIComponent(subject)}&teacher=${encodeURIComponent(teacher)}&chapter=${encodeURIComponent(chapter)}`;
+        window.location.href = url;
+      };
+
+      chaptersList.appendChild(li);
+    });
+
+  } catch (err) {
+    console.error("❌ خطأ أثناء تحميل البيانات:", err);
+    chaptersList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
+  }
+}
+
+loadChapters();
+
+// 🌙 الوضع الليلي والإشعارات
+const toast = document.getElementById("toast");
+const notifyBtn = document.getElementById("notifyBtn");
+const darkToggle = document.getElementById("darkToggle");
+
+notifyBtn.onclick = () => {
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+};
+
+darkToggle.onclick = () => {
+  document.body.classList.toggle("light-mode");
+  darkToggle.classList.toggle("active");
+};
+</script>
+
+</body>
+</html>
