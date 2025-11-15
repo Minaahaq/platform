@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-  const allowedDomain = "https://pluso-one.vercel.app";
+  const allowedDomain = "https://platform-sigma-seven.vercel.app";
 
   const referer = req.headers.referer || "";
   
