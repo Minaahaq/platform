@@ -269,7 +269,7 @@ async function loadLectures() {
   try {
 
     // 🔥 جلب البيانات من API بدل JSON
-    const res = await fetch("https://pluso-one.vercel.app/api/courses");
+    const res = await fetch("https://platform-sigma-seven.vercel.app/api/courses");
     if (!res.ok) throw new Error("فشل تحميل البيانات");
     const json = await res.json();
     const data = json.data || json;
