@@ -481,28 +481,50 @@ async function loadSubjects() {
     }
 
     // عرض المواد
-    [...subjects].sort().forEach(subject => {
-      const li = document.createElement('li');
+    // ترتيب احترافي للمواد
+const order = [
+  "لغة عربية",
+  "English",
+  "أحياء",
+  "فيزياء",
+  "كيمياء",
+  "جيولوجيا",
+  "الرياضيات",
+  "تاريخ",
+  "جغرافيا",
+  "احصاء",
+  "ادبي"
+];
 
-      const circle = document.createElement('div');
-      circle.className = 'circle';
+// ترتيب حسب اللستة السابقة
+const sortedSubjects = [...subjects].sort((a, b) => {
+  return order.indexOf(a) - order.indexOf(b);
+});
 
-      const img = document.createElement('img');
-      img.src = subjectImages[subject] || 'https://img.icons8.com/ios-filled/100/ffd700/book.png';
+// عرض المواد
+sortedSubjects.forEach(subject => {
+  const li = document.createElement('li');
 
-      circle.appendChild(img);
+  const circle = document.createElement('div');
+  circle.className = 'circle';
 
-      const span = document.createElement('span');
-      span.textContent = subject;
+  const img = document.createElement('img');
+  img.src = subjectImages[subject] || 'https://img.icons8.com/ios-filled/100/ffd700/book.png';
 
-      li.appendChild(circle);
-      li.appendChild(span);
+  circle.appendChild(img);
 
-      li.onclick = () =>
-        window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
+  const span = document.createElement('span');
+  span.textContent = subject;
 
-      subjectsList.appendChild(li);
-    });
+  li.appendChild(circle);
+  li.appendChild(span);
+
+  li.onclick = () =>
+    window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
+
+  subjectsList.appendChild(li);
+});
+
 
     showToast("✅ تم تحميل المواد بنجاح");
 
