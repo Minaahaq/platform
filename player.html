@@ -1,335 +1,69 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>تشغيل الفيديو - منصة THE BEST</title>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>مشغل الفيديو</title>
+
+<!-- Plyr CSS -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
   body {
-    font-family: 'Cairo', sans-serif;
-    background: radial-gradient(circle at top, #0a0a0a, #000);
-    color: #fff;
+    background: #111;
     margin: 0;
-    text-align: center;
-    overflow-x: hidden;
+    padding: 20px;
+    font-family: "Cairo", sans-serif;
+    color: white;
   }
 
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #111;
-    padding: 14px 18px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
-  }
   .title {
-    color: #ffd700;
-    font-weight: 700;
-    font-size: 18px;
-    text-shadow: 0 0 8px #ffd700;
-  }
-  .back {
     font-size: 22px;
-    cursor: pointer;
-    color: #ffd700;
-    transition: transform 0.3s;
-    user-select: none;
+    margin-bottom: 10px;
   }
-  .back:hover { transform: translateX(-5px); }
 
-  #player, iframe {
-    max-width: 950px;
+  video {
     width: 100%;
-    height: 60vh;
-    border-radius: 18px;
-    margin: 25px auto;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-    background: #000;
-  }
-
-  .external {
-    background: #111;
-    padding: 35px 10px 50px;
-    border-top: 2px solid #222;
-    box-shadow: 0 -5px 15px rgba(255, 215, 0, 0.05);
-  }
-  .external h2 {
-    color: #ffd700;
-    font-size: 22px;
-    margin-bottom: 25px;
-    text-shadow: 0 0 10px #ffd700;
-    position: relative;
-  }
-  .external h2::after {
-    content: "";
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #ffd700, #ffb700);
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 2px;
-  }
-
-  .apps {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    justify-content: center;
-  }
-  .app-btn {
-    background: #1b1b1b;
-    border: 1px solid #333;
-    border-radius: 14px;
-    padding: 15px 10px;
-    width: 130px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-  }
-  .app-btn:hover {
-    transform: translateY(-6px);
-    background: linear-gradient(180deg, #222, #111);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-  }
-  .app-btn img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-  }
-  .app-btn span {
-    display: block;
-    color: #ffd700;
-    font-weight: 600;
-    font-size: 15px;
-  }
-
-  #toast {
-    visibility: hidden;
-    min-width: 260px;
-    background: linear-gradient(90deg, #222, #1a1a1a);
-    color: #ffd700;
-    text-align: center;
     border-radius: 12px;
-    padding: 14px;
-    position: fixed;
-    z-index: 2000;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-    opacity: 0;
-    transition: opacity 0.5s, bottom 0.5s;
-  }
-  #toast.show {
-    visibility: visible;
-    opacity: 1;
-    bottom: 55px;
-  }
-
-  .error-msg {
-    margin: 40px auto;
-    color: #ff4d4d;
-    font-size: 20px;
-    font-weight: 700;
-    text-shadow: 0 0 8px #ff0000;
+    overflow: hidden;
   }
 </style>
 </head>
 <body>
 
-  <div class="topbar">
-    <div class="back" onclick="history.back()">⬅</div>
-    <div class="title">𝑷𝒍𝒂𝒚 𝑽𝒊𝒅𝒆𝒐 🎬</div>
-    <div style="width:25px;"></div>
-  </div>
+<div class="title" id="video-title">LOADING...</div>
 
-  <video id="player" playsinline controls></video>
+<video id="player" controls playsinline></video>
 
-  <div class="external">
-    <h2>𝑷𝒍𝒂𝒚 𝑾𝒊𝒕𝒉...</h2>
-    <div class="apps">
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png" alt="VLC Player"><span>VLC Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png" alt="MX Player"><span>MX Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png" alt="PlayIt"><span>PlayIt</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png" alt="KM Player"><span>KM Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"><span>YouTube</span></div>
-    </div>
-  </div>
-
-  <div id="toast">🚧 سيتم إضافة هذه الميزة قريبًا 🔜</div>
-
-
-  <script>
-// 🎯 Toast فقط عند الخطأ
-function showToast(message, type = "info") {
-  const toast = document.createElement("div");
-  toast.className = `custom-toast ${type}`;
-  toast.innerHTML = `<span>${message}</span>`;
-
-  const style = document.createElement("style");
-  style.textContent = `
-    .custom-toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 14px 22px;
-      border-radius: 14px;
-      font-family: "Cairo", sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.4s forwards;
-      z-index: 9999;
-    }
-    .custom-toast.error { background: linear-gradient(135deg,#e74c3c,#c0392b); }
-
-    @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } 
-                          to { transform: translateX(0); opacity: 1; } }
-    @keyframes fadeOut { to { opacity: 0; transform: translateX(120%); } }
-  `;
-  document.head.appendChild(style);
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
-
-// 🌟 تحقق صامت من الفايربيس عند كل تحميل صفحة
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const isApproved = localStorage.getItem("approved");
-    const uid        = localStorage.getItem("localUid");
-
-    // لو أصلاً مش متسجل — طرده بدون توست
-    if (isApproved !== "true" || !uid) {
-      window.location.href = "index.html";
-      return;
-    }
-
-    // 🔥 تحقق فوري من الفايربيس بدون أي توست
-    const dbUrl = "https://plus-c3d02-default-rtdb.firebaseio.com/approvedStudents.json";
-    const res = await fetch(dbUrl);
-    const data = await res.json();
-
-    const exists = Object.values(data || {}).some(v => v.deviceId === uid);
-
-    // لو الحساب اتحذف — هنا فقط نستخدم التوست
-    if (!exists) {
-      localStorage.clear();
-      showToast("⚠️ تم حذف حسابك — أعد التسجيل", "error");
-      setTimeout(() => window.location.href = "index.html", 1500);
-      return;
-    }
-
-    // 🟢 الحساب سليم — بدون أي توست
-    document.dispatchEvent(new Event("authReady"));
-
-  } catch (err) {
-    console.error(err);
-    // خطأ في الاتصال — ارجع للصفحة الرئيسية بدون أي رسالة
-    setTimeout(() => window.location.href = "index.html", 1500);
-  }
-});
-</script>
-
-
- <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<!-- Plyr + HLS -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
-  // ============================
-  // 1) قراءة البيانات المحفوظة
-  // ============================
-  let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-  let savedSources = localStorage.getItem("video_sources");
-  let qualitySources = [];
+  // قراءة اختيار المستخدم من صفحة الجودات
+  const sources = JSON.parse(localStorage.getItem("video_sources"));
+  const videoTitle = localStorage.getItem("video_title");
 
-  if (savedSources) {
-    try {
-      const linkObj = JSON.parse(savedSources);
+  document.getElementById("video-title").textContent = videoTitle || "Video";
 
-      qualitySources = [{
-        src: linkObj.url,
-        type: "application/x-mpegURL",
-        size: parseInt(linkObj.label) || 720
-      }];
+  const video = document.getElementById("player");
 
-    } catch (err) {
-      console.error("❌ Error parsing video_sources:", err);
-      document.body.innerHTML = "<div class='error-msg'>حدث خطأ في روابط الفيديو 😢</div>";
-    }
+  // رابط الفيديو من السيرفر الحقيقي → نعدّله ليشتغل عبر البروكسي
+  const finalURL = `/api/proxy?url=${encodeURIComponent(sources.url)}`;
+
+  // تشغيل الفيديو
+  if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(finalURL);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+      });
   } else {
-    document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
+      video.src = finalURL;
   }
 
-  // ============================
-  // 2) بناء رابط البروكسي المحمي
-  // ============================
-  const originalURL = qualitySources[0].src;
-  const finalURL = "/api/stream?url=" + encodeURIComponent(originalURL);
-
-  // ============================
-  // 3) إعداد مشغل الفيديو
-  // ============================
-  const player = new Plyr('#player', {
-    controls: [
-      'play-large','play','progress','current-time',
-      'mute','volume','settings','fullscreen'
-    ],
-    settings: ['quality','speed','loop']
-  });
-
-  // ============================
-  // 4) تشغيل HLS عبر البروكسي
-  // ============================
-  const videoElement = document.getElementById("player");
-
-  if (finalURL.endsWith(".m3u8") && Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(finalURL);
-    hls.attachMedia(videoElement);
-
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      console.log("✅ HLS manifest loaded عبر البروكسي");
-    });
-
-  } else {
-    player.source = {
-      type: 'video',
-      title: videoTitle,
-      sources: [
-        { src: finalURL, type: "application/x-mpegURL", size: 720 }
-      ]
-    };
-  }
-
-  // ============================
-  // 5) Toast للإشعارات
-  // ============================
-  function showToast(msg) {
-    const toast = document.getElementById("toast");
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2500);
-  }
-
-  document.querySelectorAll(".app-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜");
-    });
-  });
+  // تفعيل مشغل Plyr
+  const player = new Plyr('#player');
 </script>
 
 </body>
