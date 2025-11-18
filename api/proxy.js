@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   try {
-    const response = await fetch("https://platform-sigma-seven.vercel.app/api/courses", {
+    const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
         "x-api-key": process.env.SECRET_KEY
       }
