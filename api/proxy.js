@@ -1,30 +1,34 @@
-export default async function handler(req, res) {
-  const site = process.env.SITE_URL;
-  const origin = req.headers.origin || "";
-  const referer = req.headers.referer || "";
-
-  // حماية: لو الطلب مش من موقعك → اقفل
-  if (!origin.startsWith(site) && !referer.startsWith(site)) {
-    return res.status(403).json({ error: "Access Forbidden" });
-  }
-
+async function loadVideos() {
   try {
-    const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
-      headers: {
-        "x-api-key": process.env.SECRET_KEY
-      }
+    const res = await fetch("/api/proxy");
+
+    if (!res.ok) {
+      throw new Error("Proxy returned error");
+    }
+
+    const json = await res.json();
+
+    // قراءة البيانات صح
+    const data = json.data || json;
+
+    console.log("DATA LOADED:", data);
+
+    // لو عايز توصل للروابط
+    data.forEach(year => {
+      (year.subjects || []).forEach(sub => {
+        (sub.chapters || []).forEach(ch => {
+          (ch.lectures || []).forEach(lec => {
+            (lec.videos || []).forEach(video => {
+              console.log("📌 فيديو:", video.video_name);
+              console.log("🔗 اللينكات:", video.links);
+            });
+          });
+        });
+      });
     });
 
-    const result = await response.json();
-
-    // هذا هو السطر المهم
-    const data = result.data || result;
-
-    // ✔️ رجّع البيانات بالشكل اللي الفرانت إند متعوّد عليه
-    return res.status(200).json({ data });
-
   } catch (error) {
-    return res.status(500).json({ error: "Proxy Error", details: error.message });
+    console.error("❌ Error loading videos:", error);
+    alert("حدث خطأ أثناء تحميل البيانات");
   }
 }
-
