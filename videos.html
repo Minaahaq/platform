@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     popup.style.display = "none";
   }
 
- function showQualityOptions(video) {
+function showQualityOptions(video) {
   qualityOptions.innerHTML = "";
   popup.style.display = "flex";
 
@@ -335,9 +335,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      // تشغيل عادي داخل WebView لأبكريتو
-      window.location.href = videoUrl;
+      // تشغيل الفيديو داخل مشغل AppCreator الداخلي
+      BeeApps.videoPlay(videoUrl);
     };
+
+    qualityOptions.appendChild(btn);
+  });
+}
+
 
     qualityOptions.appendChild(btn);
   });
