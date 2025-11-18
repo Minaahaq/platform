@@ -332,26 +332,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  async function loadVideos() {
+ async function loadVideos() {
   try {
     const res = await fetch("/api/proxy");
-    if (!res.ok) throw new Error("فشل تحميل البيانات");
-
     const json = await res.json();
 
-    // ❗ هنا التعديل المهم
-    const videos = json.data; 
+    // قراءة الداتا بشكل صحيح
+    const data = json.data || json;
 
-    console.log(videos); // بس عشان تتأكد إنها ظهرت
 
-    // هنا كمل بقى عرض الفيديوهات حسب طريقتك
-    return videos;
 
-  } catch (e) {
-    console.error(e);
-    alert("حدث خطأ أثناء تحميل الفيديوهات");
-  }
-}
 
 
 
