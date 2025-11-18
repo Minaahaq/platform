@@ -218,30 +218,6 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
 
-  <script>
-(function() {
-  const ua = navigator.userAgent.toLowerCase();
-
-  const inAppCreator =
-    ua.includes("appcreator24") ||
-    ua.includes("wv") ||
-    ua.includes("webview");
-
-  const isBrowser =
-    ua.includes("chrome") ||
-    ua.includes("safari") ||
-    ua.includes("firefox") ||
-    ua.includes("edge") ||
-    ua.includes("facebook") ||
-    ua.includes("instagram");
-
-  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
-  if (!inAppCreator && isBrowser) {
-    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
-  }
-})();
-</script>
-
 <script>
 (function() {
 
