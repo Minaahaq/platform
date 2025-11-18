@@ -325,11 +325,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     btn.textContent = link.label ? link.label + "p" : "غير معروف";
 
     btn.onclick = () => {
-      // رابط الفيديو الحقيقي
-      const videoUrl = link.url;
+      let videoUrl = link.url;
 
-      // مشغل Appcreator
-      window.location.href = `intent:${videoUrl}#Intent;type=video/mp4;action=android.intent.action.VIEW;end`;
+      // إزالة أي intent:// لو جاي من السيرفر
+      if (videoUrl.startsWith("intent:")) {
+        videoUrl = videoUrl.replace("intent:", "");
+        if (videoUrl.includes("#")) {
+          videoUrl = videoUrl.split("#")[0];
+        }
+      }
+
+      // تشغيل عادي داخل WebView لأبكريتو
+      window.location.href = videoUrl;
     };
 
     qualityOptions.appendChild(btn);
