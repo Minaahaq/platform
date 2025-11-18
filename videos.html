@@ -311,11 +311,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return (str || "").trim().replace(/[\s.\-ـ_]/g, "").toLowerCase();
   }
 
-  function closePopup() {
-    popup.style.display = "none";
-  }
-
-function showQualityOptions(video) {
+ function showQualityOptions(video) {
   qualityOptions.innerHTML = "";
   popup.style.display = "flex";
 
@@ -327,7 +323,7 @@ function showQualityOptions(video) {
     btn.onclick = () => {
       let videoUrl = link.url;
 
-      // إزالة أي intent:// لو جاي من السيرفر
+      // إزالة intent:// لو موجود
       if (videoUrl.startsWith("intent:")) {
         videoUrl = videoUrl.replace("intent:", "");
         if (videoUrl.includes("#")) {
@@ -335,7 +331,7 @@ function showQualityOptions(video) {
         }
       }
 
-      // تشغيل الفيديو داخل مشغل AppCreator الداخلي
+      // تشغيل داخل مشغل أبكريتو الداخلي
       BeeApps.videoPlay(videoUrl);
     };
 
@@ -343,10 +339,6 @@ function showQualityOptions(video) {
   });
 }
 
-
-    qualityOptions.appendChild(btn);
-  });
-}
 
  async function loadVideos() {
   try {
