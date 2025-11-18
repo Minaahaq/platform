@@ -216,30 +216,6 @@
 
   <script>
 (function() {
-  const ua = navigator.userAgent.toLowerCase();
-
-  const inAppCreator =
-    ua.includes("appcreator24") ||
-    ua.includes("wv") ||
-    ua.includes("webview");
-
-  const isBrowser =
-    ua.includes("chrome") ||
-    ua.includes("safari") ||
-    ua.includes("firefox") ||
-    ua.includes("edge") ||
-    ua.includes("facebook") ||
-    ua.includes("instagram");
-
-  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
-  if (!inAppCreator && isBrowser) {
-    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
-  }
-})();
-</script>
-
-  <script>
-(function() {
 
   // قراءة هل المستخدم جاء من الصفحة الرئيسية
   const came = localStorage.getItem("came_from_home");
@@ -360,27 +336,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       const btn = document.createElement("button");
       btn.className = "quality-btn";
       btn.textContent = link.label ? link.label + "p" : "غير معروف";
+
       btn.onclick = () => {
-        localStorage.setItem("video_sources", JSON.stringify(link));
+        // ✅ تحويل اللينك إلى بروكسي — حماية كاملة
+        const proxyLink = {
+          label: link.label,
+          url: `/api/proxy?url=${encodeURIComponent(link.url)}`
+        };
+
+        localStorage.setItem("video_sources", JSON.stringify(proxyLink));
         localStorage.setItem("video_title", video.name);
+
         window.location.href = "player.html";
       };
+
       qualityOptions.appendChild(btn);
     });
   }
 
   async function loadVideos() {
     try {
-      // 🔥 جلب البيانات من الـ Proxy المحمي
-const res = await fetch("/api/proxy");
+      // 🔥 جلب البيانات من البروكسي المحمي
+      const res = await fetch("/api/proxy");
 
-if (!res.ok) {
-    throw new Error("فشل تحميل البيانات");
-}
+      if (!res.ok) throw new Error("فشل تحميل البيانات");
 
-const json = await res.json();
-const data = json.data || json;
-
+      const json = await res.json();
+      const data = json.data || json;
 
       const wantedSubject = normalize(subject);
       const wantedTeacher = normalize(teacher);
