@@ -276,42 +276,44 @@ document.addEventListener("DOMContentLoaded", async () => {
 </script>
 
 
-  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+ <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <script>
-  // 🔹 قراءة البيانات من localStorage
-  let qualitySources = [];
+  // ============================
+  // 1) قراءة البيانات المحفوظة
+  // ============================
   let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-  const savedSources = localStorage.getItem("video_sources");
+  let savedSources = localStorage.getItem("video_sources");
+  let qualitySources = [];
 
-if (savedSources) {
-  try {
-    const links = JSON.parse(savedSources);
+  if (savedSources) {
+    try {
+      const linkObj = JSON.parse(savedSources);
 
-    if (Array.isArray(links)) {
-      // ✅ التعامل مع اللينكات اللي فيها label و url
-      qualitySources = links.map(link => ({
-        src: link.url || link, // لو الكائن فيه url نستخدمه، لو نص نستخدمه مباشرة
-        type: "application/x-mpegURL", // صيغة HLS (m3u8)
-        size: parseInt(link.label) || 720 // الجودة
-      }));
-    } else {
       qualitySources = [{
-        src: links.url || links,
+        src: linkObj.url,
         type: "application/x-mpegURL",
-        size: parseInt(links.label) || 720
+        size: parseInt(linkObj.label) || 720
       }];
+
+    } catch (err) {
+      console.error("❌ Error parsing video_sources:", err);
+      document.body.innerHTML = "<div class='error-msg'>حدث خطأ في روابط الفيديو 😢</div>";
     }
-
-  } catch (err) {
-    console.error("❌ Error parsing savedSources:", err);
+  } else {
+    document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
   }
-} else {
-  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
-}
 
+  // ============================
+  // 2) بناء رابط البروكسي المحمي
+  // ============================
+  const originalURL = qualitySources[0].src;
+  const finalURL = "/api/stream?url=" + encodeURIComponent(originalURL);
 
-  // 🔹 إنشاء مشغل الفيديو Plyr
+  // ============================
+  // 3) إعداد مشغل الفيديو
+  // ============================
   const player = new Plyr('#player', {
     controls: [
       'play-large','play','progress','current-time',
@@ -320,30 +322,33 @@ if (savedSources) {
     settings: ['quality','speed','loop']
   });
 
- // 🔹 تشغيل الفيديو سواء كان HLS أو MP4
-if (qualitySources.length > 0) {
-  const firstSrc = qualitySources[0].src;
+  // ============================
+  // 4) تشغيل HLS عبر البروكسي
+  // ============================
+  const videoElement = document.getElementById("player");
 
-  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
+  if (finalURL.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
-    hls.loadSource(firstSrc);
-    hls.attachMedia(document.getElementById('player'));
+    hls.loadSource(finalURL);
+    hls.attachMedia(videoElement);
 
-    // تحديث الجودة من اللينكات
     hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      console.log("✅ HLS manifest loaded");
+      console.log("✅ HLS manifest loaded عبر البروكسي");
     });
+
   } else {
     player.source = {
       type: 'video',
       title: videoTitle,
-      sources: qualitySources
+      sources: [
+        { src: finalURL, type: "application/x-mpegURL", size: 720 }
+      ]
     };
   }
-}
 
-
-  // 🔹 Toast إشعارات التطبيقات
+  // ============================
+  // 5) Toast للإشعارات
+  // ============================
   function showToast(msg) {
     const toast = document.getElementById("toast");
     toast.textContent = msg;
