@@ -371,11 +371,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadVideos() {
     try {
-      // ⛳ جلب البيانات من API المحمي
-      const res = await fetch("https://platform-sigma-seven.vercel.app/api/courses");
-      if (!res.ok) throw new Error("فشل تحميل البيانات");
-      const json = await res.json();
-      const data = json.data || json;
+      // 🔥 جلب البيانات من الـ Proxy المحمي
+const res = await fetch("/api/proxy");
+
+if (!res.ok) {
+    throw new Error("فشل تحميل البيانات");
+}
+
+const json = await res.json();
+const data = json.data || json;
+
 
       const wantedSubject = normalize(subject);
       const wantedTeacher = normalize(teacher);
