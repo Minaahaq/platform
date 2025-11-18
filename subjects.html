@@ -461,7 +461,7 @@ async function loadSubjects() {
   try {
 
     // جلب البيانات من API
-    const res = await fetch("/api/courses.js");
+    const res = await fetch("/api/proxy");
     const json = await res.json();
     const data = json.data || json;
 
