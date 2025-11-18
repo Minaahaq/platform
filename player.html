@@ -245,86 +245,76 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <script>
-  // 🔹 قراءة البيانات من localStorage
-  let qualitySources = [];
-  let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-  const savedSources = localStorage.getItem("video_sources");
+// ============= 1) قراءة البيانات =============
+let saved = localStorage.getItem("video_sources");
+let videoTitle = localStorage.getItem("video_title") || "Video";
 
-if (savedSources) {
-  try {
-    const links = JSON.parse(savedSources);
-
-    if (Array.isArray(links)) {
-      // ✅ التعامل مع اللينكات اللي فيها label و url
-      qualitySources = links.map(link => ({
-        src: link.url || link, // لو الكائن فيه url نستخدمه، لو نص نستخدمه مباشرة
-        type: "application/x-mpegURL", // صيغة HLS (m3u8)
-        size: parseInt(link.label) || 720 // الجودة
-      }));
-    } else {
-      qualitySources = [{
-        src: links.url || links,
-        type: "application/x-mpegURL",
-        size: parseInt(links.label) || 720
-      }];
-    }
-
-  } catch (err) {
-    console.error("❌ Error parsing savedSources:", err);
-  }
-} else {
+if (!saved) {
   document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
-
-  // 🔹 إنشاء مشغل الفيديو Plyr
-  const player = new Plyr('#player', {
-    controls: [
-      'play-large','play','progress','current-time',
-      'mute','volume','settings','fullscreen'
-    ],
-    settings: ['quality','speed','loop']
-  });
-
- // 🔹 تشغيل الفيديو سواء كان HLS أو MP4
-if (qualitySources.length > 0) {
-  const firstSrc = qualitySources[0].src;
-
-  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(firstSrc);
-    hls.attachMedia(document.getElementById('player'));
-
-    // تحديث الجودة من اللينكات
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      console.log("✅ HLS manifest loaded");
-    });
-  } else {
-    player.source = {
-      type: 'video',
-      title: videoTitle,
-      sources: qualitySources
-    };
-  }
+let linkObj = {};
+try {
+  linkObj = JSON.parse(saved);   // { url: "...", label: "720" }
+} catch (e) {
+  console.error(e);
 }
 
+// أخذ الرابط مباشرة بدون بروكسي
+const finalURL = linkObj.url;
 
-  // 🔹 Toast إشعارات التطبيقات
-  function showToast(msg) {
-    const toast = document.getElementById("toast");
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2500);
+// ============= 2) إنشاء المشغل =============
+const player = new Plyr('#player', {
+  controls: [
+    'play-large','play','progress','current-time',
+    'mute','volume','settings','fullscreen'
+  ],
+  settings: ['speed','loop']
+});
+
+const videoElement = document.getElementById("player");
+
+// ============= 3) تشغيل HLS أو MP4 =============
+if (finalURL.includes(".m3u8")) {
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(finalURL);
+    hls.attachMedia(videoElement);
+  } else {
+    videoElement.src = finalURL;
   }
 
-  document.querySelectorAll(".app-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜");
-    });
+} else {
+  // mp4 مباشر
+  player.source = {
+    type: "video",
+    title: videoTitle,
+    sources: [{
+      src: finalURL,
+      type: "video/mp4"
+    }]
+  };
+}
+
+// ============= 4) Toast للتطبيقات =============
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+document.querySelectorAll(".app-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜");
   });
+});
 </script>
+
 
 </body>
 </html>
