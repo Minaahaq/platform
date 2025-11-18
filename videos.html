@@ -214,44 +214,6 @@
     </div>
   </div>
 
-  <script>
-(function() {
-  const ua = navigator.userAgent.toLowerCase();
-
-  const inAppCreator =
-    ua.includes("appcreator24") ||
-    ua.includes("wv") ||
-    ua.includes("webview");
-
-  const isBrowser =
-    ua.includes("chrome") ||
-    ua.includes("safari") ||
-    ua.includes("firefox") ||
-    ua.includes("edge") ||
-    ua.includes("facebook") ||
-    ua.includes("instagram");
-
-  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
-  if (!inAppCreator && isBrowser) {
-    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
-  }
-})();
-</script>
-
-  <script>
-(function() {
-
-  // قراءة هل المستخدم جاء من الصفحة الرئيسية
-  const came = localStorage.getItem("came_from_home");
-
-  // لو لم يفتح الصفحة الرئيسية index
-  if (came !== "yes") {
-    window.location.href = "index.html"; // تحويل إجباري للصفحة الأولى
-  }
-
-})();
-</script>
-
 <script>
 // 🎯 Toast فقط عند الخطأ
 function showToast(message, type = "info") {
@@ -348,26 +310,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     return (str || "").trim().replace(/[\s.\-ـ_]/g, "").toLowerCase();
   }
 
-  function closePopup() {
-    popup.style.display = "none";
-  }
+ function showQualityOptions(video) {
+  qualityOptions.innerHTML = "";
+  popup.style.display = "flex";
 
-  function showQualityOptions(video) {
-    qualityOptions.innerHTML = "";
-    popup.style.display = "flex";
+  video.links.forEach(link => {
+    const btn = document.createElement("button");
+    btn.className = "quality-btn";
+    btn.textContent = link.label ? link.label + "p" : "غير معروف";
 
-    video.links.forEach(link => {
-      const btn = document.createElement("button");
-      btn.className = "quality-btn";
-      btn.textContent = link.label ? link.label + "p" : "غير معروف";
-      btn.onclick = () => {
-        localStorage.setItem("video_sources", JSON.stringify(link));
-        localStorage.setItem("video_title", video.name);
-        window.location.href = "player.html";
-      };
-      qualityOptions.appendChild(btn);
-    });
-  }
+    btn.onclick = () => {
+      let videoUrl = link.url;
+
+      // إزالة أي intent:// لو جاي من السيرفر
+      if (videoUrl.startsWith("intent:")) {
+        videoUrl = videoUrl.replace("intent:", "");
+        if (videoUrl.includes("#")) {
+          videoUrl = videoUrl.split("#")[0];
+        }
+      }
+
+      // تشغيل عادي داخل WebView لأبكريتو
+      window.location.href = videoUrl;
+    };
+
+    qualityOptions.appendChild(btn);
+  });
+}
+
 
   async function loadVideos() {
     try {
