@@ -20,9 +20,11 @@ export default async function handler(req, res) {
     // هذا هو السطر المهم
     const data = result.data || result;
 
-    res.status(200).json(data);
+    // ✔️ رجّع البيانات بالشكل اللي الفرانت إند متعوّد عليه
+    return res.status(200).json({ data });
 
   } catch (error) {
-    res.status(500).json({ error: "Proxy Error", details: error.message });
+    return res.status(500).json({ error: "Proxy Error", details: error.message });
   }
 }
+
