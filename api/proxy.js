@@ -1,14 +1,12 @@
 export default async function handler(req, res) {
   try {
-    // استدعاء الـ API الحقيقي مع المفتاح
-    const response = await fetch(`${process.env.VERCEL_URL}/api/courses`, {
+    const response = await fetch("https://platform-sigma-seven.vercel.app/api/courses", {
       headers: {
         "x-api-key": process.env.SECRET_KEY
       }
     });
 
     const data = await response.json();
-
     res.status(200).json(data);
 
   } catch (error) {
