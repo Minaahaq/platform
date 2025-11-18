@@ -6,7 +6,11 @@ export default async function handler(req, res) {
       }
     });
 
-    const data = await response.json();
+    const result = await response.json();
+
+    // <<< هذا السطر هو المهم
+    const data = result.data || result;
+
     res.status(200).json(data);
 
   } catch (error) {
