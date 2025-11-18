@@ -219,8 +219,8 @@
 // 🎯 Toast فقط عند الخطأ
 function showToast(message, type = "info") {
   const toast = document.createElement("div");
-  toast.className = `custom-toast ${type}`;
-  toast.innerHTML = `<span>${message}</span>`;
+  toast.className = custom-toast ${type};
+  toast.innerHTML = <span>${message}</span>;
 
   const style = document.createElement("style");
   style.textContent = `
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // لو الحساب اتحذف — هنا فقط نستخدم التوست
     if (!exists) {
       localStorage.clear();
-      showToast("⚠️ تم حذف حسابك — أعد التسجيل", "error");
+      showToast("⚠ تم حذف حسابك — أعد التسجيل", "error");
       setTimeout(() => window.location.href = "index.html", 1500);
       return;
     }
@@ -304,11 +304,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   backBtn.onclick = () => {
     window.location.href =
-      `lecture_name.html?subject=${encodeURIComponent(subject)}&teacher=${encodeURIComponent(teacher)}&chapter=${encodeURIComponent(chapter)}`;
+      lecture_name.html?subject=${encodeURIComponent(subject)}&teacher=${encodeURIComponent(teacher)}&chapter=${encodeURIComponent(chapter)};
   };
 
   function normalize(str) {
     return (str || "").trim().replace(/[\s.\-ـ_]/g, "").toLowerCase();
+  }
+
+  function closePopup() {
+    popup.style.display = "none";
   }
 
  function showQualityOptions(video) {
@@ -323,7 +327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     btn.onclick = () => {
       let videoUrl = link.url;
 
-      // إزالة intent:// لو موجود
+      // إزالة أي intent:// لو جاي من السيرفر
       if (videoUrl.startsWith("intent:")) {
         videoUrl = videoUrl.replace("intent:", "");
         if (videoUrl.includes("#")) {
@@ -331,14 +335,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      // تشغيل داخل مشغل أبكريتو الداخلي
-      BeeApps.videoPlay(videoUrl);
+      // تشغيل عادي داخل WebView لأبكريتو
+      window.location.href = videoUrl;
     };
 
     qualityOptions.appendChild(btn);
   });
 }
-
 
  async function loadVideos() {
   try {
@@ -392,7 +395,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (videos.length === 0) {
         videosContainer.innerHTML =
-          "<div class='error'>⚠️ لا توجد فيديوهات في هذه المحاضرة.</div>";
+          "<div class='error'>⚠ لا توجد فيديوهات في هذه المحاضرة.</div>";
         return;
       }
 
