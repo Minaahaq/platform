@@ -214,43 +214,6 @@
     </div>
   </div>
 
-  <script>
-(function() {
-  const ua = navigator.userAgent.toLowerCase();
-
-  const inAppCreator =
-    ua.includes("appcreator24") ||
-    ua.includes("wv") ||
-    ua.includes("webview");
-
-  const isBrowser =
-    ua.includes("chrome") ||
-    ua.includes("safari") ||
-    ua.includes("firefox") ||
-    ua.includes("edge") ||
-    ua.includes("facebook") ||
-    ua.includes("instagram");
-
-  // ❌ لو مش داخل تطبيقك → تحوّل لصفحة خارجية
-  if (!inAppCreator && isBrowser) {
-    window.location.href = "blocked.html"; // ← غيرها لأي صفحة عايزها
-  }
-})();
-</script>
-
-  <script>
-(function() {
-
-  // قراءة هل المستخدم جاء من الصفحة الرئيسية
-  const came = localStorage.getItem("came_from_home");
-
-  // لو لم يفتح الصفحة الرئيسية index
-  if (came !== "yes") {
-    window.location.href = "index.html"; // تحويل إجباري للصفحة الأولى
-  }
-
-})();
-</script>
 
 <script>
 // 🎯 Toast فقط عند الخطأ
