@@ -8,15 +8,12 @@ export default async function handler(req, res) {
 
     const result = await response.json();
 
-    // ✔ رجّعها دائمًا داخل data
-    res.status(200).json({
-      data: result.data || result
-    });
+    const data = result.data || result;
+
+    // رجّع الداتا بالشكل اللي الواجهة متوقعاه
+    res.status(200).json({ data });
 
   } catch (error) {
-    res.status(500).json({
-      error: "Proxy Error",
-      details: error.message
-    });
+    res.status(500).json({ error: "Proxy Error", details: error.message });
   }
 }
