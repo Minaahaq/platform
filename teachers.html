@@ -394,8 +394,8 @@ async function loadTeachers() {
 
   try {
 
-    // جلب البيانات من API مثل صفحة المواد
-    const res = await fetch("https://platform-sigma-seven.vercel.app/api/courses");
+   // جلب البيانات من API
+    const res = await fetch("/api/proxy");
     const json = await res.json();
     const data = json.data || json;
 
