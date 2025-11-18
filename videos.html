@@ -334,15 +334,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadVideos() {
     try {
-      // 🔥 جلب البيانات من الـ Proxy المحمي
-const res = await fetch("/api/proxy");
+   const res = await fetch("/api/proxy");
+if (!res.ok) throw new Error("فشل تحميل البيانات");
 
-if (!res.ok) {
-    throw new Error("فشل تحميل البيانات");
-}
+const data = await res.json();
 
-const json = await res.json();
-const data = json.data || json;
 
 
       const wantedSubject = normalize(subject);
