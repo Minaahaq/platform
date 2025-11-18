@@ -315,22 +315,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     popup.style.display = "none";
   }
 
-  function showQualityOptions(video) {
-    qualityOptions.innerHTML = "";
-    popup.style.display = "flex";
+ function showQualityOptions(video) {
+  qualityOptions.innerHTML = "";
+  popup.style.display = "flex";
 
-    video.links.forEach(link => {
-      const btn = document.createElement("button");
-      btn.className = "quality-btn";
-      btn.textContent = link.label ? link.label + "p" : "غير معروف";
-      btn.onclick = () => {
-        localStorage.setItem("video_sources", JSON.stringify(link));
-        localStorage.setItem("video_title", video.name);
-        window.location.href = "player.html";
-      };
-      qualityOptions.appendChild(btn);
-    });
-  }
+  video.links.forEach(link => {
+    const btn = document.createElement("button");
+    btn.className = "quality-btn";
+    btn.textContent = link.label ? link.label + "p" : "غير معروف";
+
+    btn.onclick = () => {
+      // رابط الفيديو الحقيقي
+      const videoUrl = link.url;
+
+      // مشغل Appcreator
+      window.location.href = `intent:${videoUrl}#Intent;type=video/mp4;action=android.intent.action.VIEW;end`;
+    };
+
+    qualityOptions.appendChild(btn);
+  });
+}
 
  async function loadVideos() {
   try {
