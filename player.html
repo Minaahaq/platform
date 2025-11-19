@@ -53,26 +53,11 @@
     background: #000;
   }
 
-  .control-buttons {
-    margin: 15px auto;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-  .control-buttons button {
-    padding: 10px 14px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    background: #ffd700;
-    color: #000;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255,215,0,0.3);
-    transition: transform 0.2s;
-  }
-  .control-buttons button:hover {
-    transform: translateY(-3px);
+  #hint {
+    margin-top: 12px;
+    color: #ffd700;
+    font-size: 14px;
+    text-shadow: 0 0 4px #ffd700;
   }
 
   .error-msg {
@@ -92,12 +77,8 @@
   <div style="width:25px;"></div>
 </div>
 
-<video id="player" playsinline controls></video>
-
-<div class="control-buttons">
-  <button id="rewind10">⏪ -10s</button>
-  <button id="forward10">⏩ +10s</button>
-</div>
+<video id="player" playsinline controls poster="poster.jpg"></video>
+<div id="hint">💡 اسحب الفيديو لتقديمه أو تأخيره على الهاتف</div>
 
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -130,12 +111,15 @@ if (savedSources) {
   document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
+// إنشاء المشغل مع أزرار إضافية مدمجة
 const player = new Plyr('#player', {
   controls: [
-    'play-large','play','progress','current-time',
+    'play-large','play','rewind','fast-forward','progress','current-time','duration',
     'mute','volume','settings','fullscreen'
   ],
-  settings: ['quality','speed','loop']
+  settings: ['quality','speed','loop'],
+  rewindTime: 10,
+  forwardTime: 10
 });
 
 // تشغيل HLS إذا كان الفيديو بصيغة m3u8
@@ -154,15 +138,25 @@ if (qualitySources.length > 0) {
   }
 }
 
-// ⏪ + ⏩ تقديم/تأخير الفيديو
-document.getElementById('rewind10').addEventListener('click', () => {
-  player.currentTime = Math.max(player.currentTime - 10, 0);
+// 🔄 الدخول التلقائي إلى fullscreen عند التشغيل
+player.on('play', () => {
+  if (!player.fullscreen.active) player.fullscreen.enter();
 });
-document.getElementById('forward10').addEventListener('click', () => {
-  player.currentTime = Math.min(player.currentTime + 10, player.duration);
+
+// ⏪ + ⏩ مدمجة في controls
+// تم تحديد rewindTime و forwardTime أعلاه
+
+// ⏰ عرض رسالة عند نهاية الفيديو
+player.on('ended', () => {
+  alert("🎬 انتهى الفيديو");
 });
+
+// رسالة تلميحية للمستخدم (مخففة بعد 5 ثواني)
+setTimeout(() => {
+  const hint = document.getElementById('hint');
+  hint.style.display = 'none';
+}, 5000);
 </script>
 
 </body>
 </html>
-
