@@ -312,33 +312,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     return (str || "").trim().replace(/[\s.\-ـ_]/g, "").toLowerCase();
   }
 
- function showQualityOptions(video) {
-  qualityOptions.innerHTML = "";
-  popup.style.display = "flex";
+  function closePopup() {
+      popup.style.display = "none";
+    }
 
-  video.links.forEach(link => {
-    const btn = document.createElement("button");
-    btn.className = "quality-btn";
-    btn.textContent = link.label ? link.label + "p" : "غير معروف";
+    function showQualityOptions(video) {
+      qualityOptions.innerHTML = "";
+      popup.style.display = "flex";
 
-    btn.onclick = () => {
-      let videoUrl = link.url;
+      video.links.forEach(link => {
+        const btn = document.createElement("button");
+        btn.className = "quality-btn";
+        btn.textContent = link.label ? link.label + "p" : "غير معروف";
+        btn.onclick = () => {
+          localStorage.setItem("video_sources", JSON.stringify(link));
+          localStorage.setItem("video_title", video.name);
+          window.location.href = "player.html";
+        };
+        qualityOptions.appendChild(btn);
+      });
+    }
 
-      // إزالة أي intent:// لو جاي من السيرفر
-      if (videoUrl.startsWith("intent:")) {
-        videoUrl = videoUrl.replace("intent:", "");
-        if (videoUrl.includes("#")) {
-          videoUrl = videoUrl.split("#")[0];
-        }
-      }
-
-      // تشغيل عادي داخل WebView لأبكريتو
-      window.location.href = videoUrl;
-    };
-
-    qualityOptions.appendChild(btn);
-  });
-}
 
 
   async function loadVideos() {
