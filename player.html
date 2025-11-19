@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>تشغيل الفيديو - منصة THE BEST</title>
-
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
@@ -43,7 +43,7 @@
   }
   .back:hover { transform: translateX(-5px); }
 
-  #player {
+  #player, iframe {
     max-width: 950px;
     width: 100%;
     height: 60vh;
@@ -51,7 +51,6 @@
     margin: 25px auto;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
     background: #000;
-    overflow: hidden;
   }
 
   .external {
@@ -154,49 +153,55 @@
     <div style="width:25px;"></div>
   </div>
 
-  <!-- 🔥 Clappr Player Container -->
-  <div id="player"></div>
+  <video id="player" playsinline controls></video>
 
   <div class="external">
     <h2>𝑷𝒍𝒂𝒚 𝑾𝒊𝒕𝒉...</h2>
     <div class="apps">
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png"><span>VLC Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png"><span>MX Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png"><span>PlayIt</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png"><span>KM Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"><span>YouTube</span></div>
+      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png" alt="VLC Player"><span>VLC Player</span></div>
+      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png" alt="MX Player"><span>MX Player</span></div>
+      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png" alt="PlayIt"><span>PlayIt</span></div>
+      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png" alt="KM Player"><span>KM Player</span></div>
+      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"><span>YouTube</span></div>
     </div>
   </div>
 
   <div id="toast">🚧 سيتم إضافة هذه الميزة قريبًا 🔜</div>
 
-<!-- ✓ Clappr Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/clappr-level-selector@latest/dist/level-selector.min.js"></script>
-
-<script>
-// ✓ التحقق من التشغيل داخل التطبيق
+  <script>
 (function() {
   const ua = navigator.userAgent || "";
   const inAppCreator = ua.includes("AppCreator24") || ua.includes("wv") || ua.includes("WebView");
+
   if (!inAppCreator) {
     document.body.innerHTML = `
       <div style="
-        display:flex;justify-content:center;align-items:center;
-        height:100vh;flex-direction:column;background:#000;
-        color:#ffd700;text-align:center;padding:20px;">
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        flex-direction:column;
+        background:#000;
+        color:#ffd700;
+        font-family:'Cairo',sans-serif;
+        text-align:center;
+        padding:20px;">
         <h2>⚠️ هذا الإصدار يعمل داخل تطبيق الثانويه بلس فقط</h2>
         <p>قم بتحميل التطبيق من الرابط التالي 👇</p>
         <a href="https://www.appcreator24.com/app3711758-ykz86f"
-           style="background:#ffd700;color:#000;padding:12px 20px;
-                  border-radius:10px;text-decoration:none;font-weight:bold;margin-top:15px;">
+           style="background:#ffd700;color:#000;padding:12px 20px;border-radius:10px;
+                  text-decoration:none;font-weight:bold;margin-top:15px;">
           📲 تحميل التطبيق
         </a>
       </div>`;
   }
 })();
+</script>
 
-// 🔥 قراءة روابط الفيديو المخزنة
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
 let qualitySources = [];
 let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
 const savedSources = localStorage.getItem("video_sources");
@@ -206,11 +211,18 @@ if (savedSources) {
     const links = JSON.parse(savedSources);
 
     if (Array.isArray(links)) {
-      qualitySources = links.map(link => link.url || link);
+      qualitySources = links.map(link => ({
+        src: link.url || link,
+        type: "application/x-mpegURL",
+        size: parseInt(link.label) || 720
+      }));
     } else {
-      qualitySources = [links.url || links];
+      qualitySources = [{
+        src: links.url || links,
+        type: "application/x-mpegURL",
+        size: parseInt(links.label) || 720
+      }];
     }
-
   } catch (err) {
     console.error("❌ Error parsing savedSources:", err);
   }
@@ -218,35 +230,68 @@ if (savedSources) {
   document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
-// 🔥 تشغيل Clappr
+const player = new Plyr('#player', {
+  controls: [
+    'play-large','play','progress','current-time',
+    'mute','volume','settings','fullscreen'
+  ],
+  settings: ['quality','speed','loop']
+});
+
 if (qualitySources.length > 0) {
-  const player = new Clappr.Player({
-    parentId: "#player",
-    source: qualitySources[0],
-    width: "100%",
-    height: "100%",
-    autoPlay: false,
-    mimeType: "application/x-mpegURL",
-    plugins: { core: [LevelSelector] },
-    levelSelectorConfig: { title: "الجودة" },
-    playback: {
-      hlsjsConfig: {
-        maxBufferLength: 30
-      }
-    }
-  });
+  const firstSrc = qualitySources[0].src;
+
+  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(firstSrc);
+    hls.attachMedia(document.getElementById('player'));
+  } else {
+    player.source = {
+      type: 'video',
+      title: videoTitle,
+      sources: qualitySources
+    };
+  }
 }
 
-// 🔔 Toast buttons
+// 🔔 Toast إشعار التطبيقات
 function showToast(msg) {
   const toast = document.getElementById("toast");
   toast.textContent = msg;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2500);
 }
+
 document.querySelectorAll(".app-btn").forEach(btn => {
-  btn.addEventListener("click", () => showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜"));
+  btn.addEventListener("click", () =>
+    showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜")
+  );
 });
+
+
+/*-----------------------------------------
+    🔄 الدوران التلقائي عند تشغيل الفيديو
+------------------------------------------*/
+player.on("play", async () => {
+  try {
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock("landscape");
+      console.log("📱 تم تفعيل وضع Landscape تلقائياً");
+    }
+  } catch (err) {
+    console.warn("⚠️ لا يمكن تفعيل الدوران التلقائي:", err);
+  }
+});
+
+// (اختياري) رجوع الوضع لطبيعي عند الإيقاف
+player.on("pause", async () => {
+  try {
+    if (screen.orientation && screen.orientation.unlock) {
+      await screen.orientation.unlock();
+    }
+  } catch (err) {}
+});
+
 </script>
 
 </body>
