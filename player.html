@@ -43,35 +43,15 @@
   }
   .back:hover { transform: translateX(-5px); }
 
-  #player-container {
-    position: relative;
-    max-width: 950px;
-    margin: 25px auto;
-  }
-
   #player {
+    max-width: 950px;
     width: 100%;
     height: 60vh;
     border-radius: 18px;
+    margin: 25px auto;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
     background: #000;
   }
-
-  .double-tap {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 32px;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 8px #000;
-    opacity: 0.8;
-    pointer-events: none;
-    transition: opacity 0.5s;
-  }
-
-  .left { left: 20%; }
-  .right { right: 20%; }
 
   #hint {
     margin-top: 12px;
@@ -97,12 +77,8 @@
   <div style="width:25px;"></div>
 </div>
 
-<div id="player-container">
-  <video id="player" playsinline controls poster="poster.jpg"></video>
-  <div class="double-tap left" id="rewind-indicator">⏪ 10s</div>
-  <div class="double-tap right" id="forward-indicator">⏩ 10s</div>
-</div>
-<div id="hint">💡 اضغط مرتين على يسار/يمين الفيديو للتقديم أو التأخير</div>
+<video id="player" playsinline controls poster="poster.jpg"></video>
+<div id="hint">💡 اسحب الفيديو لتقديمه أو تأخيره على الهاتف</div>
 
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -135,7 +111,7 @@ if (savedSources) {
   document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
-// إنشاء المشغل
+// إنشاء المشغل مع أزرار مدمجة
 const player = new Plyr('#player', {
   controls: [
     'play-large','play','rewind','fast-forward','progress','current-time','duration',
@@ -162,9 +138,17 @@ if (qualitySources.length > 0) {
   }
 }
 
-// 🔄 Fullscreen عند التشغيل
-player.on('play', () => {
-  if (!player.fullscreen.active) player.fullscreen.enter();
+// 🔄 Fullscreen وتدوير تلقائي عند التشغيل
+player.on('play', async () => {
+  try {
+    if (!player.fullscreen.active) player.fullscreen.enter();
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape');
+      console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
+    }
+  } catch (err) {
+    console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
+  }
 });
 
 // ⏰ نهاية الفيديو
@@ -174,34 +158,6 @@ player.on('ended', () => {
 
 // رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
 setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
-
-// 👆 ضغط مزدوج للتقديم/التأخير
-const container = document.getElementById('player-container');
-let lastTap = 0;
-
-container.addEventListener('click', function(e) {
-  const currentTime = player.currentTime;
-  const tapTime = new Date().getTime();
-  if (tapTime - lastTap < 300) { // إذا كان الضغط المزدوج
-    const width = container.offsetWidth;
-    const clickX = e.offsetX;
-
-    if (clickX < width / 2) { // نصف يسار
-      player.currentTime = Math.max(currentTime - 10, 0);
-      showIndicator('rewind-indicator');
-    } else { // نصف يمين
-      player.currentTime = Math.min(currentTime + 10, player.duration);
-      showIndicator('forward-indicator');
-    }
-  }
-  lastTap = tapTime;
-});
-
-function showIndicator(id) {
-  const el = document.getElementById(id);
-  el.style.opacity = 1;
-  setTimeout(() => el.style.opacity = 0, 500);
-}
 </script>
 
 </body>
