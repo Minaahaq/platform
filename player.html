@@ -143,32 +143,49 @@
     font-weight: 700;
     text-shadow: 0 0 8px #ff0000;
   }
+
+  #rotateBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    background: #ffd700;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+  }
 </style>
 </head>
 <body>
 
-  <div class="topbar">
-    <div class="back" onclick="history.back()">⬅</div>
-    <div class="title">𝑷𝒍𝒂𝒚 𝑽𝒊𝒅𝒆𝒐 🎬</div>
-    <div style="width:25px;"></div>
+<div class="topbar">
+  <div class="back" onclick="history.back()">⬅</div>
+  <div class="title">𝑷𝒍𝒂𝒚 𝑽𝒊𝒅𝒆𝒐 🎬</div>
+  <div style="width:25px;"></div>
+</div>
+
+<video id="player" playsinline controls></video>
+
+<div class="external">
+  <h2>𝑷𝒍𝒂𝒚 𝑾𝒊𝒕𝒉...</h2>
+  <div class="apps">
+    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png" alt="VLC Player"><span>VLC Player</span></div>
+    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png" alt="MX Player"><span>MX Player</span></div>
+    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png" alt="PlayIt"><span>PlayIt</span></div>
+    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png" alt="KM Player"><span>KM Player</span></div>
+    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"><span>YouTube</span></div>
   </div>
+</div>
 
-  <video id="player" playsinline controls></video>
+<div id="toast">🚧 سيتم إضافة هذه الميزة قريبًا 🔜</div>
 
-  <div class="external">
-    <h2>𝑷𝒍𝒂𝒚 𝑾𝒊𝒕𝒉...</h2>
-    <div class="apps">
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png" alt="VLC Player"><span>VLC Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png" alt="MX Player"><span>MX Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png" alt="PlayIt"><span>PlayIt</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png" alt="KM Player"><span>KM Player</span></div>
-      <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"><span>YouTube</span></div>
-    </div>
-  </div>
+<button id="rotateBtn">🔄 الوضع الأفقي</button>
 
-  <div id="toast">🚧 سيتم إضافة هذه الميزة قريبًا 🔜</div>
-
-  <script>
+<script>
 (function() {
   const ua = navigator.userAgent || "";
   const inAppCreator = ua.includes("AppCreator24") || ua.includes("wv") || ua.includes("WebView");
@@ -209,7 +226,6 @@ const savedSources = localStorage.getItem("video_sources");
 if (savedSources) {
   try {
     const links = JSON.parse(savedSources);
-
     if (Array.isArray(links)) {
       qualitySources = links.map(link => ({
         src: link.url || link,
@@ -240,7 +256,6 @@ const player = new Plyr('#player', {
 
 if (qualitySources.length > 0) {
   const firstSrc = qualitySources[0].src;
-
   if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(firstSrc);
@@ -268,30 +283,21 @@ document.querySelectorAll(".app-btn").forEach(btn => {
   );
 });
 
-
-/*-----------------------------------------
-    🔄 الدوران التلقائي عند تشغيل الفيديو
-------------------------------------------*/
-player.on("play", async () => {
+// 🔄 زر تفعيل الوضع الأفقي
+document.getElementById("rotateBtn").addEventListener("click", async () => {
   try {
+    if (player.fullscreen.active === false) {
+      await player.fullscreen.enter();
+    }
     if (screen.orientation && screen.orientation.lock) {
       await screen.orientation.lock("landscape");
-      console.log("📱 تم تفعيل وضع Landscape تلقائياً");
+      showToast("📱 تم تفعيل الوضع الأفقي");
     }
   } catch (err) {
-    console.warn("⚠️ لا يمكن تفعيل الدوران التلقائي:", err);
+    showToast("⚠️ لا يمكن تفعيل الدوران على هذا الجهاز");
+    console.warn(err);
   }
 });
-
-// (اختياري) رجوع الوضع لطبيعي عند الإيقاف
-player.on("pause", async () => {
-  try {
-    if (screen.orientation && screen.orientation.unlock) {
-      await screen.orientation.unlock();
-    }
-  } catch (err) {}
-});
-
 </script>
 
 </body>
