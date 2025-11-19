@@ -43,7 +43,7 @@
   }
   .back:hover { transform: translateX(-5px); }
 
-  #player, iframe {
+  #player {
     max-width: 950px;
     width: 100%;
     height: 60vh;
@@ -53,87 +53,26 @@
     background: #000;
   }
 
-  .external {
-    background: #111;
-    padding: 35px 10px 50px;
-    border-top: 2px solid #222;
-    box-shadow: 0 -5px 15px rgba(255, 215, 0, 0.05);
-  }
-  .external h2 {
-    color: #ffd700;
-    font-size: 22px;
-    margin-bottom: 25px;
-    text-shadow: 0 0 10px #ffd700;
-    position: relative;
-  }
-  .external h2::after {
-    content: "";
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #ffd700, #ffb700);
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 2px;
-  }
-
-  .apps {
+  .control-buttons {
+    margin: 15px auto;
     display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
     justify-content: center;
+    gap: 15px;
   }
-  .app-btn {
-    background: #1b1b1b;
-    border: 1px solid #333;
-    border-radius: 14px;
-    padding: 15px 10px;
-    width: 130px;
-    text-align: center;
+  .control-buttons button {
+    padding: 10px 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: #ffd700;
+    color: #000;
     cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
+    box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+    transition: transform 0.2s;
   }
-  .app-btn:hover {
-    transform: translateY(-6px);
-    background: linear-gradient(180deg, #222, #111);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-  }
-  .app-btn img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-  }
-  .app-btn span {
-    display: block;
-    color: #ffd700;
-    font-weight: 600;
-    font-size: 15px;
-  }
-
-  #toast {
-    visibility: hidden;
-    min-width: 260px;
-    background: linear-gradient(90deg, #222, #1a1a1a);
-    color: #ffd700;
-    text-align: center;
-    border-radius: 12px;
-    padding: 14px;
-    position: fixed;
-    z-index: 2000;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-    opacity: 0;
-    transition: opacity 0.5s, bottom 0.5s;
-  }
-  #toast.show {
-    visibility: visible;
-    opacity: 1;
-    bottom: 55px;
+  .control-buttons button:hover {
+    transform: translateY(-3px);
   }
 
   .error-msg {
@@ -142,21 +81,6 @@
     font-size: 20px;
     font-weight: 700;
     text-shadow: 0 0 8px #ff0000;
-  }
-
-  #rotateBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 12px 16px;
-    background: #ffd700;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
   }
 </style>
 </head>
@@ -170,50 +94,10 @@
 
 <video id="player" playsinline controls></video>
 
-<div class="external">
-  <h2>𝑷𝒍𝒂𝒚 𝑾𝒊𝒕𝒉...</h2>
-  <div class="apps">
-    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969200.png" alt="VLC Player"><span>VLC Player</span></div>
-    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969215.png" alt="MX Player"><span>MX Player</span></div>
-    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969220.png" alt="PlayIt"><span>PlayIt</span></div>
-    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969210.png" alt="KM Player"><span>KM Player</span></div>
-    <div class="app-btn"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"><span>YouTube</span></div>
-  </div>
+<div class="control-buttons">
+  <button id="rewind10">⏪ -10s</button>
+  <button id="forward10">⏩ +10s</button>
 </div>
-
-<div id="toast">🚧 سيتم إضافة هذه الميزة قريبًا 🔜</div>
-
-<button id="rotateBtn">🔄 الوضع الأفقي</button>
-
-<script>
-(function() {
-  const ua = navigator.userAgent || "";
-  const inAppCreator = ua.includes("AppCreator24") || ua.includes("wv") || ua.includes("WebView");
-
-  if (!inAppCreator) {
-    document.body.innerHTML = `
-      <div style="
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-        flex-direction:column;
-        background:#000;
-        color:#ffd700;
-        font-family:'Cairo',sans-serif;
-        text-align:center;
-        padding:20px;">
-        <h2>⚠️ هذا الإصدار يعمل داخل تطبيق الثانويه بلس فقط</h2>
-        <p>قم بتحميل التطبيق من الرابط التالي 👇</p>
-        <a href="https://www.appcreator24.com/app3711758-ykz86f"
-           style="background:#ffd700;color:#000;padding:12px 20px;border-radius:10px;
-                  text-decoration:none;font-weight:bold;margin-top:15px;">
-          📲 تحميل التطبيق
-        </a>
-      </div>`;
-  }
-})();
-</script>
 
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -254,6 +138,7 @@ const player = new Plyr('#player', {
   settings: ['quality','speed','loop']
 });
 
+// تشغيل HLS إذا كان الفيديو بصيغة m3u8
 if (qualitySources.length > 0) {
   const firstSrc = qualitySources[0].src;
   if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
@@ -269,36 +154,15 @@ if (qualitySources.length > 0) {
   }
 }
 
-// 🔔 Toast إشعار التطبيقات
-function showToast(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
-}
-
-document.querySelectorAll(".app-btn").forEach(btn => {
-  btn.addEventListener("click", () =>
-    showToast("🚧 سيتم إضافة هذه الميزة قريبًا 🔜")
-  );
+// ⏪ + ⏩ تقديم/تأخير الفيديو
+document.getElementById('rewind10').addEventListener('click', () => {
+  player.currentTime = Math.max(player.currentTime - 10, 0);
 });
-
-// 🔄 زر تفعيل الوضع الأفقي
-document.getElementById("rotateBtn").addEventListener("click", async () => {
-  try {
-    if (player.fullscreen.active === false) {
-      await player.fullscreen.enter();
-    }
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock("landscape");
-      showToast("📱 تم تفعيل الوضع الأفقي");
-    }
-  } catch (err) {
-    showToast("⚠️ لا يمكن تفعيل الدوران على هذا الجهاز");
-    console.warn(err);
-  }
+document.getElementById('forward10').addEventListener('click', () => {
+  player.currentTime = Math.min(player.currentTime + 10, player.duration);
 });
 </script>
 
 </body>
 </html>
+
