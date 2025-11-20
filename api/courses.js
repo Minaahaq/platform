@@ -8,7 +8,7 @@ export default function handler(req, res) {
   }
 
   // جلب البيانات
-  const data = require("../data/coursatk_scraped_data.json");
+  const data = require("../date/coursatk_scraped_data.json");
 
   res.status(200).json({ data });
 }
