@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 export default function handler(req, res) {
   // نقرأ المفتاح اللي جاي في الهيدر
   const secret = req.headers["x-api-key"];
@@ -11,13 +8,7 @@ export default function handler(req, res) {
   }
 
   // جلب البيانات
-  try {
-    const filePath = path.join(process.cwd(), "data/coursatk_scraped_data.json");
-    const jsonData = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(jsonData);
+  const data = require("../data/coursatk_scraped_data.json");
 
-    res.status(200).json({ data });
-  } catch (err) {
-    res.status(500).json({ error: "Read Error", details: err.message });
-  }
+  res.status(200).json({ data });
 }
