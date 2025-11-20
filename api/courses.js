@@ -7,7 +7,7 @@ export default function handler(req, res) {
   }
 
   // ⚠ المسار الصحيح حسب بنية مجلداتك
-  const filePath = path.join(__dirname, "../data/coursatk_scraped_data.json");
+  const filePath = path.join(__dirname, "../date/coursatk_scraped_data.json");
 
   try {
     const jsonData = fs.readFileSync(filePath, "utf-8");
