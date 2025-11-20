@@ -1,25 +1,23 @@
+// pages/api/proxy.js
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
-  const site = process.env.SITE_URL;
-  const origin = req.headers.origin || "";
-  const referer = req.headers.referer || "";
-
-  // حماية: لو الطلب مش من موقعك → اقفل
-  if (!origin.startsWith(site) && !referer.startsWith(site)) {
-    return res.status(403).json({ error: "Access Forbidden" });
-  }
-
   try {
-    const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
+    // الاتصال بالـ API الداخلي مباشرة من السيرفر
+    const internalRes = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
         "x-api-key": process.env.SECRET_KEY
       }
     });
 
-    const result = await response.json();
+    if (!internalRes.ok) {
+      return res.status(500).json({ error: "Internal API Error" });
+    }
 
-    // هذا هو السطر المهم
+    const result = await internalRes.json();
     const data = result.data || result;
 
+    // إرسال البيانات للعميل
     res.status(200).json(data);
 
   } catch (error) {
