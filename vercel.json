@@ -1,8 +1,0 @@
-{
-  "routes": [
-    {
-      "src": "/data/.*",
-      "dest": "api/no-access"
-    }
-  ]
-}
