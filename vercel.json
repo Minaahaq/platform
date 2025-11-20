@@ -1,9 +1,8 @@
 {
   "routes": [
     {
-      "src": "/data/(.*)",
-      "status": 404,
-      "dest": "/404"
+      "src": "/data/.*",
+      "dest": "api/no-access"
     }
   ]
 }
