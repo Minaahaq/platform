@@ -5,18 +5,39 @@ export default async function handler(req, res) {
 
   const origin = req.headers.origin || "";
   const referer = req.headers.referer || "";
+  const ua = req.headers["user-agent"] || "";
 
-  // السماح فقط لموقعك
-  if (!origin.startsWith(site) && !referer.startsWith(site)) {
+  // ============ 🔒 منع السكربتات الخارجية ============
+  // 1 - منع غياب ORIGIN / REFERER
+  if (!origin || !referer) {
+    return res.status(403).json({ error: "Blocked: No browser headers" });
+  }
+
+  // 2 - لازم يكونوا نفس موقعك
+  if (!origin.startsWith(site) || !referer.startsWith(site)) {
     return res.status(403).json({ error: "Access Forbidden (Origin)" });
   }
+
+  // 3 - منع Python / Curl / Postman / Node scripts
+  if (
+    ua.includes("python") ||
+    ua.includes("curl") ||
+    ua.includes("wget") ||
+    ua.includes("httpclient") ||
+    ua.includes("Postman") ||
+    ua.includes("axios") ||
+    ua.includes("node")
+  ) {
+    return res.status(403).json({ error: "Blocked: Script user-agent" });
+  }
+  // ===================================================
 
   try {
     // 🔥 هنا السيرفر (proxy) بيبعت INTERNAL_KEY تلقائي
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
         "x-api-key": process.env.SECRET_KEY,
-        "x-internal-key": process.env.INTERNAL_KEY   // ←← مفيش جافاسكريبت
+        "x-internal-key": process.env.INTERNAL_KEY
       }
     });
 
