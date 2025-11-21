@@ -2,38 +2,27 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
   const site = process.env.SITE_URL;
+
   const origin = req.headers.origin || "";
   const referer = req.headers.referer || "";
-  const clientKey = req.headers["x-internal-key"]; // المفتاح القادم من البراوزر
 
-  // ========== توليد المفتاح الديناميكي ==========
-  const staticKey = process.env.INTERNAL_KEY; // مفتاح ثابت سري
-  const currentMinute = Math.floor(Date.now() / 60000); // كل دقيقة
-  const dynamicKey = crypto
-    .createHmac("sha256", staticKey)
-    .update(String(currentMinute))
-    .digest("hex");
-
-  // ========== حماية Origin ==========
+  // السماح فقط لموقعك
   if (!origin.startsWith(site) && !referer.startsWith(site)) {
     return res.status(403).json({ error: "Access Forbidden (Origin)" });
   }
 
-  // ========== حماية المفتاح الديناميكي ==========
-  if (clientKey !== dynamicKey) {
-    return res.status(403).json({ error: "Access Forbidden (Dynamic Key)" });
-  }
-
   try {
+    // 🔥 هنا السيرفر (proxy) بيبعت INTERNAL_KEY تلقائي
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
-        "x-api-key": process.env.SECRET_KEY
+        "x-api-key": process.env.SECRET_KEY,
+        "x-internal-key": process.env.INTERNAL_KEY   // ←← مفيش جافاسكريبت
       }
     });
 
     const encrypted = await response.json();
 
-    // ======= فك التشفير AES =======
+    // فك تشفير AES
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = Buffer.from(encrypted.iv, "hex");
     const encryptedData = Buffer.from(encrypted.data, "hex");
