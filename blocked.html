@@ -1,79 +1,54 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خطأ في النظام</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-        }
-        .error-icon {
-            font-size: 60px;
-            color: #f44336;
-        }
-        .error-message {
-            font-size: 24px;
-            margin: 20px 0;
-            color: #444;
-        }
-        .error-details {
-            font-size: 16px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .thank-you-message {
-            font-size: 18px;
-            color: #4CAF50;
-        }
-        .btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚠️ Access Error</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    color: #ffd700;
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .error-box {
+    background: #000;
+    border: 2px solid #ffd700;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #ffd70044;
+    max-width: 90%;
+  }
+
+  .error-box h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .json-output {
+    background: #111;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 16px;
+  }
+</style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="error-icon">&#9888;</div>
-        <div class="error-message">
-            عذراً، هناك مشكلة في النظام
-        </div>
-        <div class="error-details">
-            تم اكتشاف خطأ غير متوقع في النظام. نحن نعمل على حل المشكلة في أسرع وقت ممكن.
-        </div>
-        <div class="thank-you-message">
-            شكراً لتفهمك وصبرك. سيتم إعلامك عندما يتم إصلاح المشكلة.
-        </div>
-        <a href="#" class="btn">إعادة تحميل الصفحة</a>
+  <div class="error-box">
+    <h1>⚠️ Access Error</h1>
+    <div class="json-output">
+      {"error":"App Only Access"}
     </div>
-
+  </div>
 </body>
 </html>
