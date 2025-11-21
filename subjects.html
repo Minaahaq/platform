@@ -396,6 +396,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 </script>
 
+  <script>
+window.addEventListener("DOMContentLoaded", () => {
+
+  // توليد بصمة بناءً على بيانات جهاز المستخدم
+  const signature = btoa(
+    navigator.userAgent +
+    navigator.platform +
+    screen.width +
+    "x" +
+    screen.height +
+    Date.now()
+  );
+
+  // تخزينها لإرسالها مع أي طلب
+  localStorage.setItem("app_signature", signature);
+
+});
+</script>
+
+
 <script type="module">
 const subjectsList = document.getElementById('subjects-list');
 
@@ -417,7 +437,12 @@ async function loadSubjects() {
   try {
 
   // جلب البيانات من API
-const res = await fetch("/api/proxy");
+const res = await fetch("/api/proxy", {
+  headers: {
+    "x-signature": localStorage.getItem("app_signature")
+  }
+});
+
 const json = await res.json();
 
 // البيانات موجودة داخل json.data فقط
