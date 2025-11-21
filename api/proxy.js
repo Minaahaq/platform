@@ -2,13 +2,12 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
 
-  // ============================
-  // 🔒 حماية: السماح لتطبيقك فقط
-  // ============================
-  if (req.headers["x-app-key"] !== process.env.APP_KEY) {
+  const ua = req.headers["user-agent"] || "";
+
+  // السماح فقط للطلبات من WebView أبكريتو
+  if (!ua.toLowerCase().includes("apkrito")) {
     return res.status(403).json({ error: "App Only Access" });
   }
-  // ============================
 
   try {
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
