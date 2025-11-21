@@ -398,7 +398,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 </script>
   
-<script type="module">
+
+<!-- تحميل مكتبة CryptoJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
 const subjectsList = document.getElementById('subjects-list');
 
 const subjectImages = {
@@ -415,11 +419,18 @@ const subjectImages = {
   "ادبي": "https://www2.0zz0.com/2025/10/01/19/580067879.jpeg"
 };
 
+// Toast
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.className = "show";
+  setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
+}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
-<script>
+// تحميل وعرض المواد
 async function loadSubjects() {
+  if (!subjectsList) return;
+
   try {
     const ts = Math.floor(Date.now() / 1000);
     const signature = CryptoJS.HmacSHA256(`secure-access-${ts}`, "CLIENT_SECRET_KEY").toString();
@@ -434,7 +445,6 @@ async function loadSubjects() {
     const json = await res.json();
     const data = json.data || json;
 
-    // ======== تجميع وعرض المواد ========
     const subjects = new Set();
     (data || []).forEach(year => {
       (year.subjects || []).forEach(sub => {
@@ -446,18 +456,12 @@ async function loadSubjects() {
 
     if (subjects.size === 0) {
       subjectsList.innerHTML = '<li class="loading">⚠️ لا توجد مواد.</li>';
-      return; // ✅ مسموح الآن داخل الدالة
+      return;
     }
 
-    // ترتيب المواد
-    const order = [
-      "لغة عربية", "English", "أحياء", "فيزياء", "كيمياء",
-      "جيولوجيا", "الرياضيات", "تاريخ", "جغرافيا", "الإحصاء", "ادبي"
-    ];
+    const order = ["لغة عربية","English","أحياء","فيزياء","كيمياء","جيولوجيا","الرياضيات","تاريخ","جغرافيا","الإحصاء","ادبي"];
+    const sortedSubjects = [...subjects].sort((a,b) => order.indexOf(a)-order.indexOf(b));
 
-    const sortedSubjects = [...subjects].sort((a, b) => order.indexOf(a) - order.indexOf(b));
-
-    // عرض المواد
     sortedSubjects.forEach(subject => {
       const li = document.createElement('li');
       const circle = document.createElement('div');
@@ -472,39 +476,25 @@ async function loadSubjects() {
 
       li.appendChild(circle);
       li.appendChild(span);
-
-      li.onclick = () =>
-        window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
-
+      li.onclick = () => window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
       subjectsList.appendChild(li);
     });
 
     showToast("✅ تم تحميل المواد بنجاح");
 
   } catch (err) {
-    subjectsList.innerHTML = `<li class="loading">❌ فشل تحميل البيانات</li>`;
+    subjectsList.innerHTML = '<li class="loading">❌ فشل تحميل البيانات</li>';
     console.error(err);
   }
 }
 
-
-// Toast
-function showToast(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.className = "show";
-  setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
-}
-
 // Dark Mode
-const toggle = document.getElementById("darkToggle");
-toggle.addEventListener("click", () => {
-  toggle.classList.toggle("active");
+document.getElementById("darkToggle")?.addEventListener("click", () => {
   document.body.classList.toggle("light-mode");
 });
 
 // Share
-document.getElementById("shareBtn").addEventListener("click", async () => {
+document.getElementById("shareBtn")?.addEventListener("click", async () => {
   if (navigator.share) {
     try {
       await navigator.share({
@@ -521,11 +511,11 @@ document.getElementById("shareBtn").addEventListener("click", async () => {
 });
 
 // Notify
-document.getElementById("notifyBtn").addEventListener("click", () => {
+document.getElementById("notifyBtn")?.addEventListener("click", () => {
   showToast("الإشعارات هتتفعل قريبًا 🔔✨");
 });
 
-// تشغيل
+// تشغيل تحميل المواد
 loadSubjects();
 </script>
 
