@@ -459,7 +459,17 @@
 
 <div id="toast" class="toast" role="alert"></div>
 
-  
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const signature = btoa(
+    navigator.userAgent + // بيانات الجهاز
+    screen.width + "x" + screen.height +
+    Date.now()            // تضيف تغيير كل مرة
+  );
+  localStorage.setItem("app_signature", signature);
+});
+</script>
+
 <script>
   const firebaseConfig = {
   apiKey: "AIzaSyBlGgAa0SDuvd8KM6pTalQh1J5PRXgcmSk",
