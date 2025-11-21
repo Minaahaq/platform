@@ -400,8 +400,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   
 
 <!-- تحميل مكتبة CryptoJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
 <script>
 const subjectsList = document.getElementById('subjects-list');
 
@@ -432,21 +430,19 @@ async function loadSubjects() {
   if (!subjectsList) return;
 
   try {
-    const ts = Math.floor(Date.now() / 1000);
-    const signature = CryptoJS.HmacSHA256(`secure-access-${ts}`, "CLIENT_SECRET_KEY").toString();
-
-    const res = await fetch("/api/proxy", {
-      headers: {
-        "x-timestamp": ts,
-        "x-signature": signature
-      }
-    });
-
+    // نطلب البيانات من Proxy على السيرفر (بدون مفتاح في المتصفح)
+    const res = await fetch("/api/proxy");
     const json = await res.json();
-    const data = json.data || json;
+    const data = json.data;
+
+    if (!Array.isArray(data)) {
+      subjectsList.innerHTML = '<li class="loading">❌ فشل تحميل المواد</li>';
+      console.error("Data is not an array:", data);
+      return;
+    }
 
     const subjects = new Set();
-    (data || []).forEach(year => {
+    data.forEach(year => {
       (year.subjects || []).forEach(sub => {
         subjects.add(sub.subject_name || sub.subjectName || sub.name);
       });
@@ -455,7 +451,7 @@ async function loadSubjects() {
     subjectsList.innerHTML = '';
 
     if (subjects.size === 0) {
-      subjectsList.innerHTML = '<li class="loading">⚠️ لا توجد مواد.</li>';
+      subjectsList.innerHTML = '<li class="loading">⚠️ لا توجد مواد</li>';
       return;
     }
 
@@ -518,6 +514,7 @@ document.getElementById("notifyBtn")?.addEventListener("click", () => {
 // تشغيل تحميل المواد
 loadSubjects();
 </script>
+
 
 </body>
 </body>
