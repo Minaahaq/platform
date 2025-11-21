@@ -360,7 +360,11 @@ async function loadTeachers() {
   try {
 
    // جلب البيانات من API
-    const res = await fetch("/api/proxy");
+     const res = await fetch("/api/proxy", {
+  headers: {
+    "x-signature": localStorage.getItem("app_signature")
+  }
+});
     const json = await res.json();
     const data = json.data || json;
 
