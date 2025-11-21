@@ -1,15 +1,16 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
+  const site = process.env.SITE_URL;
 
-  const ua = req.headers["user-agent"] || "";
-
-  // السماح فقط للطلبات من WebView أبكريتو
-  if (!ua.toLowerCase().includes("apkrito")) {
-    return res.status(403).json({ error: "App Only Access" });
+  // 🔒 تحقق من Referer
+  const referer = req.headers.referer || "";
+  if (!referer.startsWith(site)) {
+    return res.status(403).json({ error: "Blocked: Must be from App WebView" });
   }
 
   try {
+    // 🔥 الاتصال بالـ API الداخلي
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
         "x-api-key": process.env.SECRET_KEY,
@@ -19,6 +20,7 @@ export default async function handler(req, res) {
 
     const encrypted = await response.json();
 
+    // فك تشفير AES
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = Buffer.from(encrypted.iv, "hex");
     const encryptedData = Buffer.from(encrypted.data, "hex");
