@@ -4,9 +4,16 @@ export default async function handler(req, res) {
   const site = process.env.SITE_URL;
   const origin = req.headers.origin || "";
   const referer = req.headers.referer || "";
+  const internalKey = req.headers["x-internal-key"];
 
+  // ========== حماية الموقع ==========
   if (!origin.startsWith(site) && !referer.startsWith(site)) {
-    return res.status(403).json({ error: "Access Forbidden" });
+    return res.status(403).json({ error: "Access Forbidden (Origin)" });
+  }
+
+  // ========== حماية المفتاح الداخلي (أقوى حماية) ==========
+  if (internalKey !== process.env.INTERNAL_KEY) {
+    return res.status(403).json({ error: "Access Forbidden (Internal Key)" });
   }
 
   try {
