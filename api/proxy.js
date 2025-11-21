@@ -4,16 +4,33 @@ export default async function handler(req, res) {
 
   const ua = (req.headers["user-agent"] || "").toLowerCase();
 
-  // السماح فقط إذا كان الطلب من أبكريتو WebView
-  if (!ua.includes("apkrito") && !ua.includes("wv") && !ua.includes("webview")) {
+  // السماح فقط لو الطلب جاي من WebView داخل التطبيق
+  if (
+    !ua.includes("apkrito") &&
+    !ua.includes("wv") &&
+    !ua.includes("webview")
+  ) {
     return res.status(403).json({ error: "App Only Access" });
+  }
+
+  // التحقق من البصمة
+  const signature = req.headers["x-signature"];
+
+  if (!signature) {
+    return res.status(403).json({ error: "No signature" });
+  }
+
+  // هل البصمة Base64؟ (لو مش → تزوير)
+  try {
+    atob(signature);
+  } catch {
+    return res.status(403).json({ error: "Invalid signature" });
   }
 
   try {
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
-        "x-api-key": process.env.SECRET_KEY,
-        "x-internal-key": process.env.INTERNAL_KEY
+        "x-api-key": process.env.SECRET_KEY
       }
     });
 
