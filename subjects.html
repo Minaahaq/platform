@@ -437,12 +437,7 @@ async function loadSubjects() {
   try {
 
   // جلب البيانات من API
-const res = await fetch("/api/proxy", {
-  headers: {
-    "x-signature": localStorage.getItem("app_signature")
-  }
-});
-
+  const res = await fetch("/api/proxy");
 const json = await res.json();
 
 // البيانات موجودة داخل json.data فقط
