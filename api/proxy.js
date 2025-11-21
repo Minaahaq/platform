@@ -1,39 +1,16 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  const site = process.env.SITE_URL;
 
-  const origin = req.headers.origin || "";
-  const referer = req.headers.referer || "";
-  const ua = req.headers["user-agent"] || "";
-
-  // ============ 🔒 منع السكربتات الخارجية ============
-  // 1 - منع غياب ORIGIN / REFERER
-  if (!origin || !referer) {
-    return res.status(403).json({ error: "Blocked: No browser headers" });
+  // ============================
+  // 🔒 حماية: السماح لتطبيقك فقط
+  // ============================
+  if (req.headers["x-app-key"] !== process.env.APP_KEY) {
+    return res.status(403).json({ error: "App Only Access" });
   }
-
-  // 2 - لازم يكونوا نفس موقعك
-  if (!origin.startsWith(site) || !referer.startsWith(site)) {
-    return res.status(403).json({ error: "Access Forbidden (Origin)" });
-  }
-
-  // 3 - منع Python / Curl / Postman / Node scripts
-  if (
-    ua.includes("python") ||
-    ua.includes("curl") ||
-    ua.includes("wget") ||
-    ua.includes("httpclient") ||
-    ua.includes("Postman") ||
-    ua.includes("axios") ||
-    ua.includes("node")
-  ) {
-    return res.status(403).json({ error: "Blocked: Script user-agent" });
-  }
-  // ===================================================
+  // ============================
 
   try {
-    // 🔥 هنا السيرفر (proxy) بيبعت INTERNAL_KEY تلقائي
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
         "x-api-key": process.env.SECRET_KEY,
@@ -43,7 +20,6 @@ export default async function handler(req, res) {
 
     const encrypted = await response.json();
 
-    // فك تشفير AES
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = Buffer.from(encrypted.iv, "hex");
     const encryptedData = Buffer.from(encrypted.data, "hex");
