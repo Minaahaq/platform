@@ -4,16 +4,24 @@ export default async function handler(req, res) {
   const site = process.env.SITE_URL;
   const origin = req.headers.origin || "";
   const referer = req.headers.referer || "";
-  const internalKey = req.headers["x-internal-key"];
+  const clientKey = req.headers["x-internal-key"]; // المفتاح القادم من البراوزر
 
-  // ========== حماية الموقع ==========
+  // ========== توليد المفتاح الديناميكي ==========
+  const staticKey = process.env.INTERNAL_KEY; // مفتاح ثابت سري
+  const currentMinute = Math.floor(Date.now() / 60000); // كل دقيقة
+  const dynamicKey = crypto
+    .createHmac("sha256", staticKey)
+    .update(String(currentMinute))
+    .digest("hex");
+
+  // ========== حماية Origin ==========
   if (!origin.startsWith(site) && !referer.startsWith(site)) {
     return res.status(403).json({ error: "Access Forbidden (Origin)" });
   }
 
-  // ========== حماية المفتاح الداخلي (أقوى حماية) ==========
-  if (internalKey !== process.env.INTERNAL_KEY) {
-    return res.status(403).json({ error: "Access Forbidden (Internal Key)" });
+  // ========== حماية المفتاح الديناميكي ==========
+  if (clientKey !== dynamicKey) {
+    return res.status(403).json({ error: "Access Forbidden (Dynamic Key)" });
   }
 
   try {
