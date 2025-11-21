@@ -416,8 +416,9 @@ const subjectImages = {
 };
 
 
-import CryptoJS from "crypto-js";
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
+<script>
 async function loadSubjects() {
   try {
     const ts = Math.floor(Date.now() / 1000);
