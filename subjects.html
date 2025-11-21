@@ -420,12 +420,9 @@ import CryptoJS from "crypto-js";
 
 async function loadSubjects() {
   try {
-    // حساب timestamp
     const ts = Math.floor(Date.now() / 1000);
-    // حساب التوقيع HMAC
     const signature = CryptoJS.HmacSHA256(`secure-access-${ts}`, "CLIENT_SECRET_KEY").toString();
 
-    // جلب البيانات من API مع الهيدرات الجديدة
     const res = await fetch("/api/proxy", {
       headers: {
         "x-timestamp": ts,
@@ -436,16 +433,8 @@ async function loadSubjects() {
     const json = await res.json();
     const data = json.data || json;
 
-    console.log(data); // أو اعمل أي حاجة بالبيانات
-
-  } catch (error) {
-    console.error("Error loading subjects:", error);
-  }
-  }
-
-    // تجميع المواد
+    // ======== تجميع وعرض المواد ========
     const subjects = new Set();
-
     (data || []).forEach(year => {
       (year.subjects || []).forEach(sub => {
         subjects.add(sub.subject_name || sub.subjectName || sub.name);
@@ -456,54 +445,38 @@ async function loadSubjects() {
 
     if (subjects.size === 0) {
       subjectsList.innerHTML = '<li class="loading">⚠️ لا توجد مواد.</li>';
-      return;
+      return; // ✅ مسموح الآن داخل الدالة
     }
 
+    // ترتيب المواد
+    const order = [
+      "لغة عربية", "English", "أحياء", "فيزياء", "كيمياء",
+      "جيولوجيا", "الرياضيات", "تاريخ", "جغرافيا", "الإحصاء", "ادبي"
+    ];
+
+    const sortedSubjects = [...subjects].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+
     // عرض المواد
-    // ترتيب احترافي للمواد
-const order = [
-  "لغة عربية",
-  "English",
-  "أحياء",
-  "فيزياء",
-  "كيمياء",
-  "جيولوجيا",
-  "الرياضيات",
-  "تاريخ",
-  "جغرافيا",
-  "الإحصاء",
-  "ادبي"
-];
+    sortedSubjects.forEach(subject => {
+      const li = document.createElement('li');
+      const circle = document.createElement('div');
+      circle.className = 'circle';
 
-// ترتيب حسب اللستة السابقة
-const sortedSubjects = [...subjects].sort((a, b) => {
-  return order.indexOf(a) - order.indexOf(b);
-});
+      const img = document.createElement('img');
+      img.src = subjectImages[subject] || 'https://img.icons8.com/ios-filled/100/ffd700/book.png';
+      circle.appendChild(img);
 
-// عرض المواد
-sortedSubjects.forEach(subject => {
-  const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = subject;
 
-  const circle = document.createElement('div');
-  circle.className = 'circle';
+      li.appendChild(circle);
+      li.appendChild(span);
 
-  const img = document.createElement('img');
-  img.src = subjectImages[subject] || 'https://img.icons8.com/ios-filled/100/ffd700/book.png';
+      li.onclick = () =>
+        window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
 
-  circle.appendChild(img);
-
-  const span = document.createElement('span');
-  span.textContent = subject;
-
-  li.appendChild(circle);
-  li.appendChild(span);
-
-  li.onclick = () =>
-    window.location.href = `teachers.html?subject=${encodeURIComponent(subject)}`;
-
-  subjectsList.appendChild(li);
-});
-
+      subjectsList.appendChild(li);
+    });
 
     showToast("✅ تم تحميل المواد بنجاح");
 
@@ -512,6 +485,7 @@ sortedSubjects.forEach(subject => {
     console.error(err);
   }
 }
+
 
 // Toast
 function showToast(msg) {
