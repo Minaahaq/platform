@@ -338,7 +338,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadVideos() {
     try {
       // 🔥 جلب البيانات من الـ Proxy المحمي
-const res = await fetch("/api/proxy");
+ const res = await fetch("/api/proxy", {
+  headers: {
+    "x-signature": localStorage.getItem("app_signature")
+  }
+});
 
 if (!res.ok) {
     throw new Error("فشل تحميل البيانات");
