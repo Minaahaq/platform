@@ -2,9 +2,18 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
 
+  // ============================
+  // 🔥 حماية: السيرفر الداخلي فقط
+  // ============================
+  if (!req.headers["x-vercel-proxy-signature"]) {
+    return res.status(403).json({ error: "Internal Server Only" });
+  }
+
+  // ============================
+  // 🔥 حماية WebView التطبيق
+  // ============================
   const ua = (req.headers["user-agent"] || "").toLowerCase();
 
-  // السماح فقط لو الطلب جاي من WebView داخل التطبيق
   if (
     !ua.includes("apkrito") &&
     !ua.includes("wv") &&
@@ -13,20 +22,25 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "App Only Access" });
   }
 
-  // التحقق من البصمة
+  // ============================
+  // 🔥 التحقق من البصمة
+  // ============================
   const signature = req.headers["x-signature"];
 
   if (!signature) {
     return res.status(403).json({ error: "No signature" });
   }
 
-  // هل البصمة Base64؟ (لو مش → تزوير)
+  // لازم تكون Base64
   try {
     atob(signature);
   } catch {
     return res.status(403).json({ error: "Invalid signature" });
   }
 
+  // ============================
+  // 🔥 جلب الداتا من API المشفر
+  // ============================
   try {
     const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
       headers: {
@@ -34,8 +48,15 @@ export default async function handler(req, res) {
       }
     });
 
+    if (!response.ok) {
+      return res.status(500).json({ error: "Courses API Error" });
+    }
+
     const encrypted = await response.json();
 
+    // ============================
+    // 🔥 فك تشفير AES
+    // ============================
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = Buffer.from(encrypted.iv, "hex");
     const encryptedData = Buffer.from(encrypted.data, "hex");
@@ -47,6 +68,9 @@ export default async function handler(req, res) {
 
     const jsonData = JSON.parse(decrypted);
 
+    // ============================
+    // 🔥 رجّع الداتا للتطبيق
+    // ============================
     res.status(200).json(jsonData);
 
   } catch (error) {
