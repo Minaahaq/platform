@@ -1,16 +1,22 @@
 import crypto from "crypto";
 
 export default function handler(req, res) {
-  const secret = req.headers["x-api-key"];
 
+  // السماح للسيرفر الداخلي فقط
+  if (!req.headers["x-vercel-proxy-signature"]) {
+    return res.status(403).json({ error: "Internal Server Only" });
+  }
+
+  // التحقق من المفتاح
+  const secret = req.headers["x-api-key"];
   if (secret !== process.env.SECRET_KEY) {
     return res.status(403).json({ error: "Forbidden" });
   }
 
-  // جلب البيانات الأصلية
+  // جلب البيانات
   const data = require("../data/coursatk_scraped_data.json");
 
-  // ======= التشفير AES =======
+  // التشفير AES
   const key = Buffer.from(process.env.DATA_KEY, "hex");
   const iv = crypto.randomBytes(16);
 
@@ -18,7 +24,6 @@ export default function handler(req, res) {
   let encrypted = cipher.update(JSON.stringify(data), "utf8", "hex");
   encrypted += cipher.final("hex");
 
-  // نرجع الداتا مشفّرة
   res.status(200).json({
     iv: iv.toString("hex"),
     data: encrypted
