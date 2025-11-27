@@ -2,23 +2,26 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
 
-  // ============================
-  // 🔥 منع الـ VPN و الـ Proxy
-  // ============================
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.connection.remoteAddress;
+ // ============================
+// 🔥 منع الـ VPN و الـ Proxy
+// ============================
+const ip =
+  req.headers["x-forwarded-for"]?.split(",")[0] ||
+  req.connection.remoteAddress;
 
-  try {
-    const vpnCheck = await fetch(`http://ip-api.com/json/${ip}?fields=proxy,hosting`);
-    const info = await vpnCheck.json();
+try {
+  const vpnCheck = await fetch(`http://ip-api.com/json/${ip}?fields=proxy,hosting`);
+  const info = await vpnCheck.json();
 
-    if (info.proxy || info.hosting) {
-      return res.status(403).json({ error: "VPN Not Allowed" });
-    }
-  } catch (err) {
-    return res.status(403).json({ error: "VPN Check Failed" });
+  // لو IP من VPN او Proxy او Hosting Server
+  if (info.proxy || info.hosting) {
+    return res.status(403).json({ error: "VPN Not Allowed" });
   }
+} catch (err) {
+  // fallback: لو API عطلت → امنع
+  return res.status(403).json({ error: "VPN Check Failed" });
+}
+ 
 
   // ============================
   // 🔥 حماية: السيرفر الداخلي فقط
@@ -44,8 +47,12 @@ export default async function handler(req, res) {
   // 🔥 التحقق من البصمة
   // ============================
   const signature = req.headers["x-signature"];
-  if (!signature) return res.status(403).json({ error: "No signature" });
 
+  if (!signature) {
+    return res.status(403).json({ error: "No signature" });
+  }
+
+  // لازم تكون Base64
   try {
     atob(signature);
   } catch {
@@ -68,6 +75,9 @@ export default async function handler(req, res) {
 
     const encrypted = await response.json();
 
+    // ============================
+    // 🔥 فك تشفير AES
+    // ============================
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = Buffer.from(encrypted.iv, "hex");
     const encryptedData = Buffer.from(encrypted.data, "hex");
@@ -79,6 +89,9 @@ export default async function handler(req, res) {
 
     const jsonData = JSON.parse(decrypted);
 
+    // ============================
+    // 🔥 رجّع الداتا للتطبيق
+    // ============================
     res.status(200).json(jsonData);
 
   } catch (error) {
