@@ -1,27 +1,30 @@
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  // ============================
-  // 🔥 منع الـ VPN و الـ Proxy
-  // ============================
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.connection.remoteAddress;
 
-  try {
-    const vpnCheck = await fetch(`https://ip-api.com/json/${ip}?fields=proxy,hosting`);
-    const info = await vpnCheck.json();
+ // ============================
+// 🔥 منع الـ VPN و الـ Proxy
+// ============================
+const ip =
+  req.headers["x-forwarded-for"]?.split(",")[0] ||
+  req.connection.remoteAddress;
 
-    if (info.proxy || info.hosting) {
-      return res.status(403).json({ error: "VPN/Proxy Not Allowed" });
-    }
-  } catch (err) {
-    return res.status(403).json({ error: "VPN Check Failed" });
+try {
+  const vpnCheck = await fetch(`http://ip-api.com/json/${ip}?fields=proxy,hosting`);
+  const info = await vpnCheck.json();
+
+  // لو IP من VPN او Proxy او Hosting Server
+  if (info.proxy || info.hosting) {
+    return res.status(403).json({ error: "VPN Not Allowed" });
   }
+} catch (err) {
+  // fallback: لو API عطلت → امنع
+  return res.status(403).json({ error: "VPN Check Failed" });
+}
+ 
 
   // ============================
-  // 🔥 حماية السيرفر الداخلي
+  // 🔥 حماية: السيرفر الداخلي فقط
   // ============================
   if (!req.headers["x-vercel-proxy-signature"]) {
     return res.status(403).json({ error: "Internal Server Only" });
@@ -31,71 +34,67 @@ export default async function handler(req, res) {
   // 🔥 حماية WebView التطبيق
   // ============================
   const ua = (req.headers["user-agent"] || "").toLowerCase();
-  if (!ua.includes("apkrito") && !ua.includes("wv") && !ua.includes("webview")) {
+
+  if (
+    !ua.includes("apkrito") &&
+    !ua.includes("wv") &&
+    !ua.includes("webview")
+  ) {
     return res.status(403).json({ error: "App Only Access" });
   }
 
   // ============================
-  // 🔥 التحقق من البصمة Base64
+  // 🔥 التحقق من البصمة
   // ============================
   const signature = req.headers["x-signature"];
-  if (!signature) return res.status(403).json({ error: "No signature" });
 
+  if (!signature) {
+    return res.status(403).json({ error: "No signature" });
+  }
+
+  // لازم تكون Base64
   try {
-    Buffer.from(signature, "base64");
+    atob(signature);
   } catch {
     return res.status(403).json({ error: "Invalid signature" });
   }
 
   // ============================
-  // 🔥 جلب البيانات من Backblaze B2
+  // 🔥 جلب الداتا من API المشفر
   // ============================
   try {
-    const client = new S3Client({
-      region: "auto",
-      endpoint: process.env.B2_ENDPOINT,
-      credentials: {
-        accessKeyId: process.env.B2_KEY_ID,
-        secretAccessKey: process.env.B2_APPLICATION_KEY,
-      },
+    const response = await fetch(`${process.env.SITE_URL}/api/courses`, {
+      headers: {
+        "x-api-key": process.env.SECRET_KEY
+      }
     });
 
-    const command = new GetObjectCommand({
-      Bucket: process.env.B2_BUCKET_NAME,
-      Key: "coursatk_scraped_data.json",
-    });
+    if (!response.ok) {
+      return res.status(500).json({ error: "Courses API Error" });
+    }
 
-    const response = await client.send(command);
-
-    // تحويل Body من Stream لنص
-    const streamToString = async (stream) => {
-      const chunks = [];
-      for await (let chunk of stream) chunks.push(chunk);
-      return Buffer.concat(chunks).toString("utf-8");
-    };
-
-    const body = await streamToString(response.Body);
-    const jsonData = JSON.parse(body);
+    const encrypted = await response.json();
 
     // ============================
-    // 🔥 تشفير AES قبل الإرسال
+    // 🔥 فك تشفير AES
     // ============================
     const key = Buffer.from(process.env.DATA_KEY, "hex");
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+    const iv = Buffer.from(encrypted.iv, "hex");
+    const encryptedData = Buffer.from(encrypted.data, "hex");
 
-    let encrypted = cipher.update(JSON.stringify(jsonData), "utf8", "hex");
-    encrypted += cipher.final("hex");
+    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+
+    let decrypted = decipher.update(encryptedData, null, "utf8");
+    decrypted += decipher.final("utf8");
+
+    const jsonData = JSON.parse(decrypted);
 
     // ============================
-    // 🔥 إرجاع البيانات للتطبيق
+    // 🔥 رجّع الداتا للتطبيق
     // ============================
-    res.status(200).json({
-      iv: iv.toString("hex"),
-      data: encrypted,
-    });
+    res.status(200).json(jsonData);
 
-  } catch (err) {
-    return res.status(500).json({ error: "Backblaze API Error", details: err.message });
+  } catch (error) {
+    res.status(500).json({ error: "Proxy Error", details: error.message });
   }
 }
