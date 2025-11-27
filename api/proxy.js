@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   }
 
   // ============================
-  // 🔥 حماية: السيرفر الداخلي فقط
+  // 🔥 حماية السيرفر الداخلي
   // ============================
   if (!req.headers["x-vercel-proxy-signature"]) {
     return res.status(403).json({ error: "Internal Server Only" });
@@ -42,13 +42,13 @@ export default async function handler(req, res) {
   if (!signature) return res.status(403).json({ error: "No signature" });
 
   try {
-    Buffer.from(signature, "base64"); // أفضل من atob في Node
+    Buffer.from(signature, "base64");
   } catch {
     return res.status(403).json({ error: "Invalid signature" });
   }
 
   // ============================
-  // 🔥 جلب البيانات من Backblaze B2 مباشرة
+  // 🔥 جلب البيانات من Backblaze B2
   // ============================
   try {
     const client = new S3Client({
@@ -66,11 +66,19 @@ export default async function handler(req, res) {
     });
 
     const response = await client.send(command);
-    const body = await response.Body.transformToString();
+
+    // تحويل Body من Stream لنص
+    const streamToString = async (stream) => {
+      const chunks = [];
+      for await (let chunk of stream) chunks.push(chunk);
+      return Buffer.concat(chunks).toString("utf-8");
+    };
+
+    const body = await streamToString(response.Body);
     const jsonData = JSON.parse(body);
 
     // ============================
-    // 🔥 تشفير AES قبل الرجوع للعميل
+    // 🔥 تشفير AES قبل الإرسال
     // ============================
     const key = Buffer.from(process.env.DATA_KEY, "hex");
     const iv = crypto.randomBytes(16);
@@ -79,11 +87,15 @@ export default async function handler(req, res) {
     let encrypted = cipher.update(JSON.stringify(jsonData), "utf8", "hex");
     encrypted += cipher.final("hex");
 
+    // ============================
+    // 🔥 إرجاع البيانات للتطبيق
+    // ============================
     res.status(200).json({
       iv: iv.toString("hex"),
       data: encrypted,
     });
+
   } catch (err) {
-    res.status(500).json({ error: "Backblaze API Error", details: err.message });
+    return res.status(500).json({ error: "Backblaze API Error", details: err.message });
   }
 }
