@@ -22,13 +22,11 @@ function getDeviceID() {
  * عرض نافذة إشعار احترافية
  */
 function showToast(message, type = "error", duration = 4000) {
-  // إنشاء العنصر
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.innerText = message;
   document.body.appendChild(toast);
 
-  // إضافة ستايل
   Object.assign(toast.style, {
     position: "fixed",
     bottom: "30px",
@@ -45,9 +43,8 @@ function showToast(message, type = "error", duration = 4000) {
     transition: "opacity 0.5s ease, bottom 0.5s ease"
   });
 
-  // إظهار النافذة
   setTimeout(() => { toast.style.opacity = 1; toast.style.bottom = "50px"; }, 50);
-  // إخفاء وإزالة العنصر
+
   setTimeout(() => {
     toast.style.opacity = 0;
     toast.style.bottom = "30px";
@@ -62,7 +59,11 @@ async function autoCheckCode(redirectPage = "index.html") {
   const userData = localStorage.getItem("user_data");
   const userCode = localStorage.getItem("user_code");
 
-  if (!userData || !userCode) return; // لا توجد بيانات → تجاهل
+  // لو مفيش بيانات → طرد فوراً
+  if (!userData || !userCode) {
+    window.location.href = redirectPage;
+    return;
+  }
 
   try {
     const device = getDeviceID();
@@ -73,20 +74,26 @@ async function autoCheckCode(redirectPage = "index.html") {
 
     const result = await res.json();
 
+    // أي نتيجة غير success → طرد فوراً
     if (result.result !== "success") {
-      // الكود انتهى
       localStorage.removeItem("user_code");
       localStorage.removeItem("user_data");
-      showToast("⛔ انتهت صلاحية الكود أو غير صالح، سيتم إعادة التوجيه...", "error", 5000);
+      showToast("⛔ الكود غير صالح أو غير موجود!", "error", 4000);
 
       setTimeout(() => {
         window.location.href = redirectPage;
-      }, 2000); // إعادة التوجيه بعد ثانيتين
+      }, 1000); // طرد سريع
+      return;
     }
-    // الكود صالح → يمكن الاستمرار
+
+    // الكود صالح → تمام
   } catch (err) {
     console.error("[CheckCode] خطأ أثناء التحقق:", err);
-    showToast("⚠ خطأ في الاتصال بالخادم، حاول لاحقاً.", "error", 5000);
+    showToast("⚠ خطأ في الاتصال بالخادم.", "error", 4000);
+
+    setTimeout(() => {
+      window.location.href = redirectPage;
+    }, 1500); // طرد في حالة الخطأ
   }
 }
 
