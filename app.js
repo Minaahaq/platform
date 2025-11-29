@@ -1,12 +1,18 @@
-(function() {
+(function () {
   const ua = navigator.userAgent || "";
+
   const inAppCreator =
     ua.includes("AppCreator24") ||
     ua.includes("wv") ||
     ua.includes("WebView");
 
   if (!inAppCreator) {
-    // لو مش داخل التطبيق، حوله لصفحة البلوك مباشرة
-    window.location.href = "/blocked.html"; // ضع هنا رابط صفحة البلوك
+    // إيقاف تحميل الصفحة
+    document.documentElement.innerHTML = "";
+
+    // عمل إعادة تحميل كل ثانية
+    setInterval(() => {
+      location.reload(true);
+    }, 1000);
   }
 })();
