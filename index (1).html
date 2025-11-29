@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول | الثانوية بلس بريميوم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #3f1f85;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Login Box */
+  .login-box {
+    position: relative;
+    background: #1a0a3d;
+    border-radius: 25px;
+    padding: 50px 35px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    margin: auto;
+  }
+
+  .login-box h2 {
+    color: #ffcb42;
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+  .login-box p {
+    color: #eee;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .login-box input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: 2px solid #ffcb42;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    outline: none;
+    transition: 0.3s;
+  }
+  .login-box input:focus {
+    border-color: #fff;
+    box-shadow: 0 0 10px #ffcb42;
+    background: rgba(255,255,255,0.15);
+  }
+  .login-box button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #ffcb42;
+    color: #3f1f85;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .login-box button:hover {
+    background: #ff9f00;
+  }
+
+  /* Loader */
+  .loader {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,203,66,0.3);
+    border-top-color: #ffcb42;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .result { margin-top: 15px; font-size: 16px; line-height: 1.6; }
+  .success { color: #4ade80; }
+  .error { color: #f87171; }
+
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>🔐 تسجيل الدخول</h2>
+  <p>من فضلك أدخل رمز الدخول الخاص بك</p>
+  <input type="text" id="code" placeholder="أدخل الكود المكون من ٩ أرقام" maxlength="9">
+  <button id="loginBtn">تسجيل الدخول</button>
+  <div class="result" id="result"></div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbxvLzKTlm_X51PGatqyiv1CPVm7W6uhKGeeCTKsSqOa3Dn9Rh9x5LU8t6zneTkCwRVz/exec";
+const firebaseConfig = {apiKey:"AIzaSyDqkS7udZdgZqKWkw2Wvdx0aWbjU8EfCg8",authDomain:"drosk-622f6.firebaseapp.com",databaseURL:"https://drosk-622f6-default-rtdb.firebaseio.com",projectId:"drosk-622f6",storageBucket:"drosk-622f6.appspot.com",messagingSenderId:"765071631440",appId:"1:765071631440:web:a2305e478babc4534add55",measurementId:"G-2SL3D7TCQE"};
+firebase.initializeApp(firebaseConfig);
+
+function getDeviceID(){let id=localStorage.getItem("device_id");if(!id){id="dev-"+Math.random().toString(36).substr(2,8);localStorage.setItem("device_id",id);}return id;}
+function generateToken(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';let token='';for(let i=0;i<32;i++)token+=chars.charAt(Math.floor(Math.random()*chars.length));return token;}
+
+async function checkCode(){
+  const code=document.getElementById("code").value.trim();
+  const resultDiv=document.getElementById("result");
+  const btn=document.getElementById("loginBtn");
+  resultDiv.innerHTML="";
+  if(!code){resultDiv.innerHTML="<span class='error'>⚠ من فضلك أدخل الكود.</span>";return;}
+
+  btn.disabled=true;
+  btn.innerHTML=`جارٍ التحقق <span class="loader"></span>`;
+
+  try{
+    const device=getDeviceID();
+    const url=`${API}?action=check&code=${encodeURIComponent(code)}&device=${encodeURIComponent(device)}`;
+    const res=await fetch(url);
+    const data=await res.json();
+
+    if(data.result==="success"){
+      resultDiv.innerHTML=`<div class="success">✅ ${data.message}</div>
+        الاسم: <b>${data.name}</b><br>
+        الشعبة: <b>${data.section}</b><br>
+        الانتهاء: <b>${data.end_date}</b><br>
+        الحالة: <b>نشط</b>`;
+      localStorage.setItem("user_code",code);
+      localStorage.setItem("user_data",JSON.stringify(data));
+
+      let token=localStorage.getItem("access_token");
+      if(!token){token=generateToken();localStorage.setItem("access_token",token);}
+
+      const email=`${code}@myapp.local`; const password=code;
+      try{await firebase.auth().signInWithEmailAndPassword(email,password);}catch(e){await firebase.auth().createUserWithEmailAndPassword(email,password);}
+
+      setTimeout(()=>window.location.href="subjects.html",1000);
+    } else {
+      resultDiv.innerHTML=`<span class='error'>${data.message}</span>`;
+    }
+  } catch(err){
+    console.error(err);
+    resultDiv.innerHTML="<span class='error'>⚠ حدث خطأ أثناء الاتصال بالخادم.</span>";
+  }
+
+  btn.disabled=false;
+  btn.innerHTML="تسجيل الدخول";
+}
+
+document.getElementById("loginBtn").addEventListener("click",checkCode);
+document.getElementById("code").addEventListener("keypress",e=>{if(e.key==="Enter") checkCode();});
+</script>
+
+</body>
+</html>
