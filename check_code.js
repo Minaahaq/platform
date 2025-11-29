@@ -4,7 +4,7 @@
 // ==========================
 
 // رابط API
-const API_URL = "https://script.google.com/macros/s/AKfycbzIUhokuivKzt88Uzjg1zW0QHRUY_ZVSH6co-gojamtTk-IJxHxBA3GzEz8kauiSVKzZg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxvLzKTlm_X51PGatqyiv1CPVm7W6uhKGeeCTKsSqOa3Dn9Rh9x5LU8t6zneTkCwRVz/exec";
 
 /**
  * إنشاء أو الحصول على معرف الجهاز
