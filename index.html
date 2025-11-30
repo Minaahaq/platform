@@ -76,6 +76,21 @@
     background: #ff9f00;
   }
 
+ .info-details {
+  color: #ffd976;            /* ذهبي احترافي */
+  font-size: 18px;
+  margin-top: 12px;
+  line-height: 1.9;
+  background: rgba(255, 217, 118, 0.08); /* خلفية ذهبية شفافة */
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 217, 118, 0.25);
+  backdrop-filter: blur(3px);
+}
+.info-details b {
+  color: #ffe9a3;           /* لون أفتح لعناصر الـ <b> */
+} 
+
   /* Loader */
   .loader {
     display: inline-block;
@@ -137,12 +152,16 @@ async function checkCode(){
     const res=await fetch(url);
     const data=await res.json();
 
-    if(data.result==="success"){
-      resultDiv.innerHTML=`<div class="success">✅ ${data.message}</div>
-        الاسم: <b>${data.name}</b><br>
-        الشعبة: <b>${data.section}</b><br>
-        الانتهاء: <b>${data.end_date}</b><br>
-        الحالة: <b>نشط</b>`;
+    if (data.result === "success") {
+  resultDiv.innerHTML = `
+    <div class="success">✅ ${data.message}</div>
+    <div class="info-details">
+      الاسم: <b>${data.name}</b><br>
+      الشعبة: <b>${data.section}</b><br>
+      الانتهاء: <b>${data.end_date}</b><br>
+      الحالة: <b>نشط</b>
+    </div>
+  `;
       localStorage.setItem("user_code",code);
       localStorage.setItem("user_data",JSON.stringify(data));
 
