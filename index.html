@@ -167,6 +167,16 @@ async function checkCode(){
 
 document.getElementById("loginBtn").addEventListener("click",checkCode);
 document.getElementById("code").addEventListener("keypress",e=>{if(e.key==="Enter") checkCode();});
+
+
+// ⭐⭐⭐ تمت إضافة الخاصية المطلوبة فقط ⭐⭐⭐
+// عند فتح الصفحة → لو في كود محفوظ ضعه تلقائيًا في الخانة
+window.onload = function() {
+  const savedCode = localStorage.getItem("user_code");
+  if (savedCode) {
+    document.getElementById("code").value = savedCode;
+  }
+};
 </script>
 
 </body>
