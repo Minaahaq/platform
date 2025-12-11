@@ -1,459 +1,297 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" class="dark">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>المواد - منصة THE BEST</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coursatk Modern Viewer</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: '#3b82f6',
+        secondary: '#10b981',
+        dark: '#0f172a',
+        darker: '#020617',
+        card: '#1e293b',
+        'card-hover': '#334155'
+      },
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }
+  }
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+body { font-family: 'Inter', sans-serif; background-color:#020617; color:#f8fafc; margin:0; }
+.glass-panel {
+  background: rgba(30,41,59,0.7);
+  backdrop-filter: blur(12px);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.glass-card {
+  background: rgba(30,41,59,0.5); 
+  backdrop-filter: blur(8px);
+  border:1px solid rgba(255,255,255,0.03); 
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  background: rgba(51,65,85,0.6); 
+  transform: translateY(-2px);
+  border-color: rgba(59,130,246,0.3); 
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 
-  body {
-    font-family: 'Cairo', sans-serif;
-    background: #121212;
-    color: #fff;
-    padding: 80px 15px 30px;
-    margin: 0;
-    transition: background 0.3s, color 0.3s;
-  }
+.loading-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  color:white;
+}
 
-  /* ===== الشريط العلوي ===== */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #111;
-    padding: 10px 15px;
-    color: white;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1000;
-    transition: background 0.3s, color 0.3s;
-  }
+/* Toast Styles */
+.toast {
+  min-width:200px;
+  max-width:300px;
+  padding:0.75rem 1rem;
+  border-radius:0.5rem;
+  color:white;
+  font-weight:500;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.toast.info { background-color: #3b82f6; }
+.toast.success { background-color: #10b981; }
+.toast.error { background-color: #ef4444; }
 
-  .menu-btn {
-    font-size: 22px;
-    cursor: pointer;
-  }
-
-  .title {
-    font-size: 14px;
-    color: #f36;
-  }
-
-  .icons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .icons img {
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-  }
-
-  .toggle-dark {
-    background: #fff;
-    border-radius: 12px;
-    width: 40px;
-    height: 20px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .toggle-dark::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 16px;
-    background: #111;
-    border-radius: 50%;
-    transition: 0.3s;
-  }
-
-  .toggle-dark.active::after {
-    left: 22px;
-    background: #ff0;
-  }
-
-  /* ===== باقي التنسيقات ===== */
-  h1 {
-    color: #ffd700;
-    text-align: center;
-    font-size: 2.8rem;
-    margin-bottom: 40px;
-    text-shadow: 0 0 8px #ffd700;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    max-width: 900px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px;
-  }
-
-  li {
-    background: #1e1e1e;
-    border-radius: 16px;
-    padding: 20px 15px 30px;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.15);
-    transition: background-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    user-select: none;
-  }
-
-  li:hover {
-    background: #ffd700;
-    color: #121212;
-    transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.7);
-  }
-
-  li:active {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
-  }
-
-  .circle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: #333;
-    overflow: hidden;
-    margin-bottom: 18px;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .circle img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-  }
-
-  li span {
-    font-weight: 700;
-    font-size: 1.2rem;
-    text-align: center;
-  }
-
-  li.loading {
-    cursor: default;
-    color: #aaa;
-    background: transparent;
-    box-shadow: none;
-    font-weight: 400;
-    font-size: 1rem;
-    grid-column: 1 / -1;
-    text-align: center;
-  }
-
-  li.loading::after {
-    content: "";
-    width: 28px;
-    height: 28px;
-    border: 3px solid #ffd700;
-    border-top: 3px solid transparent;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: middle;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* ===== وضع الفاتح ===== */
-  body.light-mode {
-    background: #f5f5f5;
-    color: #000;
-  }
-  body.light-mode .topbar {
-    background: #fff;
-    color: #000;
-  }
-  body.light-mode li {
-    background: #fff;
-    color: #000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  }
-
-  /* ===== Toast إشعار ===== */
-  #toast {
-    visibility: hidden;
-    min-width: 260px;
-    background: #1e1e1e;
-    color: #ffd700;
-    text-align: center;
-    border-radius: 12px;
-    padding: 14px;
-    position: fixed;
-    z-index: 2000;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    opacity: 0;
-    transition: opacity 0.5s, bottom 0.5s;
-  }
-  #toast.show {
-    visibility: visible;
-    opacity: 1;
-    bottom: 50px;
-  }
-  body.light-mode #toast {
-    background: #fff;
-    color: #333;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-
-  /* ✅ زر البروفايل العائم */
-  .profile-float-btn {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: #222;
-    border: 2px solid #ffd700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    transition: 0.3s;
-    z-index: 1200;
-  }
-  .profile-float-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255,215,0,0.6);
-    background: #ffd700;
-  }
-  .profile-float-btn img {
-    width: 28px;
-    height: 28px;
-  }
-  body.light-mode .profile-float-btn {
-    background: #fff;
-    border: 2px solid #333;
-  }
-  body.light-mode .profile-float-btn:hover {
-    background: #333;
-    border-color: #ffd700;
-  }
-
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-    }
-    ul {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 20px;
-      max-width: 100%;
-    }
-    .circle {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 14px;
-    }
-    li span {
-      font-size: 1rem;
-    }
-    .profile-float-btn {
-      width: 45px;
-      height: 45px;
-      bottom: 15px;
-      left: 15px;
-    }
-    .profile-float-btn img {
-      width: 22px;
-      height: 22px;
-    }
-  }
+.toast-enter-from { opacity:0; transform: translateY(20px); }
+.toast-enter-to { opacity:1; transform: translateY(0); }
+.toast-leave-from { opacity:1; transform: translateY(0); }
+.toast-leave-to { opacity:0; transform: translateY(-20px); }
+.toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
 </style>
 </head>
-<body>
 
-  <!-- ✅ الشريط العلوي -->
-  <div class="topbar">
-    <div class="menu-btn">☰</div>
-    <div class="title">الثانويه بلس  𝟐𝟎𝟐𝟔</div>
-    <div class="icons">
-      <div class="toggle-dark" id="darkToggle"></div>
-      <!-- واتساب -->
-      <a href="" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
-      </a>
-      <!-- مشاركة -->
-      <img id="shareBtn" src="https://cdn-icons-png.flaticon.com/512/929/929610.png" alt="Share">
-      <!-- إشعارات -->
-      <img id="notifyBtn" src="https://cdn-icons-png.flaticon.com/512/1827/1827272.png" alt="Notification">
+<body class="h-screen overflow-hidden flex flex-col">
+
+<div id="app" class="flex-1 flex flex-col h-full overflow-hidden p-4 md:p-6 lg:p-8">
+
+<header class="glass-panel h-16 flex items-center justify-between px-4 md:px-6 mb-4 shadow-lg">
+  <!-- Logo + Title -->
+  <div class="flex items-center gap-3">
+    <div class="bg-blue-600/20 p-2 rounded-lg text-blue-400 flex items-center justify-center">
+      <i class="ph ph-video text-2xl"></i>
     </div>
+    <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+     school Viewer
+    </h1>
   </div>
 
-  <!-- ✅ Toast -->
-  <div id="toast">الإشعارات هتتفعل قريبًا 🔔✨</div>
+  <!-- Icons & Profile -->
+  <div class="flex items-center gap-4">
+    <button class="p-2 hover:bg-slate-700/50 rounded-full transition-colors text-gray-400 hover:text-white">
+      <i class="ph ph-bell text-xl"></i>
+    </button>
+    <div @click="goToProfile" class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold cursor-pointer">
+      ME
+    </div>
+  </div>
+</header>
 
-  <h1>𝑺𝒖𝒃𝒋𝒆𝒄𝒕𝒔 𝒄𝒍𝒂𝒔𝒔 𝒐𝒇 𝟐𝟎𝟐𝟔</h1>
-  <ul id="subjects-list">
-    <li class="loading">⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
-  </ul>
 
-  <!-- ✅ زر بروفايل عائم -->
-  <a href="profile.html" class="profile-float-btn">
-    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="بروفايل">
-  </a>
+  <!-- Breadcrumbs -->
+  <div v-if="stage > 0" class="flex items-center gap-2 text-gray-400 mb-4 text-sm flex-wrap">
+    <span @click="stage=0" class="hover:text-blue-400 cursor-pointer">Years</span>
+    <i class="ph ph-caret-right"></i>
+    <span v-if="stage>=1" @click="stage=1" class="hover:text-blue-400 cursor-pointer">{{ selectedYear.name }}</span>
+    <i v-if="stage>=2" class="ph ph-caret-right"></i>
+    <span v-if="stage>=2" @click="stage=2" class="hover:text-blue-400 cursor-pointer">{{ selectedSubject.name }}</span>
+    <i v-if="stage===3" class="ph ph-caret-right"></i>
+    <span v-if="stage===3">{{ selectedTeacher.name }}</span>
+  </div>
 
-  <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
+  <!-- Loading Dialog -->
+  <div v-if="loading" class="loading-dialog animate-fade-in">
+    <i class="ph ph-spinner animate-spin text-5xl mb-4"></i>
+    <p class="text-lg">Loading content...</p>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto">
+
+    <!-- Stage 0: Years -->
+    <div v-if="stage===0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div v-for="year in filteredData" :key="year.id" @click="selectYear(year)"
+          class="glass-card rounded-xl p-5 cursor-pointer group relative overflow-hidden animate-fade-in hover:scale-105 transition-transform duration-200">
+        <img v-if="year.image_url" :src="year.image_url" class="rounded-xl mb-3 w-full h-32 object-cover">
+        <h3 class="font-bold text-lg text-gray-200 group-hover:text-blue-400 transition-colors">{{ year.name }}</h3>
+        <span class="text-xs text-gray-400">{{ year.subjects?.length || 0 }} Subjects</span>
+      </div>
+    </div>
+
+    <!-- Stage 1: Subjects -->
+    <div v-if="stage===1" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div v-for="subject in selectedYear.subjects" :key="subject.id" @click="selectSubject(subject)"
+          class="glass-card rounded-xl p-5 cursor-pointer group relative overflow-hidden animate-fade-in hover:scale-105 transition-transform duration-200">
+        <img v-if="subject.image_url" :src="subject.image_url" class="rounded-xl mb-3 w-full h-32 object-cover">
+        <h3 class="font-bold text-lg text-gray-200 group-hover:text-blue-400 transition-colors">{{ subject.name }}</h3>
+        <span class="text-xs text-gray-400">{{ subject.teachers?.length || 0 }} Teachers</span>
+      </div>
+    </div>
+
+    <!-- Stage 2: Teachers -->
+    <div v-if="stage===2" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div v-for="teacher in selectedSubject.teachers" :key="teacher.id" @click="selectTeacher(teacher)"
+          class="glass-card rounded-xl p-5 cursor-pointer group relative overflow-hidden animate-fade-in hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center gap-4 relative z-10">
+          <div class="w-16 h-16 rounded-full bg-slate-700/50 overflow-hidden ring-2 ring-slate-700 group-hover:ring-blue-500/50 transition-all">
+            <img v-if="teacher.image_url" :src="teacher.image_url" class="w-full h-full object-cover">
+            <div v-else class="w-full h-full flex items-center justify-center text-slate-500">
+              <i class="ph ph-user text-2xl"></i>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-gray-200 group-hover:text-blue-400 transition-colors">{{ teacher.name }}</h3>
+            <p class="text-sm text-gray-500">{{ teacher.chapter_count || 0 }} Chapters</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 3: Chapters & Videos -->
+    <div v-if="stage===3" class="max-w-5xl mx-auto space-y-4">
+      <div class="mb-6 flex items-center gap-4">
+        <button @click="stage=2" class="p-2 hover:bg-slate-800 rounded-lg text-gray-400 hover:text-white transition-colors">
+          <i class="ph ph-arrow-left text-xl"></i>
+        </button>
+        <h2 class="text-2xl font-bold">{{ selectedTeacher.name }}</h2>
+        <p class="text-gray-500 text-sm">{{ selectedSubject.name }}</p>
+      </div>
+
+      <div v-for="chapter in selectedTeacher.chapters" :key="chapter.id"
+           class="glass-card rounded-xl overflow-hidden border border-slate-800/50">
+        <button @click="toggleChapter(chapter.id)"
+          class="w-full px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+          <span class="font-semibold text-lg">{{ chapter.name }}</span>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-slate-500 font-medium px-2 py-1 bg-slate-800/50 rounded-md">{{ chapter.lectures?.length || 0 }} Lectures</span>
+            <i class="ph ph-caret-down transition-transform duration-300" :class="{'rotate-180': expandedChapters.includes(chapter.id)}"></i>
+          </div>
+        </button>
+
+        <div v-show="expandedChapters.includes(chapter.id)" class="border-t border-slate-800/50 bg-slate-900/30">
+          <div v-if="!chapter.lectures?.length" class="p-6 text-center text-gray-500">No lectures found.</div>
+          <div v-else class="grid divide-y divide-slate-800/50">
+            <div v-for="lecture in chapter.lectures" :key="lecture.id" class="p-4 pl-8 group hover:bg-white/5 transition-colors">
+              <h4 class="font-medium text-gray-300 mb-1">{{ lecture.name }}</h4>
+              <div class="flex gap-2 text-xs text-gray-500 mb-2">
+                <span>{{ lecture.video_count }} Videos</span>
+                <span>&bull;</span>
+                <span>{{ lecture.pdf_count }} PDFs</span>
+              </div>
+              <div class="grid gap-2">
+                <div v-for="video in lecture.videos" :key="video.id" @click="playVideo(video)"
+                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-blue-600/10 cursor-pointer transition-all border border-transparent hover:border-blue-500/20">
+                  <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-blue-400">
+                    <i class="ph ph-play-circle text-lg"></i>
+                  </div>
+                  <span class="text-sm font-medium text-gray-400 flex-1">{{ video.title }}</span>
+                  <span v-if="video.stream_url" class="text-[10px] text-emerald-500 font-semibold px-2 py-0.5 bg-emerald-500/10 rounded border border-emerald-500/20">READY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast Container -->
+  <div class="fixed bottom-4 right-4 flex flex-col gap-2 z-50">
+    <transition-group name="toast" tag="div">
+      <div v-for="toast in toasts" :key="toast.id" :class="['toast', toast.type]">{{ toast.message }}</div>
+    </transition-group>
+  </div>
+
+</div>
+
+    <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
 
   <script src="check_code.js"></script>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+<script>
+const { createApp, ref, computed } = Vue;
 
-// إعدادات Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDqkS7udZdgZqKWkw2Wvdx0aWbjU8EfCg8",
-  authDomain: "drosk-622f6.firebaseapp.com",
-  databaseURL: "https://drosk-622f6-default-rtdb.firebaseio.com",
-  projectId: "drosk-622f6",
-  storageBucket: "drosk-622f6.appspot.com",
-  messagingSenderId: "765071631440",
-  appId: "1:765071631440:web:a2305e478babc4534add55",
-  measurementId: "G-2SL3D7TCQE"
-};
+createApp({
+  setup() {
+    const data = ref([]);
+    const stage = ref(0);
+    const selectedYear = ref({});
+    const selectedSubject = ref({});
+    const selectedTeacher = ref({});
+    const expandedChapters = ref([]);
+    const searchQuery = ref('');
+    const loading = ref(true);
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
+    // Toasts
+    const toasts = ref([]);
+    const showToast = (message, type='info', duration=3000) => {
+      const id = Date.now() + Math.random();
+      toasts.value.push({ id, message, type });
+      setTimeout(() => {
+        const index = toasts.value.findIndex(t => t.id === id);
+        if(index !== -1) toasts.value.splice(index,1);
+      }, duration);
+    };
 
-const subjectsList = document.getElementById("subjects-list");
-
-const subjectImages = {
-  "أحياء": "https://www2.0zz0.com/2025/11/03/16/425588580.jpg",
-  "فيزياء": "https://www2.0zz0.com/2025/11/03/16/155373686.jpg",
-  "تاريخ": "https://up6.cc/2025/10/176346425392421.png",
-  "جغرافيا": "https://g.top4top.io/p_3609sjes01.png",
-  "الإحصاء": "https://h.top4top.io/p_3609sxa941.png",
-  "كيمياء": "https://www2.0zz0.com/2025/11/03/16/286845048.jpg",
-  "لغة عربية": "https://www2.0zz0.com/2025/11/06/06/128992456.jpg",
-  "English": "https://www2.0zz0.com/2025/11/03/16/386429473.jpg",
-  "جيولوجيا": "https://www2.0zz0.com/2025/11/03/22/343667596.jpg",
-  "الرياضيات": "https://www2.0zz0.com/2025/11/03/22/428968592.jpg",
-  "ادبي": "https://www2.0zz0.com/2025/10/01/19/580067879.jpeg"
-};
-
-// دالة Toast
-function showToast(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.className = "show";
-  setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
-}
-
-// -------- تحميل المواد بعد التأكد من تسجيل الدخول --------
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadSubjects();
-  } else {
-    showToast("⚠ يجب تسجيل الدخول للوصول للمواد");
-    setTimeout(() => window.location.href = "index.html", 2000);
-  }
-});
-
-// تحميل المواد من Firebase
-async function loadSubjects() {
-  try {
-    const snapshot = await get(ref(db, 'data'));
-    if (!snapshot.exists()) {
-      subjectsList.innerHTML = '<li>⚠ لا توجد بيانات.</li>';
-      return;
+    const selectYear = (year) => { selectedYear.value=year; stage.value=1; }
+    const selectSubject = (subject) => { selectedSubject.value=subject; stage.value=2; }
+    const selectTeacher = (teacher) => { selectedTeacher.value=teacher; stage.value=3; }
+    const toggleChapter = (id) => {
+      const idx = expandedChapters.value.indexOf(id);
+      if(idx===-1) expandedChapters.value.push(id);
+      else expandedChapters.value.splice(idx,1);
+    }
+    const playVideo = (video) => {
+      if(!video.stream_url) showToast("Stream not available", "error");
+      else window.open(video.stream_url,'_blank');
     }
 
-    const data = snapshot.val();
-    subjectsList.innerHTML = '';
-
-    data.forEach(item => {
-      (item.subjects || []).forEach(subject => {
-        const li = document.createElement('li');
-
-        const circle = document.createElement('div');
-        circle.className = 'circle';
-        const img = document.createElement('img');
-        img.src = subjectImages[subject.subject_name] || 'https://img.icons8.com/ios-filled/100/ffd700/book.png';
-        circle.appendChild(img);
-
-        const span = document.createElement('span');
-        span.textContent = subject.subject_name;
-
-        li.appendChild(circle);
-        li.appendChild(span);
-
-        li.onclick = () => {
-          window.location.href = `teachers.html?subject_id=${subject.subject_id}`;
-        };
-
-        subjectsList.appendChild(li);
-      });
+    const filteredData = computed(() => {
+      if(!searchQuery.value) return data.value;
+      return data.value.filter(y => y.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
     });
 
-    showToast("✅ تم تحميل المواد بنجاح");
-
-  } catch (err) {
-    console.error(err);
-    subjectsList.innerHTML = '<li>❌ فشل تحميل البيانات</li>';
-  }
-}
-
-// Dark Mode
-const toggle = document.getElementById("darkToggle");
-toggle.addEventListener("click", () => {
-  toggle.classList.toggle("active");
-  document.body.classList.toggle("light-mode");
-});
-
-// Share
-document.getElementById("shareBtn").addEventListener("click", async () => {
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "الثانويه بلس",
-        text: "جرب تطبيق الثانويه بلس 2026 📚✨",
-        url: window.location.href
-      });
-    } catch {
-      showToast("❌ تم إلغاء المشاركة");
+    const goToProfile = () => {
+      window.location.href = 'profile.html';
     }
-  } else {
-    showToast("المشاركة غير مدعومة في متصفحك 😢");
+
+    fetch('./organized_output.json')
+      .then(res => res.json())
+      .then(json => { data.value = json; loading.value = false; showToast("Data loaded successfully","success"); })
+      .catch(err => { console.error(err); loading.value=false; showToast("Failed to load data","error"); });
+
+    return { data, stage, selectedYear, selectedSubject, selectedTeacher, expandedChapters, searchQuery, loading, filteredData,
+             selectYear, selectSubject, selectTeacher, toggleChapter, playVideo, goToProfile, toasts, showToast };
   }
-});
-
-// Notify
-document.getElementById("notifyBtn").addEventListener("click", () => {
-  showToast("الإشعارات هتتفعل قريبًا 🔔✨");
-});
+}).mount('#app');
 </script>
-
 
 </body>
 </html>
