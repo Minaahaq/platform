@@ -269,9 +269,21 @@ createApp({
       else expandedChapters.value.splice(idx,1);
     }
     const playVideo = (video) => {
-      if(!video.stream_url) showToast("Stream not available", "error");
-      else window.open(video.stream_url,'_blank');
+  if (!video.stream_url) {
+    alert("Stream not available");
+    return;
+  }
+
+  localStorage.setItem("video_title", video.title);
+  localStorage.setItem("video_sources", JSON.stringify([
+    {
+      url: video.stream_url,
+      label: "720"
     }
+  ]));
+
+  window.location.href = "player.html";
+};
 
     const filteredData = computed(() => {
       if(!searchQuery.value) return data.value;
