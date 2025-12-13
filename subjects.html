@@ -270,7 +270,7 @@ createApp({
     }
     const playVideo = (video) => {
   if (!video.stream_url) {
-    alert("Stream not available");
+    showToast("❌ الفيديو غير متاح", "error");
     return;
   }
 
@@ -282,7 +282,11 @@ createApp({
     }
   ]));
 
-  window.location.href = "player.html";
+  showToast("🎬 جاري فتح الفيديو...", "info", 1500);
+
+  setTimeout(() => {
+    window.location.href = "player.html";
+  }, 500);
 };
 
     const filteredData = computed(() => {
