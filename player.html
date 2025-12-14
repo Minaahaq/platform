@@ -93,13 +93,13 @@ if (savedSources) {
     const links = JSON.parse(savedSources);
     if (Array.isArray(links)) {
       qualitySources = links.map(link => ({
-        src: typeof link === 'string' ? link : link.url,
+        src: link.url || link,
         type: "application/x-mpegURL",
         size: parseInt(link.label) || 720
       }));
     } else {
       qualitySources = [{
-        src: typeof links === 'string' ? links : links.url,
+        src: links.url || links,
         type: "application/x-mpegURL",
         size: parseInt(links.label) || 720
       }];
@@ -107,26 +107,25 @@ if (savedSources) {
   } catch (err) {
     console.error("❌ Error parsing savedSources:", err);
   }
+} else {
+  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
-if (qualitySources.length === 0 || !qualitySources[0].src) {
-  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
-} else {
-  // إنشاء المشغل مع أزرار مدمجة
-  const player = new Plyr('#player', {
-    controls: [
-      'play-large','play','rewind','fast-forward','progress','current-time','duration',
-      'mute','volume','settings','fullscreen'
-    ],
-    settings: ['quality','speed','loop'],
-    rewindTime: 10,
-    forwardTime: 10
-  });
+// إنشاء المشغل مع أزرار مدمجة
+const player = new Plyr('#player', {
+  controls: [
+    'play-large','play','rewind','fast-forward','progress','current-time','duration',
+    'mute','volume','settings','fullscreen'
+  ],
+  settings: ['quality','speed','loop'],
+  rewindTime: 10,
+  forwardTime: 10
+});
 
+// تشغيل HLS إذا كان الفيديو بصيغة m3u8
+if (qualitySources.length > 0) {
   const firstSrc = qualitySources[0].src;
-  
-  // تشغيل HLS إذا كان الفيديو بصيغة m3u8
-  if (typeof firstSrc === 'string' && firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
+  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(firstSrc);
     hls.attachMedia(document.getElementById('player'));
@@ -137,29 +136,29 @@ if (qualitySources.length === 0 || !qualitySources[0].src) {
       sources: qualitySources
     };
   }
-
-  // Fullscreen وتدوير تلقائي عند التشغيل
-  player.on('play', async () => {
-    try {
-      if (!player.fullscreen.active) player.fullscreen.enter();
-      if (screen.orientation && screen.orientation.lock) {
-        await screen.orientation.lock('landscape');
-        console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
-      }
-    } catch (err) {
-      console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
-    }
-  });
-
-  // نهاية الفيديو
-  player.on('ended', () => {
-    alert("🎬 انتهى الفيديو");
-  });
-
-  // رسالة تلميحية مخفية بعد 5 ثواني
-  const hint = document.getElementById('hint');
-  if (hint) setTimeout(() => hint.style.display = 'none', 5000);
 }
+
+// 🔄 Fullscreen وتدوير تلقائي عند التشغيل
+player.on('play', async () => {
+  try {
+    if (!player.fullscreen.active) player.fullscreen.enter();
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape');
+      console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
+    }
+  } catch (err) {
+    console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
+  }
+});
+
+// ⏰ نهاية الفيديو
+player.on('ended', () => {
+  alert("🎬 انتهى الفيديو");
+});
+
+// رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
+setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
+</script>
 
 </body>
 </html>
