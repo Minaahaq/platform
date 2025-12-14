@@ -6,17 +6,13 @@
 <title>تشغيل الفيديو - منصة THE BEST</title>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
   body {
     font-family: 'Cairo', sans-serif;
-    background: radial-gradient(circle at top, #0a0a0a, #000);
+    background: #0a0a0a;
     color: #fff;
     margin: 0;
     text-align: center;
-    overflow-x: hidden;
   }
-
   .topbar {
     display: flex;
     align-items: center;
@@ -26,54 +22,20 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
   }
-  .title {
-    color: #ffd700;
-    font-weight: 700;
-    font-size: 18px;
-    text-shadow: 0 0 8px #ffd700;
-  }
-  .back {
-    font-size: 22px;
-    cursor: pointer;
-    color: #ffd700;
-    transition: transform 0.3s;
-    user-select: none;
-  }
+  .title { color: #ffd700; font-weight: 700; font-size: 18px; }
+  .back { font-size: 22px; cursor: pointer; color: #ffd700; user-select: none; }
   .back:hover { transform: translateX(-5px); }
-
-  #player {
-    max-width: 950px;
-    width: 100%;
-    height: 60vh;
-    border-radius: 18px;
-    margin: 25px auto;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-    background: #000;
-  }
-
-  #hint {
-    margin-top: 12px;
-    color: #ffd700;
-    font-size: 14px;
-    text-shadow: 0 0 4px #ffd700;
-  }
-
-  .error-msg {
-    margin: 40px auto;
-    color: #ff4d4d;
-    font-size: 20px;
-    font-weight: 700;
-    text-shadow: 0 0 8px #ff0000;
-  }
+  #player { max-width: 950px; width: 100%; height: 60vh; margin: 25px auto; border-radius: 18px; background: #000; }
+  #hint { margin-top: 12px; color: #ffd700; font-size: 14px; }
+  .error-msg { margin: 40px auto; color: #ff4d4d; font-size: 20px; font-weight: 700; }
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="back" onclick="history.back()">⬅</div>
-  <div class="title">𝑷𝒍𝒂𝒚 𝑽𝒊𝒅𝒆𝒐 🎬</div>
+  <div class="title">تشغيل الفيديو 🎬</div>
   <div style="width:25px;"></div>
 </div>
 
@@ -84,47 +46,22 @@
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
-let qualitySources = [];
-let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-const savedSources = localStorage.getItem("video_sources");
-
-if (savedSources) {
-  try {
-    const links = JSON.parse(savedSources);
-    if (Array.isArray(links)) {
-      qualitySources = links.map(link => ({
-        src: link.url || link,
-        type: "application/x-mpegURL",
-        size: parseInt(link.label) || 720
-      }));
-    } else {
-      qualitySources = [{
-        src: links.url || links,
-        type: "application/x-mpegURL",
-        size: parseInt(links.label) || 720
-      }];
-    }
-  } catch (err) {
-    console.error("❌ Error parsing savedSources:", err);
-  }
-} else {
-  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
-}
-
-// إنشاء المشغل مع أزرار مدمجة
 const player = new Plyr('#player', {
-  controls: [
-    'play-large','play','rewind','fast-forward','progress','current-time','duration',
-    'mute','volume','settings','fullscreen'
-  ],
-  settings: ['quality','speed','loop'],
+  controls: ['play-large','play','rewind','fast-forward','progress','current-time','duration','mute','volume','fullscreen'],
   rewindTime: 10,
   forwardTime: 10
 });
 
-// تشغيل HLS إذا كان الفيديو بصيغة m3u8
-if (qualitySources.length > 0) {
-  const firstSrc = qualitySources[0].src;
+// جلب البيانات من localStorage
+let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
+let savedSources = JSON.parse(localStorage.getItem("video_sources") || "[]");
+
+if (!savedSources || savedSources.length === 0) {
+  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
+} else {
+  // نختار المصدر الأول لتشغيله
+  let firstSrc = typeof savedSources[0] === "string" ? savedSources[0] : savedSources[0].src;
+
   if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(firstSrc);
@@ -133,32 +70,28 @@ if (qualitySources.length > 0) {
     player.source = {
       type: 'video',
       title: videoTitle,
-      sources: qualitySources
+      sources: savedSources.map(src => ({
+        src: typeof src === "string" ? src : src.src,
+        type: "application/x-mpegURL"
+      }))
     };
   }
 }
 
-// 🔄 Fullscreen وتدوير تلقائي عند التشغيل
+// Fullscreen تلقائي وتدوير عند التشغيل
 player.on('play', async () => {
   try {
     if (!player.fullscreen.active) player.fullscreen.enter();
     if (screen.orientation && screen.orientation.lock) {
       await screen.orientation.lock('landscape');
-      console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
     }
-  } catch (err) {
-    console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
-  }
+  } catch (err) { console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err); }
 });
 
-// ⏰ نهاية الفيديو
-player.on('ended', () => {
-  alert("🎬 انتهى الفيديو");
-});
-
-// رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
+// رسالة تلميحية مخفية بعد 5 ثواني
 setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
 </script>
 
 </body>
 </html>
+
