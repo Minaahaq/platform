@@ -90,20 +90,23 @@ const savedSources = localStorage.getItem("video_sources");
 
 if (savedSources) {
   try {
-    const links = JSON.parse(savedSources);
-    if (Array.isArray(links)) {
-      qualitySources = links.map(link => ({
-        src: link.url || link,
+    const videoData = JSON.parse(savedSources);
+
+    // إذا كان الفيديو مخزن كمصفوفة (معظم الأحيان هتكون عنصر واحد)
+    if (Array.isArray(videoData)) {
+      qualitySources = videoData.map(v => ({
+        src: v.stream_url || v.src || v,  // استخدام stream_url أولًا
         type: "application/x-mpegURL",
-        size: parseInt(link.label) || 720
+        size: parseInt(v.label) || 720
       }));
     } else {
       qualitySources = [{
-        src: links.url || links,
+        src: videoData.stream_url || videoData.src || videoData,
         type: "application/x-mpegURL",
-        size: parseInt(links.label) || 720
+        size: parseInt(videoData.label) || 720
       }];
     }
+
   } catch (err) {
     console.error("❌ Error parsing savedSources:", err);
   }
@@ -125,7 +128,7 @@ const player = new Plyr('#player', {
 // تشغيل HLS إذا كان الفيديو بصيغة m3u8
 if (qualitySources.length > 0) {
   const firstSrc = qualitySources[0].src;
-  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
+  if (typeof firstSrc === "string" && firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(firstSrc);
     hls.attachMedia(document.getElementById('player'));
@@ -159,6 +162,7 @@ player.on('ended', () => {
 // رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
 setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
 </script>
+
 
 </body>
 </html>
