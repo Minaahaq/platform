@@ -287,12 +287,16 @@ async function loadVideos() {
 
       const thumb = document.createElement("div");
       thumb.className = "thumb";
-      thumb.onclick = () => {
-  // تخزين رابط الفيديو
-  localStorage.setItem("video_sources", JSON.stringify(video));
-  // الانتقال مباشرة إلى صفحة الفيديو
-  window.location.href = 'player.html'; // ضع هنا اسم صفحة المشغل
+     thumb.onclick = () => {
+  // جلب رابط الفيديو المناسب
+  const videoLink = video.links?.[0]?.url || video.url || video; // هذا يعتمد على شكل JSON عندك
+  // تخزين الرابط بالشكل الذي يتوقعه player.html
+  localStorage.setItem("video_sources", JSON.stringify([{ src: videoLink, type: "application/x-mpegURL" }]));
+  localStorage.setItem("video_title", video.title || `فيديو`);
+  // الانتقال مباشرة إلى صفحة المشغل
+  window.location.href = 'player.html';
 };
+
 
 
       div.appendChild(title);
