@@ -54,13 +54,29 @@ const player = new Plyr('#player', {
 
 // جلب البيانات من localStorage
 let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-let savedSources = JSON.parse(localStorage.getItem("video_sources") || "[]");
+let savedSourcesRaw = localStorage.getItem("video_sources");
+let savedSources = [];
 
-if (!savedSources || savedSources.length === 0) {
+try {
+  const parsed = JSON.parse(savedSourcesRaw || "[]");
+
+  if (Array.isArray(parsed)) {
+    savedSources = parsed.map(item => {
+      if (typeof item === "string") return { src: item, type: "application/x-mpegURL" };
+      if (item?.url) return { src: item.url, type: "application/x-mpegURL" };
+      return null;
+    }).filter(x => x !== null);
+  } else if (parsed?.url) {
+    savedSources = [{ src: parsed.url, type: "application/x-mpegURL" }];
+  }
+} catch (err) {
+  console.error("❌ Error parsing savedSources:", err);
+}
+
+if (!savedSources.length) {
   document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 } else {
-  // نختار المصدر الأول لتشغيله
-  let firstSrc = typeof savedSources[0] === "string" ? savedSources[0] : savedSources[0].src;
+  const firstSrc = savedSources[0].src;
 
   if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
@@ -70,13 +86,12 @@ if (!savedSources || savedSources.length === 0) {
     player.source = {
       type: 'video',
       title: videoTitle,
-      sources: savedSources.map(src => ({
-        src: typeof src === "string" ? src : src.src,
-        type: "application/x-mpegURL"
-      }))
+      sources: savedSources
     };
   }
 }
+
+
 
 // Fullscreen تلقائي وتدوير عند التشغيل
 player.on('play', async () => {
