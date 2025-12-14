@@ -80,70 +80,85 @@
 <video id="player" playsinline controls poster="poster.jpg"></video>
 <div id="hint">💡 اسحب الفيديو لتقديمه أو تأخيره على الهاتف</div>
 
- <script src="check_code.js"></script>
- 
 <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-let videoSrc = null;
 
-// جلب رابط الفيديو من localStorage
-const savedSource = localStorage.getItem("video_sources");
-if (savedSource) {
+<script>
+let qualitySources = [];
+let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
+const savedSources = localStorage.getItem("video_sources");
+
+if (savedSources) {
   try {
-    const link = JSON.parse(savedSource);
-    videoSrc = link.url || link;
+    const links = JSON.parse(savedSources);
+    if (Array.isArray(links)) {
+      qualitySources = links.map(link => ({
+        src: link.url || link,
+        type: "application/x-mpegURL",
+        size: parseInt(link.label) || 720
+      }));
+    } else {
+      qualitySources = [{
+        src: links.url || links,
+        type: "application/x-mpegURL",
+        size: parseInt(links.label) || 720
+      }];
+    }
   } catch (err) {
-    console.error("❌ Error parsing video source:", err);
+    console.error("❌ Error parsing savedSources:", err);
   }
+} else {
+  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
 }
 
-if (!videoSrc) {
-  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
-} else {
-  const player = new Plyr('#player', {
-    controls: [
-      'play-large','play','rewind','fast-forward','progress','current-time','duration',
-      'mute','volume','settings','fullscreen'
-    ],
-    settings: ['speed','loop'],
-    rewindTime: 10,
-    forwardTime: 10
-  });
+// إنشاء المشغل مع أزرار مدمجة
+const player = new Plyr('#player', {
+  controls: [
+    'play-large','play','rewind','fast-forward','progress','current-time','duration',
+    'mute','volume','settings','fullscreen'
+  ],
+  settings: ['quality','speed','loop'],
+  rewindTime: 10,
+  forwardTime: 10
+});
 
-  // تشغيل HLS إذا كان m3u8
-  if (videoSrc.endsWith(".m3u8") && Hls.isSupported()) {
+// تشغيل HLS إذا كان الفيديو بصيغة m3u8
+if (qualitySources.length > 0) {
+  const firstSrc = qualitySources[0].src;
+  if (firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
     const hls = new Hls();
-    hls.loadSource(videoSrc);
+    hls.loadSource(firstSrc);
     hls.attachMedia(document.getElementById('player'));
   } else {
     player.source = {
       type: 'video',
       title: videoTitle,
-      sources: [{ src: videoSrc, type: 'video/mp4', size: 720 }]
+      sources: qualitySources
     };
   }
-
-  // تفعيل fullscreen وتدوير تلقائي عند التشغيل
-  player.on('play', async () => {
-    try {
-      if (!player.fullscreen.active) player.fullscreen.enter();
-      if (screen.orientation && screen.orientation.lock) {
-        await screen.orientation.lock('landscape');
-        console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
-      }
-    } catch (err) {
-      console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
-    }
-  });
-
-  player.on('ended', () => {
-    alert("🎬 انتهى الفيديو");
-  });
 }
-</script>
 
+// 🔄 Fullscreen وتدوير تلقائي عند التشغيل
+player.on('play', async () => {
+  try {
+    if (!player.fullscreen.active) player.fullscreen.enter();
+    if (screen.orientation && screen.orientation.lock) {
+      await screen.orientation.lock('landscape');
+      console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
+    }
+  } catch (err) {
+    console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
+  }
+});
+
+// ⏰ نهاية الفيديو
+player.on('ended', () => {
+  alert("🎬 انتهى الفيديو");
+});
+
+// رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
+setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
+</script>
 
 </body>
 </html>
