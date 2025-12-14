@@ -288,14 +288,23 @@ async function loadVideos() {
       const thumb = document.createElement("div");
       thumb.className = "thumb";
      thumb.onclick = () => {
-  // جلب رابط الفيديو المناسب
-  const videoLink = video.links?.[0]?.url || video.url || video; // هذا يعتمد على شكل JSON عندك
-  // تخزين الرابط بالشكل الذي يتوقعه player.html
-  localStorage.setItem("video_sources", JSON.stringify([{ src: videoLink, type: "application/x-mpegURL" }]));
+  // جلب رابط الفيديو من stream_url
+  const videoLink = video.stream_url;
+  if (!videoLink) {
+    alert("⚠️ لا يوجد رابط لهذا الفيديو");
+    return;
+  }
+  
+  // تخزين الرابط والشكل المطلوب للمشغل
+  localStorage.setItem("video_sources", JSON.stringify([
+    { src: videoLink, type: "application/x-mpegURL" }
+  ]));
   localStorage.setItem("video_title", video.title || `فيديو`);
+
   // الانتقال مباشرة إلى صفحة المشغل
   window.location.href = 'player.html';
 };
+
 
 
 
