@@ -231,7 +231,7 @@ const selectedLecture = JSON.parse(localStorage.getItem("selected_lecture"));
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = 'lecture_name.html';
+  window.location.href = 'lecture_name-a.html';
 };
 
 function normalize(str) {
@@ -245,7 +245,7 @@ async function loadVideos() {
   }
 
   try {
-    const res = await fetch("organized_output.json");
+    const res = await fetch("organized_output-a.json");
     const data = await res.json();
 
     const wantedSubject = normalize(selectedSubject.name);
