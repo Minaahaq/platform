@@ -354,7 +354,7 @@ if (!selectedYear) {
 
 async function loadSubjects() {
   try {
-    const res = await fetch("./organized_output.json");
+    const res = await fetch("./organized_output-a.json");
     const data = await res.json();
 
     const year = data.find(
