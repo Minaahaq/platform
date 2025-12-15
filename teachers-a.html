@@ -249,7 +249,7 @@ if (!selectedSubject) {
 // تحميل المدرسين
 async function loadTeachers() {
   try {
-    const res = await fetch('organized_output.json'); // نفس ملف البيانات
+    const res = await fetch('organized_output-a.json'); // نفس ملف البيانات
     const data = await res.json();
 
     // جلب السنة المختارة
@@ -302,7 +302,7 @@ li.appendChild(chaptersCount);
       // الانتقال لصفحة الفصول
       li.onclick = () => {
         localStorage.setItem('selected_teacher', JSON.stringify(teacher));
-        window.location.href = 'chapters.html';
+        window.location.href = 'chapters-a.html';
       };
 
       teachersList.appendChild(li);
