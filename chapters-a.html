@@ -211,7 +211,7 @@ function normalize(str) {
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = 'teachers.html';
+  window.location.href = 'teachers-a.html';
 };
 
 // تحميل الأبواب
@@ -219,7 +219,7 @@ async function loadChapters() {
   if (!selectedSubject || !selectedTeacher) return;
 
   try {
-    const res = await fetch("organized_output.json");
+    const res = await fetch("organized_output-a.json");
     const data = await res.json();
 
     const wantedSubject = normalize(selectedSubject.name);
@@ -253,7 +253,7 @@ async function loadChapters() {
       li.textContent = chapter;
       li.onclick = () => {
         localStorage.setItem('selected_chapter', JSON.stringify({ name: chapter }));
-        window.location.href = 'lecture_name.html';
+        window.location.href = 'lecture_name-a.html';
       };
       chaptersList.appendChild(li);
     });
