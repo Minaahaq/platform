@@ -120,7 +120,7 @@ const yearsList = document.getElementById("years-list");
 
 async function loadYears() {
   try {
-    const res = await fetch("./organized_output.json");
+    const res = await fetch("./organized_output-a.json");
     const data = await res.json();
 
     yearsList.innerHTML = "";
@@ -150,7 +150,7 @@ data.forEach(year => {
 
   li.onclick = () => {
     localStorage.setItem("selected_year", JSON.stringify(year));
-    window.location.href = "subjects.html";
+    window.location.href = "subjects-a.html";
   };
 
   yearsList.appendChild(li);
