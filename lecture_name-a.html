@@ -162,7 +162,7 @@ async function loadLectures() {
   if (!selectedSubject || !selectedTeacher || !selectedChapter) return;
 
   try {
-    const res = await fetch("organized_output.json");
+    const res = await fetch("organized_output-a.json");
     const data = await res.json();
 
     const wantedSubject = normalize(selectedSubject.name);
@@ -211,7 +211,7 @@ async function loadLectures() {
 
       li.onclick = () => {
         localStorage.setItem('selected_lecture', JSON.stringify({ name: lec.name }));
-        window.location.href = 'videos.html';
+        window.location.href = 'videos-a.html';
       };
 
       lecturesList.appendChild(li);
