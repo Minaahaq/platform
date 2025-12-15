@@ -162,27 +162,57 @@ async function checkCode(){
       الحالة: <b>نشط</b>
     </div>
   `;
-      localStorage.setItem("user_code",code);
-      localStorage.setItem("user_data",JSON.stringify(data));
 
-      let token=localStorage.getItem("access_token");
-      if(!token){token=generateToken();localStorage.setItem("access_token",token);}
+      /* ===== حفظ البيانات ===== */
+      localStorage.setItem("user_code", code);
+      localStorage.setItem("user_data", JSON.stringify(data));
 
-      const email=`${code}@myapp.local`; const password=code;
-      try{await firebase.auth().signInWithEmailAndPassword(email,password);}catch(e){await firebase.auth().createUserWithEmailAndPassword(email,password);}
+      const section = (data.section || "").trim();
+      localStorage.setItem("user_section", section);
 
-      setTimeout(()=>window.location.href="year.html",1000);
+      let token = localStorage.getItem("access_token");
+      if (!token) {
+        token = generateToken();
+        localStorage.setItem("access_token", token);
+      }
+
+      /* ===== Firebase Auth ===== */
+      const email = `${code}@myapp.local`;
+      const password = code;
+
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+      } catch (e) {
+        await firebase.auth().createUserWithEmailAndPassword(email, password);
+      }
+
+      /* ===== تحويل حسب الشعبة (مُصحَّح) ===== */
+      let targetPage = "year.html";
+
+      if (section.includes("علمي علوم")) {
+        targetPage = "year.html";
+      } else if (section.includes("أدبي")) {
+        targetPage = "year-a.html";
+      } else if (section.includes("علمي رياضه")) {
+        targetPage = "year.html";
+      }
+
+      setTimeout(() => {
+        window.location.href = targetPage;
+      }, 1000);
+
     } else {
-      resultDiv.innerHTML=`<span class='error'>${data.message}</span>`;
+      resultDiv.innerHTML = `<span class='error'>${data.message}</span>`;
     }
-  } catch(err){
+
+  } catch (err) {
     console.error(err);
-    resultDiv.innerHTML="<span class='error'>⚠ حدث خطأ أثناء الاتصال بالخادم.</span>";
+    resultDiv.innerHTML = "<span class='error'>⚠ حدث خطأ أثناء الاتصال بالخادم.</span>";
   }
 
-  btn.disabled=false;
-  btn.innerHTML="تسجيل الدخول";
-}
+  btn.disabled = false;
+  btn.innerHTML = "تسجيل الدخول";
+ }
 
 document.getElementById("loginBtn").addEventListener("click",checkCode);
 document.getElementById("code").addEventListener("keypress",e=>{if(e.key==="Enter") checkCode();});
