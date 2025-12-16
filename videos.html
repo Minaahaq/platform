@@ -244,6 +244,9 @@ async function loadVideos() {
     return;
   }
 
+  // ✅ عرض رسالة التحميل أثناء جلب البيانات
+  videosContainer.innerHTML = `<div class="loading">⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</div>`;
+
   try {
     const res = await fetch("organized_output.json");
     const data = await res.json();
@@ -280,7 +283,10 @@ async function loadVideos() {
       return;
     }
 
-    // عرض الفيديوهات مباشرة بدون popup
+    // ✅ إزالة رسالة التحميل قبل عرض الفيديوهات
+    videosContainer.innerHTML = "";
+
+    // عرض الفيديوهات مباشرة
     foundLecture.videos.forEach((video, index) => {
       const div = document.createElement("div");
       div.className = "video-box";
@@ -291,26 +297,19 @@ async function loadVideos() {
 
       const thumb = document.createElement("div");
       thumb.className = "thumb";
-     thumb.onclick = () => {
-  // جلب رابط الفيديو من stream_url
-  const videoLink = video.stream_url;
-  if (!videoLink) {
-    alert("⚠️ لا يوجد رابط لهذا الفيديو");
-    return;
-  }
-  
-  // تخزين الرابط والشكل المطلوب للمشغل
-  localStorage.setItem("video_sources", JSON.stringify([
-    { src: videoLink, type: "application/x-mpegURL" }
-  ]));
-  localStorage.setItem("video_title", video.title || `فيديو`);
+      thumb.onclick = () => {
+        const videoLink = video.stream_url;
+        if (!videoLink) {
+          alert("⚠️ لا يوجد رابط لهذا الفيديو");
+          return;
+        }
 
-  // الانتقال مباشرة إلى صفحة المشغل
-  window.location.href = 'player.html';
-};
-
-
-
+        localStorage.setItem("video_sources", JSON.stringify([
+          { src: videoLink, type: "application/x-mpegURL" }
+        ]));
+        localStorage.setItem("video_title", video.title || `فيديو`);
+        window.location.href = 'player.html';
+      };
 
       div.appendChild(title);
       div.appendChild(thumb);
@@ -322,6 +321,7 @@ async function loadVideos() {
     videosContainer.innerHTML = "<p>❌ حدث خطأ أثناء تحميل الفيديوهات.</p>";
   }
 }
+
 
 loadVideos();
 </script>
