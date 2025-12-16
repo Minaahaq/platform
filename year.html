@@ -3,170 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>السنوات - منصة THE BEST</title>
+<title>السنوات الدراسية | THE BEST</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+:root {
+  --bg: #0f0f0f;
+  --card: #1a1a1a;
+  --accent: #ffd700;
+  --muted: #999;
+}
 
-/* ===== CSS كما هو بدون تغيير ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Cairo', sans-serif;
-  background: #121212;
-  color: #fff;
-  padding: 80px 15px 30px;
   margin: 0;
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: #fff;
+  padding-top: 75px;
 }
 
+/* ===== Top Bar ===== */
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #111;
-  padding: 10px 15px;
-  color: white;
   position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-h1 {
-  color: #ffd700;
-  text-align: center;
-  font-size: 2.4rem;
-  margin-bottom: 40px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 30px;
-}
-
-li {
-  background: #1e1e1e;
-  border-radius: 16px;
-  padding: 20px 15px 30px;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(255,215,0,0.15);
-  transition: 0.3s;
+  inset: 0 0 auto 0;
+  height: 60px;
+  background: rgba(15,15,15,.95);
+  backdrop-filter: blur(10px);
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-li:hover {
-  background: #ffd700;
-  color: #121212;
-  transform: translateY(-8px);
-}
-
-.circle {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: #333;
-  overflow: hidden;
-  margin-bottom: 18px;
-  display: flex;
   justify-content: center;
-  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+  z-index: 1000;
+  border-bottom: 1px solid #222;
 }
 
-.circle img {
-  width: 80%;
-  height: 80%;
+/* ===== Title ===== */
+h1 {
+  text-align: center;
+  margin: 30px 0 45px;
+  font-size: 2.2rem;
+}
+
+/* ===== Grid ===== */
+.grid {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+}
+
+/* ===== Card ===== */
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 28px 20px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: .35s ease;
+  border: 1px solid #222;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  background: var(--accent);
+  color: #000;
+}
+
+/* ===== Image ===== */
+.icon {
+  width: 110px;
+  height: 110px;
+  margin: auto;
+  border-radius: 50%;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.icon img {
+  width: 75%;
+  height: 75%;
   object-fit: contain;
 }
 
-li span {
+/* ===== Text ===== */
+.year-name {
+  font-size: 1.3rem;
   font-weight: 700;
-  font-size: 1.2rem;
-  text-align: center;
 }
 
-li.loading {
-  background: transparent;
-  box-shadow: none;
-  cursor: default;
-  grid-column: 1 / -1;
-  text-align: center;
-  color: #aaa;
+.year-meta {
+  margin-top: 8px;
+  font-size: .95rem;
+  color: var(--muted);
+}
+
+/* ===== Skeleton ===== */
+.skeleton {
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton .icon,
+.skeleton .year-name,
+.skeleton .year-meta {
+  background: #222;
+  color: transparent;
+  border-radius: 8px;
+}
+
+.skeleton .icon {
+  height: 110px;
+}
+
+@keyframes pulse {
+  0% {opacity: .6}
+  50% {opacity: 1}
+  100% {opacity: .6}
 }
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
-  <div>☰</div>
-  <div>السنوات</div>
-  <div></div>
-</div>
+<div class="topbar">السنوات الدراسية</div>
 
 <h1>اختر السنة</h1>
 
-<ul id="years-list">
-  <li class="loading">⏳ Loading...</li>
-</ul>
+<div class="grid" id="grid">
+  <!-- Skeleton -->
+  <div class="card skeleton">
+    <div class="icon"></div>
+    <div class="year-name">----</div>
+    <div class="year-meta">----</div>
+  </div>
+  <div class="card skeleton">
+    <div class="icon"></div>
+    <div class="year-name">----</div>
+    <div class="year-meta">----</div>
+  </div>
+</div>
 
 <script>
-const yearsList = document.getElementById("years-list");
+const grid = document.getElementById("grid");
+const DATA_URL = "./organized_output.json";
+
+function createCard(year) {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div class="icon">
+      <img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}">
+    </div>
+    <div class="year-name">${year.name}</div>
+    <div class="year-meta">${year.subjects?.length || 0} مادة</div>
+  `;
+
+  card.onclick = () => {
+    localStorage.setItem("selected_year", JSON.stringify(year));
+    location.href = "subjects.html";
+  };
+
+  return card;
+}
 
 async function loadYears() {
   try {
-    const res = await fetch("./organized_output.json");
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error();
+
     const data = await res.json();
+    grid.innerHTML = "";
 
-    yearsList.innerHTML = "";
+    data.forEach(y => grid.appendChild(createCard(y)));
 
-data.forEach(year => {
-  const li = document.createElement("li");
-
-  const circle = document.createElement("div");
-  circle.className = "circle";
-
-  const img = document.createElement("img");
-  img.src = year.image_url || "https://img.icons8.com/ios-filled/100/ffd700/calendar.png";
-
-  circle.appendChild(img);
-
-  const span = document.createElement("span");
-  span.textContent = year.name;
-
-  // إضافة عدد المواد لكل سنة
-  const info = document.createElement("div");
-  info.style.fontSize = "0.9rem";
-  info.style.color = "#ffd700";
-  info.style.marginTop = "6px";
-  info.textContent = `${year.subjects?.length || 0} مادة`;
-
-  li.append(circle, span, info);
-
-  li.onclick = () => {
-    localStorage.setItem("selected_year", JSON.stringify(year));
-    window.location.href = "subjects.html";
-  };
-
-  yearsList.appendChild(li);
-});
-
-
-  } catch (e) {
-    console.error(e);
-    yearsList.innerHTML =
-      `<li class="loading">❌ خطأ في قراءة الملف</li>`;
+  } catch {
+    grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
   }
 }
 
-// تحميل السنوات فور فتح الصفحة
 loadYears();
 </script>
 
 </body>
 </html>
+
