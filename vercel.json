@@ -1,8 +1,2 @@
-{
-  "routes": [
-    {
-      "src": "/(organized_output(-a)?\\.json)",
-      "dest": "/api/no-access"
-    }
-  ]
-}
+
+... 
