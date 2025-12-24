@@ -162,7 +162,7 @@ async function loadLectures() {
   if (!selectedSubject || !selectedTeacher || !selectedChapter) return;
 
   try {
-    const res = await fetch("organized_output-a.json");
+    const res = await fetch("organized_output-e.json");
     const data = await res.json();
 
     const wantedSubject = normalize(selectedSubject.name);
