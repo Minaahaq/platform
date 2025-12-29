@@ -5,11 +5,35 @@ export default async function handler(req, res) {
  const BASE_URL = "https://platform-sigma-seven.vercel.app";
  // رابط مشروعك بعد النشر
 
-  let url = "";
-  if(type === "years") url = `${BASE_URL}/api/years`;
-  if(type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
-  if(type === "teachers") url = `${BASE_URL}/api/teachers/${yearId}/${subjectId}`;
-  if(type === "teacher") url = `${BASE_URL}/api/teacher/${teacherId}`;
+ let url = "";
+
+// سنوات
+if (type === "years")
+  url = `${BASE_URL}/api/years`;
+
+// مواد
+if (type === "subjects")
+  url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
+
+// مدرسين
+if (type === "teachers")
+  url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
+
+// مدرس واحد
+if (type === "teacher")
+  url = `${BASE_URL}/api/teacher?teacherId=${teacherId}`;
+
+// فصول
+if (type === "chapters")
+  url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
+
+// محاضرات
+if (type === "lectures")
+  url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
+
+// فيديوهات
+if (type === "videos")
+  url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
 
   try {
     const response = await fetch(url, {
