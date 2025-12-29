@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const { type, yearId, subjectId, teacherId } = req.query;
- const BASE_URL = "https://test1-psi-nine-91.vercel.app";
+ const BASE_URL = "https://platform-sigma-seven.vercel.app";
  // رابط مشروعك بعد النشر
 
   let url = "";
