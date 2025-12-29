@@ -348,8 +348,9 @@ if (!selectedYear) {
 
 async function loadSubjects(yearId) {
   try {
-    const res = await fetch(`/api/subjects?yearId=${yearId}`);
-    if (!res.ok) throw new Error("Network response was not ok");
+    const res = await fetch(`/api/proxy?type=subjects&yearId=${yearId}`);
+
+    if (!res.ok) throw new Error("Network error");
 
     const subjects = await res.json();
     subjectsList.innerHTML = "";
