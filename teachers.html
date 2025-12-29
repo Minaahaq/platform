@@ -236,22 +236,21 @@ const subjectImages = {
 
 // جلب المادة المختارة من LocalStorage
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
-if (!selectedSubject) {
-  teachersList.innerHTML = '<li>⚠️ لم يتم اختيار مادة</li>';
+const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
+
+if (!selectedSubject || !selectedYear) {
+  teachersList.innerHTML = '<li>⚠️ لم يتم اختيار السنة أو المادة</li>';
 } else {
-  loadTeachers();
+  loadTeachers(selectedYear.id, selectedSubject.id);
 }
 
 // تحميل المدرسين
-async function loadTeachers() {
+async function loadTeachers(yearId, subjectId) {
   try {
-    const selectedYear = JSON.parse(localStorage.getItem('selected_year'));
-    const selectedSubject = JSON.parse(localStorage.getItem('selected_subject'));
+    if (!yearId || !subjectId) return;
 
-    if (!selectedYear || !selectedSubject) return;
-
-    // جلب المدرسين من API
-   const res = await fetch(`/api/proxy?type=teachers&yearId=${yearId}&subjectId=${subjectId}`);
+    // جلب المدرسين من API عبر Proxy
+    const res = await fetch(`/api/proxy?type=teachers&yearId=${yearId}&subjectId=${subjectId}`);
     if (!res.ok) throw new Error("Failed to fetch teachers");
     const teachers = await res.json();
 
@@ -265,11 +264,13 @@ async function loadTeachers() {
     teachers.forEach(teacher => {
       const li = document.createElement('li');
 
+      // صورة المادة
       const subjectImg = document.createElement('img');
       subjectImg.className = 'subject-img';
       subjectImg.src = selectedSubject.image_url || "https://img.icons8.com/fluency/300/book.png";
       subjectImg.alt = selectedSubject.name;
 
+      // صورة المدرس داخل دائرة
       const circle = document.createElement('div');
       circle.className = 'teacher-circle';
       const teacherImg = document.createElement('img');
@@ -277,16 +278,19 @@ async function loadTeachers() {
       teacherImg.alt = teacher.name;
       circle.appendChild(teacherImg);
 
+      // اسم المدرس
       const nameSpan = document.createElement('span');
       nameSpan.textContent = teacher.name;
 
+      // عدد الفصول
       const chaptersCount = document.createElement('div');
       chaptersCount.style.fontSize = '0.85rem';
       chaptersCount.style.color = '#ffd700';
-      chaptersCount.textContent = `${teacher.chapters_count || 0} 𝑪𝒉𝒂𝒑𝒕𝒆𝒓`;
+      chaptersCount.textContent = `${teacher.chapters_count || 0} Chapter`;
 
       li.append(subjectImg, circle, nameSpan, chaptersCount);
 
+      // الضغط على المدرس يحفظه في LocalStorage وينتقل للفصول
       li.onclick = () => {
         localStorage.setItem('selected_teacher', JSON.stringify(teacher));
         window.location.href = 'chapters.html';
