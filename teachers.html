@@ -251,9 +251,8 @@ async function loadTeachers() {
     if (!selectedYear || !selectedSubject) return;
 
     // جلب المدرسين من API
-    const res = await fetch(`/api/teachers?yearId=${selectedYear.id}&subjectId=${selectedSubject.id}`);
-    if (!res.ok) throw new Error("حدث خطأ أثناء جلب المدرسين");
-
+   const res = await fetch(`/api/proxy?type=teachers&yearId=${yearId}&subjectId=${subjectId}`);
+    if (!res.ok) throw new Error("Failed to fetch teachers");
     const teachers = await res.json();
 
     if (!teachers?.length) {
