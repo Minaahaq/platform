@@ -1,62 +1,58 @@
-/* ======================
-   🔐 SITE PROTECTION
-   ====================== */
+/* ======== 🔐 ULTIMATE FRONTEND PROTECTION ======== */
 
-// منع كليك يمين
-document.addEventListener("contextmenu", e => {
-  e.preventDefault();
-  return false;
-});
+(function () {
 
-// منع التحديد والنسخ
-document.addEventListener("selectstart", e => e.preventDefault());
-document.addEventListener("copy", e => e.preventDefault());
-document.addEventListener("cut", e => e.preventDefault());
+  // تعطيل كل محاولات النسخ والتحديد والسحب
+  ["contextmenu","selectstart","copy","cut","dragstart"].forEach(e =>
+    document.addEventListener(e, ev => ev.preventDefault())
+  );
 
-// منع اختصارات الكيبورد
-document.addEventListener("keydown", function (e) {
-  // F12
-  if (e.keyCode === 123) {
-    e.preventDefault();
-    return false;
-  }
+  // منع كل الاختصارات الشائعة لفتح السورس
+  document.addEventListener("keydown", e => {
+    const k = e.key.toUpperCase();
+    if (e.key === "F12") e.preventDefault();
+    if (e.ctrlKey && ["U","S","A","C"].includes(k)) e.preventDefault();
+    if (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(k)) e.preventDefault();
+    if (e.key === "F5") e.preventDefault();
+  });
 
-  // Ctrl + Shift + I / J / C
-  if (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) {
-    e.preventDefault();
-    return false;
-  }
+  // تعطيل Inspect عبر console.log trap
+  const devtools = /./;
+  devtools.toString = function () {
+    lockPage();
+  };
+  console.log("%c", devtools);
 
-  // Ctrl + U / S / C / A
-  if (e.ctrlKey && ["U", "S", "C", "A"].includes(e.key)) {
-    e.preventDefault();
-    return false;
-  }
-});
-
-// كشف DevTools
-(function detectDevTools() {
-  const threshold = 160;
+  // كشف تغيير حجم النافذة لفتح DevTools
+  let threshold = 160;
   setInterval(() => {
-    const widthDiff = window.outerWidth - window.innerWidth;
-    const heightDiff = window.outerHeight - window.innerHeight;
-
-    if (widthDiff > threshold || heightDiff > threshold) {
-      document.body.innerHTML = `
-        <div style="
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          height:100vh;
-          font-size:24px;
-          background:#000;
-          color:#f00;
-          font-family:Arial">
-          🚫 Access Denied
-        </div>`;
+    if (
+      Math.abs(window.outerHeight - window.innerHeight) > threshold ||
+      Math.abs(window.outerWidth - window.innerWidth) > threshold
+    ) {
+      lockPage();
     }
-  }, 500);
+  }, 120);
+
+  // كشف إبطاء تنفيذ السكربت (علامة debugging)
+  let last = performance.now();
+  setInterval(() => {
+    const now = performance.now();
+    if (now - last > 300) lockPage();
+    last = now;
+  }, 200);
+
+  // تعطيل التفاعل بالكامل عند الاشتباه
+  function lockPage() {
+    document.body.innerHTML = `
+      <div style="
+        display:flex;justify-content:center;align-items:center;
+        height:100vh;background:#000;color:#f00;font-size:26px;
+        font-family:Arial;text-align:center">
+        🚫 Access Denied<br>Developer Tools Detected
+      </div>`;
+    document.body.style.pointerEvents = "none";
+  }
+
 })();
 
-// تعطيل السحب
-document.ondragstart = () => false;
