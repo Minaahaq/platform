@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   let url = "";
   if(type === "years") url = `${BASE_URL}/api/years`;
-  if(type === "subjects") url = `${BASE_URL}/api/subjects/${yearId}`;
+  if(type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
   if(type === "teachers") url = `${BASE_URL}/api/teachers/${yearId}/${subjectId}`;
   if(type === "teacher") url = `${BASE_URL}/api/teacher/${teacherId}`;
 
