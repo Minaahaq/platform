@@ -352,7 +352,16 @@ if (!selectedYear) {
 
 async function loadSubjects(yearId) {
   try {
-    const res = await fetch(`/api/proxy?type=subjects&yearId=${yearId}`);
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
+
+    // 2️⃣ الطلب المحمي (زي السنين)
+    const res = await fetch(`/api/proxy?type=subjects&yearId=${yearId}`, {
+      headers: {
+        "x-client-token": token
+      }
+    });
 
     if (!res.ok) throw new Error("Network error");
 
