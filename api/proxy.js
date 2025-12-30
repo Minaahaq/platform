@@ -1,43 +1,81 @@
 import fetch from "node-fetch";
 
+// Rate limit بسيط
 const rateLimit = new Map();
+const activeTokens = {}; // لتخزين IP لكل توكن
 
 export default async function handler(req, res) {
+
+  /* =====================
+     🔒 BASIC SECURITY
+  ===================== */
+
+  // السماح بـ GET فقط
   if (req.method !== "GET") {
     return res.status(405).json({ error: "NOT_ALLOWED" });
   }
 
- ============= Token Check =================
+  // فحص Dynamic Token
   const token = req.headers["x-client-token"];
-  if (!token) return res.status(403).json({ error: "NO_TOKEN" });
+  if (!token) {
+    return res.status(403).json({ error: "NO_TOKEN" });
+  }
 
+  let secret, expires;
   try {
     const decoded = Buffer.from(token, "base64").toString("utf8");
-    const [secret, expires] = decoded.split(":");
+    [secret, expires] = decoded.split(":");
 
-    if (secret !== process.env.CLIENT_SECRET) return res.status(403).json({ error: "INVALID_TOKEN" });
-    if (Date.now() > Number(expires)) return res.status(403).json({ error: "TOKEN_EXPIRED" });
+    if (secret !== process.env.CLIENT_SECRET) {
+      return res.status(403).json({ error: "INVALID_TOKEN" });
+    }
+
+    if (Date.now() > Number(expires)) {
+      return res.status(403).json({ error: "TOKEN_EXPIRED" });
+    }
+
   } catch {
     return res.status(403).json({ error: "BAD_TOKEN" });
   }
 
-  // ================= Rate Limit =================
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown";
+  // =====================
+  // 🔐 ربط التوكن بالـ IP
+  const ip =
+    req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress ||
+    "unknown";
+
+  if (!activeTokens[token]) {
+    activeTokens[token] = ip; // لأول مرة نسجل الـ IP
+  }
+
+  if (activeTokens[token] !== ip) {
+    return res.status(403).json({ error: "IP_MISMATCH" });
+  }
+
+  // Rate limit (20 طلب / 10 ثواني)
   const now = Date.now();
   const windowMs = 10 * 1000;
   const maxReq = 20;
 
   const user = rateLimit.get(ip) || { count: 0, time: now };
+
   if (now - user.time < windowMs) {
     user.count++;
-    if (user.count > maxReq) return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
+    if (user.count > maxReq) {
+      return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
+    }
   } else {
     user.count = 1;
     user.time = now;
   }
+
   rateLimit.set(ip, user);
 
-  // ================= Proxy Requests =================
+  /* =====================
+     📦 ORIGINAL CODE
+  ===================== */
+
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
   const BASE_URL = "https://platform-sigma-seven.vercel.app";
 
@@ -58,7 +96,9 @@ export default async function handler(req, res) {
       }
     });
 
-    if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
+    if (!response.ok) {
+      return res.status(502).json({ error: "UPSTREAM_ERROR" });
+    }
 
     const data = await response.json();
     res.setHeader("Cache-Control", "no-store");
@@ -68,4 +108,4 @@ export default async function handler(req, res) {
     console.error("Proxy Error:", err.message);
     res.status(500).json({ error: "SERVER_ERROR" });
   }
-}
+      }
