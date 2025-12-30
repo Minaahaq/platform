@@ -161,11 +161,12 @@
         return;
       }
 
-      try {
-        const res = await fetch(`/api/videos?yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`);
-        if (!res.ok) throw new Error("لم يتم العثور على البيانات");
+       try {
+    // جلب الفيديوهات من API عبر Proxy
+    const res = await fetch(`/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`);
+    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
-        const data = await res.json();
+    const data = await res.json();
         videosContainer.innerHTML = "";
 
         if (!data.videos || data.videos.length === 0) {
