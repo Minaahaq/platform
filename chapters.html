@@ -209,10 +209,24 @@ backBtn.onclick = () => {
 
 // تحميل الفصول (Chapters) من API عبر Proxy
 async function loadChapters() {
+async function loadChapters() {
   if (!selectedYear || !selectedSubject || !selectedTeacher) return;
 
   try {
-    const res = await fetch(`/api/proxy?type=chapters&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`);
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
+
+    // 2️⃣ الطلب المحمي عبر Proxy (نفس نظام السنين)
+    const res = await fetch(
+      `/api/proxy?type=chapters&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
     const chapters = await res.json();
@@ -221,7 +235,7 @@ async function loadChapters() {
     if (chapters.length === 0) {
       chaptersList.innerHTML = '<li>⚠️ لا يوجد أبواب لهذا المدرس.</li>';
       return;
-    }
+  }
 
     // عرض الفصول مع تخزين الفصل المحدد عند الضغط
     chapters.forEach(chapter => {
