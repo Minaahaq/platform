@@ -162,11 +162,12 @@ h1 {
 <script>
 const grid = document.getElementById("grid");
 
-async function loadYears(){
-  try{
-    const res = await fetch(`/api/proxy?type=years`);
-    if(!res.ok) throw new Error("Network response was not ok");
-    const data = await res.json();
+async function loadSubjects(yearId) {
+  try {
+    const res = await fetch(`/api/subjects?yearId=${yearId}`);
+    if (!res.ok) throw new Error("Network response was not ok");
+
+    const subjects = await res.json();
     grid.innerHTML = "";
     data.forEach(year => {
       const card = document.createElement("div");
