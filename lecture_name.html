@@ -126,11 +126,7 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
 
-  <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
-
-  <script src="check_code.js"></script>
-
-
+  
 <script type="module">
 const lecturesList = document.getElementById("lectures-list");
 const backBtn = document.getElementById("backBtn");
@@ -156,11 +152,23 @@ async function loadLectures() {
   if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) return;
 
   try {
-    const res = await fetch(`/api/proxy?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`);
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
+
+    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
+    const res = await fetch(
+      `/api/proxy?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
     const lectures = await res.json(); // المحاضرات
-
     lecturesList.innerHTML = "";
 
     if (!lectures || lectures.length === 0) {
