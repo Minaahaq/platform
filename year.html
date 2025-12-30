@@ -159,18 +159,37 @@ h1 {
 <script>
 const grid = document.getElementById("grid");
 
-async function loadSubjects(yearId) {
-  try {
-    const res = await fetch(`/api/subjects?yearId=${yearId}`);
-    if (!res.ok) throw new Error("Network response was not ok");
+async function fetchProtectedData() {
+  const tokenRes = await fetch("/api/get-token");
+  const { token } = await tokenRes.json();
 
-    const subjects = await res.json();
+  const res = await fetch("/api/proxy?type=years", {
+    headers: {
+      "x-client-token": token
+    }
+  });
+
+  return res.json();
+}
+
+async function loadYears() {
+  try {
     grid.innerHTML = "";
+    const data = await fetchProtectedData();
+
+    if (!Array.isArray(data)) {
+      console.error("Unexpected response:", data);
+      grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
+      return;
+    }
+
     data.forEach(year => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <div class="icon"><img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}"></div>
+        <div class="icon">
+          <img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}">
+        </div>
         <div class="year-name">${year.name}</div>
         <div class="year-meta">${year.subjects_count} مادة</div>
       `;
@@ -180,14 +199,16 @@ async function loadSubjects(yearId) {
       };
       grid.appendChild(card);
     });
-  }catch(err){
-    grid.innerHTML=`<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
+
+  } catch(err) {
+    grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
     console.error(err);
   }
 }
 
 loadYears();
 </script>
+
 
 
 </body>
