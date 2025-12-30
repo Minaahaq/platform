@@ -192,6 +192,7 @@ const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 
+// التحقق من وجود البيانات
 if (!selectedYear || !selectedSubject || !selectedTeacher) {
   chaptersList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس.</li>';
 }
@@ -201,12 +202,12 @@ backBtn.onclick = () => {
   window.location.href = 'teachers.html';
 };
 
-// تحميل الأبواب من API
+// تحميل الفصول (Chapters) من API عبر Proxy
 async function loadChapters() {
   if (!selectedYear || !selectedSubject || !selectedTeacher) return;
 
   try {
-    const res = await fetch(`/api/chapters?yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`);
+    const res = await fetch(`/api/proxy?type=chapters&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`);
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
     const chapters = await res.json();
@@ -217,14 +218,16 @@ async function loadChapters() {
       return;
     }
 
-    // عرض الأبواب بدون عدد الفيديوهات
-    chapters.forEach((chapter) => {
+    // عرض الفصول مع تخزين الفصل المحدد عند الضغط
+    chapters.forEach(chapter => {
       const li = document.createElement("li");
       li.textContent = chapter.name;
+
       li.onclick = () => {
         localStorage.setItem('selected_chapter', JSON.stringify({ id: chapter.id, name: chapter.name }));
         window.location.href = 'lecture_name.html';
       };
+
       chaptersList.appendChild(li);
     });
 
@@ -234,6 +237,7 @@ async function loadChapters() {
   }
 }
 
+// تنفيذ تحميل الفصول مباشرة عند فتح الصفحة
 loadChapters();
 
 // 🌙 الوضع الليلي والإشعارات
@@ -250,7 +254,7 @@ darkToggle?.addEventListener('click', () => {
   document.body.classList.toggle("light-mode");
   darkToggle.classList.toggle("active");
 });
-  </script>
+</script>
 
 </body>
 </html>
