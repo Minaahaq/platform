@@ -126,7 +126,7 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
 
-   <script type="module">
+<script type="module">
 const lecturesList = document.getElementById("lectures-list");
 const backBtn = document.getElementById("backBtn");
 
@@ -136,6 +136,7 @@ const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
 
+// التحقق من وجود كل البيانات
 if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) {
   lecturesList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس أو الفصل.</li>';
 }
@@ -145,15 +146,15 @@ backBtn.onclick = () => {
   window.location.href = 'chapters.html';
 };
 
-// تحميل المحاضرات من API
+// تحميل المحاضرات من API عبر Proxy
 async function loadLectures() {
   if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) return;
 
   try {
-    const res = await fetch(`/api/lectures?yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`);
+    const res = await fetch(`/api/proxy?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`);
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
-    const lectures = await res.json(); // الآن المحاضرات مباشرة
+    const lectures = await res.json(); // المحاضرات
 
     lecturesList.innerHTML = "";
 
@@ -162,7 +163,7 @@ async function loadLectures() {
       return;
     }
 
-    // عرض أسماء المحاضرات مع عدد الفيديوهات
+    // عرض المحاضرات مع عدد الفيديوهات
     lectures.forEach(lec => {
       const li = document.createElement("li");
 
@@ -190,7 +191,10 @@ async function loadLectures() {
     lecturesList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
   }
 }
+
+// تنفيذ التحميل مباشرة
 loadLectures();
-    </script>
+</script>
+
 </body>
 </html>
