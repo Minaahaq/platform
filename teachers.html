@@ -218,10 +218,6 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
-<script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
-
-  <script src="check_code.js"></script>
-
 
   
 <script type="module">
@@ -254,15 +250,28 @@ async function loadTeachers(yearId, subjectId) {
   try {
     if (!yearId || !subjectId) return;
 
-    // جلب المدرسين من API عبر Proxy
-    const res = await fetch(`/api/proxy?type=teachers&yearId=${yearId}&subjectId=${subjectId}`);
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
+
+    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
+    const res = await fetch(
+      `/api/proxy?type=teachers&yearId=${yearId}&subjectId=${subjectId}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
     if (!res.ok) throw new Error("Failed to fetch teachers");
+
     const teachers = await res.json();
 
     if (!teachers?.length) {
       teachersList.innerHTML = '<li>لا يوجد مدرسون لهذه المادة.</li>';
       return;
-    }
+  }
 
     teachersList.innerHTML = '';
 
