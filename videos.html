@@ -160,24 +160,44 @@
       window.location.href = 'lecture_name.html';
     };
 
-    async function loadVideos() {
-      if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter || !selectedLecture) {
-        videosContainer.innerHTML = "<p>⚠️ لم يتم تحديد البيانات المطلوبة.</p>";
-        return;
-      }
+   async function loadVideos() {
+  if (
+    !selectedYear ||
+    !selectedSubject ||
+    !selectedTeacher ||
+    !selectedChapter ||
+    !selectedLecture
+  ) {
+    videosContainer.innerHTML = "<p>⚠️ لم يتم تحديد البيانات المطلوبة.</p>";
+    return;
+  }
 
-       try {
-    // جلب الفيديوهات من API عبر Proxy
-    const res = await fetch(`/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`);
+  try {
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
+
+    // 2️⃣ طلب الفيديوهات عبر البروكسي
+    const res = await fetch(
+      `/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
     const data = await res.json();
-        videosContainer.innerHTML = "";
+    videosContainer.innerHTML = "";
 
-        if (!data.videos || data.videos.length === 0) {
-          videosContainer.innerHTML = "<p>⚠️ لا توجد فيديوهات لهذه المحاضرة.</p>";
-          return;
-        }
+    // لا توجد فيديوهات
+    if (!data.videos || data.videos.length === 0) {
+      videosContainer.innerHTML =
+        "<p>⚠️ لا توجد فيديوهات لهذه المحاضرة.</p>";
+      return;
+    }
 
         // عرض الفيديوهات
         data.videos.forEach((video, index) => {
