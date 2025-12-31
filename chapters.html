@@ -188,23 +188,21 @@
 const chaptersList = document.getElementById("chapters-list");
 const backBtn = document.getElementById("backBtn");
 
-// جلب السنة والمادة والمدرس من localStorage
+// جلب السنة والمادة والمدرس
 const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 
-// التحقق من وجود البيانات
 if (!selectedYear || !selectedSubject || !selectedTeacher) {
   chaptersList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس.</li>';
 }
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = 'teachers.html';
+  window.location.href = "teachers.html";
 };
 
-// تحميل الفصول (Chapters) من API عبر Proxy
-async function loadChapters() {
+// تحميل الفصول عبر البروكسي
 async function loadChapters() {
   if (!selectedYear || !selectedSubject || !selectedTeacher) return;
 
@@ -213,13 +211,11 @@ async function loadChapters() {
     const tokenRes = await fetch("/api/get-token");
     const { token } = await tokenRes.json();
 
-    // 2️⃣ الطلب المحمي عبر Proxy (نفس نظام السنين)
+    // 2️⃣ الطلب المحمي
     const res = await fetch(
       `/api/proxy?type=chapters&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`,
       {
-        headers: {
-          "x-client-token": token
-        }
+        headers: { "x-client-token": token }
       }
     );
 
@@ -228,31 +224,35 @@ async function loadChapters() {
     const chapters = await res.json();
     chaptersList.innerHTML = "";
 
+    // لا توجد فصول
     if (chapters.length === 0) {
-      chaptersList.innerHTML = '<li>⚠️ لا يوجد أبواب لهذا المدرس.</li>';
+      chaptersList.innerHTML = "<li>⚠️ لا يوجد أبواب لهذا المدرس.</li>";
       return;
-  }
+    }
 
-    // عرض الفصول مع تخزين الفصل المحدد عند الضغط
+    // عرض الفصول
     chapters.forEach(chapter => {
       const li = document.createElement("li");
       li.textContent = chapter.name;
 
       li.onclick = () => {
-        localStorage.setItem('selected_chapter', JSON.stringify({ id: chapter.id, name: chapter.name }));
-        window.location.href = 'lecture_name.html';
+        localStorage.setItem(
+          "selected_chapter",
+          JSON.stringify({ id: chapter.id, name: chapter.name })
+        );
+        window.location.href = "lecture_name.html";
       };
 
       chaptersList.appendChild(li);
     });
 
   } catch (err) {
-    console.error("❌ خطأ أثناء جلب البيانات من API:", err);
+    console.error("❌ خطأ أثناء جلب البيانات:", err);
     chaptersList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
   }
 }
 
-// تنفيذ تحميل الفصول مباشرة عند فتح الصفحة
+// تشغيل الدالة
 loadChapters();
 
 // 🌙 الوضع الليلي والإشعارات
@@ -260,15 +260,16 @@ const toast = document.getElementById("toast");
 const notifyBtn = document.getElementById("notifyBtn");
 const darkToggle = document.getElementById("darkToggle");
 
-notifyBtn?.addEventListener('click', () => {
+notifyBtn?.addEventListener("click", () => {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
 });
 
-darkToggle?.addEventListener('click', () => {
+darkToggle?.addEventListener("click", () => {
   document.body.classList.toggle("light-mode");
   darkToggle.classList.toggle("active");
 });
 </script>
+
 </body>
 </html>
