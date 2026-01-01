@@ -90,11 +90,11 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(url, {
-      headers: {
-        "x-api-key": process.env.API_KEY,
-        "User-Agent": "Secure-Proxy/1.0"
-      }
-    });
+  headers: {
+    "User-Agent": "FullMarkApp/1.0 (Android)",
+    "x-app-key": process.env.APP_KEY
+  }
+});
 
     if (!response.ok) {
       return res.status(502).json({ error: "UPSTREAM_ERROR" });
