@@ -1,210 +1,237 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>السنوات الدراسية | THE BEST</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #0f0f0f;
-  --card: #1a1a1a;
-  --accent: #ffd700;
-  --muted: #999;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Cairo', sans-serif;
-  background: var(--bg);
-  color: #fff;
-  padding-top: 75px;
-}
-
-/* ===== Top Bar ===== */
-.topbar {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 60px;
-  background: rgba(15,15,15,.95);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--accent);
-  z-index: 1000;
-  border-bottom: 1px solid #222;
-}
-
-/* ===== Title ===== */
-h1 {
-  text-align: center;
-  margin: 30px 0 45px;
-  font-size: 2.2rem;
-}
-
-/* ===== Grid ===== */
-.grid {
-  max-width: 1100px;
-  margin: auto;
-  padding: 0 16px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 28px;
-}
-
-/* ===== Card ===== */
-.card {
-  background: var(--card);
-  border-radius: 18px;
-  padding: 28px 20px 32px;
-  text-align: center;
-  cursor: pointer;
-  transition: .35s ease;
-  border: 1px solid #222;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  background: var(--accent);
-  color: #000;
-}
-
-/* ===== Image ===== */
-.icon {
-  width: 110px;
-  height: 110px;
-  margin: auto;
-  border-radius: 50%;
-  background: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.icon img {
-  width: 75%;
-  height: 75%;
-  object-fit: contain;
-}
-
-/* ===== Text ===== */
-.year-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.year-meta {
-  margin-top: 8px;
-  font-size: .95rem;
-  color: var(--muted);
-}
-
-/* ===== Skeleton ===== */
-.skeleton {
-  animation: pulse 1.5s infinite;
-}
-
-.skeleton .icon,
-.skeleton .year-name,
-.skeleton .year-meta {
-  background: #222;
-  color: transparent;
-  border-radius: 8px;
-}
-
-.skeleton .icon {
-  height: 110px;
-}
-
-@keyframes pulse {
-  0% {opacity: .6}
-  50% {opacity: 1}
-  100% {opacity: .6}
-}
-</style>
-</head>
-
-<body>
-
-<div class="topbar">السنوات الدراسية</div>
-
-<h1>اختر السنة</h1>
-
-<div class="grid" id="grid">
-  <!-- Skeleton -->
-  <div class="card skeleton">
-    <div class="icon"></div>
-    <div class="year-name">----</div>
-    <div class="year-meta">----</div>
-  </div>
-  <div class="card skeleton">
-    <div class="icon"></div>
-    <div class="year-name">----</div>
-    <div class="year-meta">----</div>
-  </div>
-</div>
-
-     
-<script>
-const grid = document.getElementById("grid");
-
-async function fetchProtectedData() {
-  const tokenRes = await fetch("/api/get-token");
-  const { token } = await tokenRes.json();
-
-  const res = await fetch("/api/proxy1?type=years", {
-    headers: {
-      "x-client-token": token
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الفيديوهات - منصة THE BEST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      margin: 0;
+      padding: 15px;
     }
-  });
 
-  return res.json();
-}
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-async function loadYears() {
+    header h1 {
+      color: #ffd700;
+      font-size: 1.6rem;
+      margin: 0;
+      font-weight: 900;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    #back {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1.5px solid #ffd700;
+      color: #ffd700;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
+      margin-left: 5px;
+    }
+
+    #back:hover {
+      background: rgba(255, 215, 0, 0.2);
+      transform: translateY(-1px);
+    }
+
+    #videos-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .video-box {
+      background: #1a1a1a;
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      border-radius: 12px;
+      padding: 12px;
+      transition: 0.3s;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255,215,0,0.05);
+    }
+
+    .video-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 18px rgba(255,215,0,0.25);
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffd700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .thumb {
+      background: #000;
+      border-radius: 10px;
+      height: 160px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thumb::after {
+      content: "▶";
+      position: absolute;
+      font-size: 40px;
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .thumb:hover::after {
+      transform: scale(1.1);
+    }
+
+    .loading, .error {
+      text-align: center;
+      color: #ffd700;
+      font-size: 17px;
+      padding: 20px;
+    }
+
+    footer {
+      text-align: center;
+      color: #888;
+      margin-top: 35px;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 215, 0, 0.1);
+      padding-top: 15px;
+    }
+
+    footer span {
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="back">⬅ رجوع</button>
+    <h1>🎬VEDIO</h1>
+    <div style="width:35px;"></div>
+  </header>
+
+  <main>
+    <div id="videos-container">
+      <div class="loading">⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</div>
+    </div>
+  </main>
+
+  <footer>
+    © جميع الحقوق محفوظة لمنصة <span>THE BEST</span> 🔥
+  </footer>
+
+   <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
+
+  <script src="check_code.js"></script>
+
+
+  <script type="module">
+    const videosContainer = document.getElementById("videos-container");
+    const backBtn = document.getElementById("back");
+
+    const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
+    const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
+    const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
+    const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
+    const selectedLecture = JSON.parse(localStorage.getItem("selected_lecture"));
+
+    backBtn.onclick = () => {
+      window.location.href = 'lecture_name-e.html';
+    };
+
+   async function loadVideos() {
+  if (
+    !selectedYear ||
+    !selectedSubject ||
+    !selectedTeacher ||
+    !selectedChapter ||
+    !selectedLecture
+  ) {
+    videosContainer.innerHTML = "<p>⚠️ لم يتم تحديد البيانات المطلوبة.</p>";
+    return;
+  }
+
   try {
-    grid.innerHTML = "";
-    const data = await fetchProtectedData();
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
 
-    if (!Array.isArray(data)) {
-      console.error("Unexpected response:", data);
-      grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
+    // 2️⃣ طلب الفيديوهات عبر البروكسي
+    const res = await fetch(
+      `/api/proxy1?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
+    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
+
+    const data = await res.json();
+    videosContainer.innerHTML = "";
+
+    // لا توجد فيديوهات
+    if (!data.videos || data.videos.length === 0) {
+      videosContainer.innerHTML =
+        "<p>⚠️ لا توجد فيديوهات لهذه المحاضرة.</p>";
       return;
     }
 
-    data.forEach(year => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <div class="icon">
-          <img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}">
-        </div>
-        <div class="year-name">${year.name}</div>
-        <div class="year-meta">${year.subjects_count} مادة</div>
-      `;
-      card.onclick = () => {
-        localStorage.setItem("selected_year", JSON.stringify(year));
-        location.href = "subjects.html";
-      };
-      grid.appendChild(card);
-    });
+        // عرض الفيديوهات
+        data.videos.forEach((video, index) => {
+          const div = document.createElement("div");
+          div.className = "video-box";
 
-  } catch(err) {
-    grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
-    console.error(err);
-  }
-}
-  
-loadYears();
-</script>
+          const title = document.createElement("div");
+          title.className = "video-title";
+          title.textContent = `فيديو ${index + 1}: ${video.title || "بدون اسم"}`;
+
+          const thumb = document.createElement("div");
+          thumb.className = "thumb";
+          thumb.onclick = () => {
+            if (!video.stream_url) {
+              alert("⚠️ لا يوجد رابط لهذا الفيديو");
+              return;
+            }
+            localStorage.setItem("video_sources", JSON.stringify([{ src: video.stream_url, type: "application/x-mpegURL" }]));
+            localStorage.setItem("video_title", video.title || `فيديو`);
+            window.location.href = 'player.html';
+          };
+
+          div.appendChild(title);
+          div.appendChild(thumb);
+          videosContainer.appendChild(div);
+        });
+
+      } catch (err) {
+        console.error(err);
+        videosContainer.innerHTML = "<p>❌ حدث خطأ أثناء تحميل الفيديوهات.</p>";
+      }
+    }
+
+    loadVideos();
+  </script>
 </body>
 </html>

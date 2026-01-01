@@ -198,7 +198,7 @@
 
   <!-- ✅ الشريط العلوي -->
   <div class="topbar">
-    <div class="menu-btn" onclick="window.location.href='subjects-a.html'">⬅</div>
+    <div class="menu-btn" onclick="window.location.href='subjects-e.html'">⬅</div>
     <div class="title">𝑺𝒖𝒃𝒋𝒆𝒄𝒕 𝑻𝒆𝒂𝒄𝒉𝒆𝒓𝒔</div>
     <div class="icons">
       <div class="toggle-dark" id="darkToggle"></div>
@@ -218,11 +218,7 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
-
-   <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
-
-  <script src="check_code.js"></script>
-
+  
 <script type="module">
 const teachersList = document.getElementById('teachers-list');
 
@@ -240,66 +236,74 @@ const subjectImages = {
 
 // جلب المادة المختارة من LocalStorage
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
-if (!selectedSubject) {
-  teachersList.innerHTML = '<li>⚠️ لم يتم اختيار مادة</li>';
+const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
+
+if (!selectedSubject || !selectedYear) {
+  teachersList.innerHTML = '<li>⚠️ لم يتم اختيار السنة أو المادة</li>';
 } else {
-  loadTeachers();
+  loadTeachers(selectedYear.id, selectedSubject.id);
 }
 
 // تحميل المدرسين
-async function loadTeachers() {
+async function loadTeachers(yearId, subjectId) {
   try {
-    const res = await fetch('./organized_output-e.json'); // نفس ملف البيانات
-    const data = await res.json();
+    if (!yearId || !subjectId) return;
 
-    // جلب السنة المختارة
-    const selectedYear = JSON.parse(localStorage.getItem('selected_year'));
-    const year = data.find(y => y.id === selectedYear.id || y.name === selectedYear.name);
-    if (!year) return;
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
 
-    // البحث عن المادة
-    const subjectName = selectedSubject.name;
-    const sub = year.subjects.find(s => s.name === subjectName);
-    if (!sub || !sub.teachers?.length) {
+    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
+    const res = await fetch(
+      `/api/proxy1?type=teachers&yearId=${yearId}&subjectId=${subjectId}`,
+      {
+        headers: {
+          "x-client-token": token
+        }
+      }
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch teachers");
+
+    const teachers = await res.json();
+
+    if (!teachers?.length) {
       teachersList.innerHTML = '<li>لا يوجد مدرسون لهذه المادة.</li>';
       return;
-    }
+  }
 
     teachersList.innerHTML = '';
 
-    sub.teachers.forEach(teacher => {
+    teachers.forEach(teacher => {
       const li = document.createElement('li');
 
       // صورة المادة
       const subjectImg = document.createElement('img');
       subjectImg.className = 'subject-img';
-      subjectImg.src = selectedSubject.image_url || "https://img.icons8.com/fluency/300/book.png";
-      subjectImg.alt = subjectName;
+      subjectImg.src = selectedSubject.image_url || "https://www2.0zz0.com/2025/12/30/00/795134816.jpg";
+      subjectImg.alt = selectedSubject.name;
 
-      // صورة المدرس
+      // صورة المدرس داخل دائرة
       const circle = document.createElement('div');
       circle.className = 'teacher-circle';
       const teacherImg = document.createElement('img');
       teacherImg.src = teacher.image_url || "https://img.icons8.com/ios-filled/100/ffd700/user-male-circle.png";
       teacherImg.alt = teacher.name;
       circle.appendChild(teacherImg);
-// اسم المدرس
-const nameSpan = document.createElement('span');
-nameSpan.textContent = teacher.name;
 
-// عدد الفصول أسفل الاسم
-const chaptersCount = document.createElement('div');
-chaptersCount.style.fontSize = '0.85rem';
-chaptersCount.style.color = '#ffd700';
-chaptersCount.textContent = `${teacher.chapters?.length || 0} فصل`;
+      // اسم المدرس
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = teacher.name;
 
-li.appendChild(subjectImg);
-li.appendChild(circle);
-li.appendChild(nameSpan);
-li.appendChild(chaptersCount);
+      // عدد الفصول
+      const chaptersCount = document.createElement('div');
+      chaptersCount.style.fontSize = '0.85rem';
+      chaptersCount.style.color = '#ffd700';
+      chaptersCount.textContent = `${teacher.chapters_count || 0} Chapter`;
 
+      li.append(subjectImg, circle, nameSpan, chaptersCount);
 
-      // الانتقال لصفحة الفصول
+      // الضغط على المدرس يحفظه في LocalStorage وينتقل للفصول
       li.onclick = () => {
         localStorage.setItem('selected_teacher', JSON.stringify(teacher));
         window.location.href = 'chapters-e.html';

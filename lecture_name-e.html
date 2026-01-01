@@ -121,81 +121,63 @@
     <div class="title">𝑳𝒆𝒄𝒕𝒖𝒓𝒆𝒔</div>
   </div>
 
-  <h1>𝑳𝒆𝒄𝒕𝒖𝒓𝒆𝒔</h1>
+  <h1>𝑳𝒆𝒄𝒕𝒖𝒓𝒆 – 𝟐𝟎𝟐𝟔</h1>
   <ul id="lectures-list">
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
 
-   <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
-
-  <script src="check_code.js"></script>
-
-
+  
 <script type="module">
 const lecturesList = document.getElementById("lectures-list");
 const backBtn = document.getElementById("backBtn");
 
-// جلب المادة والمدرس والفصل من localStorage
+// جلب السنة والمادة والمدرس والفصل من localStorage
+const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
 
-if (!selectedSubject || !selectedTeacher || !selectedChapter) {
-  lecturesList.innerHTML = '<li>⚠️ لم يتم تحديد المادة أو المدرس أو الفصل.</li>';
+// التحقق من وجود كل البيانات
+if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) {
+  lecturesList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس أو الفصل.</li>';
 }
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = 'chapters-a.html';
+  window.location.href = 'chapters-e.html';
 };
 
-// دالة لتوحيد النصوص لتسهيل البحث
-function normalize(str) {
-  return (str || "")
-    .trim()
-    .replace(/[.\s]/g, "")
-    .replace(/[أإآا]/g, "ا")
-    .toLowerCase();
-}
-
+// تحميل المحاضرات من API عبر Proxy
 async function loadLectures() {
-  if (!selectedSubject || !selectedTeacher || !selectedChapter) return;
+  if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) return;
 
   try {
-    const res = await fetch("organized_output-e.json");
-    const data = await res.json();
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
 
-    const wantedSubject = normalize(selectedSubject.name);
-    const wantedTeacher = normalize(selectedTeacher.name);
-    const wantedChapter = normalize(selectedChapter.name);
-
-    let foundLectures = [];
-
-    (data || []).forEach(year => {
-      (year.subjects || []).forEach(sub => {
-        if (normalize(sub.name) === wantedSubject) {
-          (sub.teachers || []).forEach(t => {
-            if (normalize(t.name) === wantedTeacher) {
-              (t.chapters || []).forEach(ch => {
-                if (normalize(ch.name) === wantedChapter) {
-                  foundLectures = ch.lectures || [];
-                }
-              });
-            }
-          });
+    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
+    const res = await fetch(
+      `/api/proxy1?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`,
+      {
+        headers: {
+          "x-client-token": token
         }
-      });
-    });
+      }
+    );
 
+    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
+
+    const lectures = await res.json(); // المحاضرات
     lecturesList.innerHTML = "";
 
-    if (foundLectures.length === 0) {
+    if (!lectures || lectures.length === 0) {
       lecturesList.innerHTML = "<li>⚠️ لا توجد محاضرات لهذا الفصل.</li>";
       return;
     }
 
-    // عرض المحاضرات مع عدد الفيديوهات لكل محاضرة
-    foundLectures.forEach(lec => {
+    // عرض المحاضرات مع عدد الفيديوهات
+    lectures.forEach(lec => {
       const li = document.createElement("li");
 
       const nameSpan = document.createElement("span");
@@ -204,13 +186,13 @@ async function loadLectures() {
       const videoCount = document.createElement("div");
       videoCount.style.fontSize = "0.85rem";
       videoCount.style.color = "#ffd700";
-      videoCount.textContent = `${lec.videos?.length || 0} فيديو`;
+      videoCount.textContent = `${lec.videos_count || 0} فيديو`;
 
       li.appendChild(nameSpan);
       li.appendChild(videoCount);
 
       li.onclick = () => {
-        localStorage.setItem('selected_lecture', JSON.stringify({ name: lec.name }));
+        localStorage.setItem('selected_lecture', JSON.stringify({ id: lec.id, name: lec.name }));
         window.location.href = 'videos-e.html';
       };
 
@@ -218,11 +200,12 @@ async function loadLectures() {
     });
 
   } catch (err) {
-    console.error("❌ خطأ أثناء تحميل البيانات:", err);
+    console.error("❌ خطأ أثناء جلب البيانات من API:", err);
     lecturesList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
   }
 }
 
+// تنفيذ التحميل مباشرة
 loadLectures();
 </script>
 
