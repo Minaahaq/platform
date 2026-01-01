@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     !ua.includes("wv") &&
     !ua.includes("WebView")
   ) {
-    return res.status(403).json({ error: "APP_ONLY" });
+    return res.status(403).json({ error: "No_TOKEN" });
   }
   /* =====================
      🔒 BASIC SECURITY
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
   ===================== */
 
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
-  const BASE_URL = "https://platform-sigma-seven.vercel.app";
+  const BASE_URL = "https://plus-teal.vercel.app";
 
   let url = "";
   if (type === "years") url = `${BASE_URL}/api/years`;
@@ -116,4 +116,4 @@ export default async function handler(req, res) {
     console.error("Proxy Error:", err.message);
     res.status(500).json({ error: "SERVER_ERROR" });
   }
-      }
+}
