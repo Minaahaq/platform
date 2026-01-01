@@ -7,6 +7,16 @@ const activeTokens = {}; // لتخزين IP لكل توكن
 export default async function handler(req, res) {
 
   /* =====================
+     🔒 APP ONLY CHECK
+  ===================== */
+  const ua = req.headers["user-agent"] || "";
+
+  if (!ua.includes("FullMarkApp")) {
+    return res.status(403).json({ error: "APP_ONLY" });
+  }
+
+  // ⬇️ بعد كده يكمل كودك الطبيعي
+  /* =====================
      🔒 BASIC SECURITY
   ===================== */
 
