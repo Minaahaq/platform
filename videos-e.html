@@ -122,72 +122,8 @@
     footer span {
       color: #ffd700;
     }
-
-    /* ✅ نافذة اختيار الجودات */
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      display: none;
-    }
-
-    .popup-content {
-      background: #1a1a1a;
-      border: 2px solid #ffd700;
-      border-radius: 14px;
-      padding: 20px;
-      text-align: center;
-      width: 300px;
-      box-shadow: 0 0 20px rgba(255,215,0,0.2);
-    }
-
-    .popup-content h3 {
-      color: #ffd700;
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
-
-    .quality-btn {
-      display: block;
-      background: #ffd700;
-      color: #000;
-      border: none;
-      padding: 10px 15px;
-      margin: 8px auto;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-      width: 80%;
-    }
-
-    .quality-btn:hover {
-      background: #e6c200;
-      transform: translateY(-2px);
-    }
-
-    .cancel-btn {
-      margin-top: 10px;
-      background: none;
-      border: 1px solid #ffd700;
-      color: #ffd700;
-      padding: 8px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .cancel-btn:hover {
-      background: rgba(255,215,0,0.1);
-    }
   </style>
 </head>
-
 <body>
   <header>
     <button id="back">⬅ رجوع</button>
@@ -205,126 +141,97 @@
     © جميع الحقوق محفوظة لمنصة <span>THE BEST</span> 🔥
   </footer>
 
-  <!-- ✅ نافذة اختيار الجوده -->
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <h3>اختر الجودة 🎥</h3>
-      <div id="quality-options"></div>
-      <button class="cancel-btn" onclick="closePopup()">إلغاء</button>
-    </div>
-  </div>
-
- <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
+   <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
 
   <script src="check_code.js"></script>
-  
 
-<script type="module">
-const videosContainer = document.getElementById("videos-container");
-const backBtn = document.getElementById("back");
 
-// جلب البيانات من localStorage
-const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
-const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
-const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
-const selectedLecture = JSON.parse(localStorage.getItem("selected_lecture"));
+  <script type="module">
+    const videosContainer = document.getElementById("videos-container");
+    const backBtn = document.getElementById("back");
 
-// زر العودة
-backBtn.onclick = () => {
-  window.location.href = 'lecture_name-a.html';
-};
+    const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
+    const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
+    const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
+    const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
+    const selectedLecture = JSON.parse(localStorage.getItem("selected_lecture"));
 
-function normalize(str) {
-  return (str || "").trim().replace(/[\s.\-ـ_]/g, "").toLowerCase();
-}
+    backBtn.onclick = () => {
+      window.location.href = 'lecture_name-e.html';
+    };
 
-async function loadVideos() {
-  if (!selectedSubject || !selectedTeacher || !selectedChapter || !selectedLecture) {
-    videosContainer.innerHTML = "<p>⚠️ لم يتم تحديد المادة أو المدرس أو الفصل أو المحاضرة.</p>";
+   async function loadVideos() {
+  if (
+    !selectedYear ||
+    !selectedSubject ||
+    !selectedTeacher ||
+    !selectedChapter ||
+    !selectedLecture
+  ) {
+    videosContainer.innerHTML = "<p>⚠️ لم يتم تحديد البيانات المطلوبة.</p>";
     return;
   }
 
   try {
-    const res = await fetch("organized_output-e.json");
-    const data = await res.json();
+    // 1️⃣ جلب التوكن
+    const tokenRes = await fetch("/api/get-token");
+    const { token } = await tokenRes.json();
 
-    const wantedSubject = normalize(selectedSubject.name);
-    const wantedTeacher = normalize(selectedTeacher.name);
-    const wantedChapter = normalize(selectedChapter.name);
-    const wantedLecture = normalize(selectedLecture.name);
-
-    let foundLecture = null;
-
-    (data || []).forEach(year => {
-      (year.subjects || []).forEach(sub => {
-        if (normalize(sub.name) === wantedSubject) {
-          (sub.teachers || []).forEach(t => {
-            if (normalize(t.name) === wantedTeacher) {
-              (t.chapters || []).forEach(ch => {
-                if (normalize(ch.name) === wantedChapter) {
-                  (ch.lectures || []).forEach(lec => {
-                    if (normalize(lec.name) === wantedLecture) {
-                      foundLecture = lec;
-                    }
-                  });
-                }
-              });
-            }
-          });
+    // 2️⃣ طلب الفيديوهات عبر البروكسي
+    const res = await fetch(
+      `/api/proxy1?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`,
+      {
+        headers: {
+          "x-client-token": token
         }
-      });
-    });
+      }
+    );
 
-    if (!foundLecture || !foundLecture.videos?.length) {
-      videosContainer.innerHTML = "<p>⚠️ لا توجد فيديوهات لهذه المحاضرة.</p>";
+    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
+
+    const data = await res.json();
+    videosContainer.innerHTML = "";
+
+    // لا توجد فيديوهات
+    if (!data.videos || data.videos.length === 0) {
+      videosContainer.innerHTML =
+        "<p>⚠️ لا توجد فيديوهات لهذه المحاضرة.</p>";
       return;
     }
 
-    // عرض الفيديوهات مباشرة بدون popup
-    foundLecture.videos.forEach((video, index) => {
-      const div = document.createElement("div");
-      div.className = "video-box";
+        // عرض الفيديوهات
+        data.videos.forEach((video, index) => {
+          const div = document.createElement("div");
+          div.className = "video-box";
 
-      const title = document.createElement("div");
-      title.className = "video-title";
-      title.textContent = `فيديو ${index + 1}: ${video.title || "بدون اسم"}`;
+          const title = document.createElement("div");
+          title.className = "video-title";
+          title.textContent = `فيديو ${index + 1}: ${video.title || "بدون اسم"}`;
 
-      const thumb = document.createElement("div");
-      thumb.className = "thumb";
-     thumb.onclick = () => {
-  // جلب رابط الفيديو من stream_url
-  const videoLink = video.stream_url;
-  if (!videoLink) {
-    alert("⚠️ لا يوجد رابط لهذا الفيديو");
-    return;
-  }
-  
-  // تخزين الرابط والشكل المطلوب للمشغل
-  localStorage.setItem("video_sources", JSON.stringify([
-    { src: videoLink, type: "application/x-mpegURL" }
-  ]));
-  localStorage.setItem("video_title", video.title || `فيديو`);
+          const thumb = document.createElement("div");
+          thumb.className = "thumb";
+          thumb.onclick = () => {
+            if (!video.stream_url) {
+              alert("⚠️ لا يوجد رابط لهذا الفيديو");
+              return;
+            }
+            localStorage.setItem("video_sources", JSON.stringify([{ src: video.stream_url, type: "application/x-mpegURL" }]));
+            localStorage.setItem("video_title", video.title || `فيديو`);
+            window.location.href = 'player.html';
+          };
 
-  // الانتقال مباشرة إلى صفحة المشغل
-  window.location.href = 'player.html';
-};
+          div.appendChild(title);
+          div.appendChild(thumb);
+          videosContainer.appendChild(div);
+        });
 
+      } catch (err) {
+        console.error(err);
+        videosContainer.innerHTML = "<p>❌ حدث خطأ أثناء تحميل الفيديوهات.</p>";
+      }
+    }
 
-
-
-      div.appendChild(title);
-      div.appendChild(thumb);
-      videosContainer.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error(err);
-    videosContainer.innerHTML = "<p>❌ حدث خطأ أثناء تحميل الفيديوهات.</p>";
-  }
-}
-
-loadVideos();
-</script>
-
+    loadVideos();
+  </script>
 </body>
 </html>
