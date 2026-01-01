@@ -2,6 +2,15 @@ import fs from "fs/promises";
 import path from "path";
 
 export default async function handler(req, res) {
+  // 🔒 APP ONLY CHECK
+  const ua = req.headers["user-agent"] || "";
+  if (
+    !ua.includes("AppCreator24") &&
+    !ua.includes("wv") &&
+    !ua.includes("WebView")
+  ) {
+    return res.status(403).json({ error: "APP_ONLY" });
+  }
   const yearId = req.query.yearId;
   if (!yearId) return res.status(400).json({ error: "yearId مطلوب" });
 
