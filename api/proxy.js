@@ -91,8 +91,9 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(url, {
       headers: {
-        "x-api-key": process.env.API_KEY,
-        "User-Agent": "Secure-Proxy/1.0"
+  "x-api-key": process.env.API_KEY,
+  "x-internal-secret": process.env.INTERNAL_SECRET,
+  "User-Agent": "Secure-Proxy/1.0"
       }
     });
 
