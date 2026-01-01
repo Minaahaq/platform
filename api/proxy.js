@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 
-// Rate limit بسيط
 const rateLimit = new Map();
-const activeTokens = {}; // لتخزين IP لكل توكن
+const activeTokens = {};
 
 export default async function handler(req, res) {
 
@@ -10,82 +9,66 @@ export default async function handler(req, res) {
      🔒 APP ONLY CHECK
   ===================== */
   const ua = req.headers["user-agent"] || "";
-
-  if (!ua.includes("FullMarkApp")) {
+  if (
+    !ua.includes("AppCreator24") &&
+    !ua.includes("wv") &&
+    !ua.includes("WebView")
+  ) {
     return res.status(403).json({ error: "APP_ONLY" });
   }
 
-  // ⬇️ بعد كده يكمل كودك الطبيعي
   /* =====================
-     🔒 BASIC SECURITY
+     🔒 METHOD
   ===================== */
-
-  // السماح بـ GET فقط
   if (req.method !== "GET") {
     return res.status(405).json({ error: "NOT_ALLOWED" });
   }
 
-  // فحص Dynamic Token
+  /* =====================
+     🔒 DYNAMIC TOKEN
+  ===================== */
   const token = req.headers["x-client-token"];
-  if (!token) {
-    return res.status(403).json({ error: "NO_TOKEN" });
-  }
+  if (!token) return res.status(403).json({ error: "NO_TOKEN" });
 
   let secret, expires;
   try {
     const decoded = Buffer.from(token, "base64").toString("utf8");
     [secret, expires] = decoded.split(":");
-
-    if (secret !== process.env.CLIENT_SECRET) {
+    if (secret !== process.env.CLIENT_SECRET)
       return res.status(403).json({ error: "INVALID_TOKEN" });
-    }
-
-    if (Date.now() > Number(expires)) {
+    if (Date.now() > Number(expires))
       return res.status(403).json({ error: "TOKEN_EXPIRED" });
-    }
-
   } catch {
     return res.status(403).json({ error: "BAD_TOKEN" });
   }
 
-  // =====================
-  // 🔐 ربط التوكن بالـ IP
-  const ip =
-    req.headers["x-forwarded-for"] ||
-    req.socket.remoteAddress ||
-    "unknown";
+  /* =====================
+     🔐 IP BINDING
+  ===================== */
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown";
+  if (!activeTokens[token]) activeTokens[token] = ip;
+  if (activeTokens[token] !== ip) return res.status(403).json({ error: "IP_MISMATCH" });
 
-  if (!activeTokens[token]) {
-    activeTokens[token] = ip; // لأول مرة نسجل الـ IP
-  }
-
-  if (activeTokens[token] !== ip) {
-    return res.status(403).json({ error: "IP_MISMATCH" });
-  }
-
-  // Rate limit (20 طلب / 10 ثواني)
+  /* =====================
+     ⚡ RATE LIMIT
+  ===================== */
   const now = Date.now();
-  const windowMs = 10 * 1000;
+  const windowMs = 10_000;
   const maxReq = 20;
-
   const user = rateLimit.get(ip) || { count: 0, time: now };
 
   if (now - user.time < windowMs) {
     user.count++;
-    if (user.count > maxReq) {
-      return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
-    }
+    if (user.count > maxReq) return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
   } else {
     user.count = 1;
     user.time = now;
   }
-
   rateLimit.set(ip, user);
 
   /* =====================
-     📦 ORIGINAL CODE
+     📦 PROXY FETCH
   ===================== */
-
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
   const BASE_URL = "https://platform-sigma-seven.vercel.app";
 
@@ -100,22 +83,19 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(url, {
-  headers: {
-    "User-Agent": "FullMarkApp/1.0 (Android)",
-    "x-app-key": process.env.APP_KEY
-  }
-});
+      headers: {
+        "User-Agent": "FullMarkApp/1.0 (Android)"
+      }
+    });
 
-    if (!response.ok) {
-      return res.status(502).json({ error: "UPSTREAM_ERROR" });
-    }
+    if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
 
     const data = await response.json();
     res.setHeader("Cache-Control", "no-store");
     res.status(200).json(data);
 
   } catch (err) {
-    console.error("Proxy Error:", err.message);
+    console.error("Proxy Error:", err);
     res.status(500).json({ error: "SERVER_ERROR" });
   }
-      }
+}
