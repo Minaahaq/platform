@@ -85,7 +85,7 @@ export default async function handler(req, res) {
   ===================== */
 
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
-  const BASE_URL = "https://plus-teal.vercel.app";
+  const BASE_URL = "https://platform-sigma-seven.vercel.app/";
 
   let url = "";
   if (type === "years") url = `${BASE_URL}/api/years`;
