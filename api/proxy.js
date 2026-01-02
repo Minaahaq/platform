@@ -48,6 +48,18 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "FAKE_CLIENT" });
   }
 
+/* =====================
+     📱 3) APP CREATOR ONLY
+  ===================== */
+  const isAppCreator =
+    ua.includes("AppCreator") ||
+    ua.includes("WebView") ||
+    ua.includes("wv");
+
+  if (!isAppCreator) {
+    return res.status(403).json({ error: "APP_ONLY" });
+  }
+   
   /* =====================
      🔒 SITE ONLY (الأهم)
   ===================== */
