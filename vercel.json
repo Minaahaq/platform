@@ -2,7 +2,13 @@
   "routes": [
     {
       "src": "/data/.*",
-      "dest": "api/no-access"
+      "dest": "/api/no-access"
+    },
+    {
+      "src": "^/api/.*",
+      "headers": {
+        "Cache-Control": "no-store"
+      }
     }
   ]
 }
