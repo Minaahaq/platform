@@ -1,74 +1,35 @@
 import fetch from "node-fetch";
 
-/* =====================
-   🔐 SETTINGS
-===================== */
-
-// 👇 غيرهم بدوميناتك
-const ALLOWED_SITES = [
-  "https://plus-teal.vercel.app",
-  "https://platform-sigma-seven.vercel.app"
-];
-
-// Rate limit
+// Rate limit بسيط
 const rateLimit = new Map();
-const activeTokens = {}; // token -> ip
-
-/* =====================
-   🚀 HANDLER
-===================== */
+const activeTokens = {}; // لتخزين IP لكل توكن
 
 export default async function handler(req, res) {
-
-  /* =====================
-     🔒 SITE ONLY CHECK
-  ===================== */
-
-  const origin = req.headers.origin || "";
-  const referer = req.headers.referer || "";
-
-  const siteAllowed = ALLOWED_SITES.some(site =>
-    origin.startsWith(site) || referer.startsWith(site)
-  );
-
-  if (!siteAllowed) {
-    return res.status(403).json({ error: "SITE_NOT_ALLOWED" });
-  }
-
-  /* =====================
-     🤖 BLOCK TOOLS
-  ===================== */
-
+  // 🔒 APP ONLY CHECK
   const ua = req.headers["user-agent"] || "";
-
   if (
-    !ua.includes("Mozilla") ||
-    ua.includes("Postman") ||
-    ua.includes("curl") ||
-    ua.includes("okhttp")
+    !ua.includes("AppCreator24") &&
+    !ua.includes("wv") &&
+    !ua.includes("WebView")
   ) {
-    return res.status(403).json({ error: "BOT_BLOCKED" });
+    return res.status(403).json({ error: "No_TOKEN" });
   }
-
   /* =====================
      🔒 BASIC SECURITY
   ===================== */
 
+  // السماح بـ GET فقط
   if (req.method !== "GET") {
     return res.status(405).json({ error: "NOT_ALLOWED" });
   }
 
-  /* =====================
-     🔑 TOKEN CHECK
-  ===================== */
-
+  // فحص Dynamic Token
   const token = req.headers["x-client-token"];
   if (!token) {
     return res.status(403).json({ error: "NO_TOKEN" });
   }
 
   let secret, expires;
-
   try {
     const decoded = Buffer.from(token, "base64").toString("utf8");
     [secret, expires] = decoded.split(":");
@@ -80,31 +41,27 @@ export default async function handler(req, res) {
     if (Date.now() > Number(expires)) {
       return res.status(403).json({ error: "TOKEN_EXPIRED" });
     }
+
   } catch {
     return res.status(403).json({ error: "BAD_TOKEN" });
   }
 
-  /* =====================
-     🔐 TOKEN ↔ IP BINDING
-  ===================== */
-
+  // =====================
+  // 🔐 ربط التوكن بالـ IP
   const ip =
     req.headers["x-forwarded-for"] ||
     req.socket.remoteAddress ||
     "unknown";
 
   if (!activeTokens[token]) {
-    activeTokens[token] = ip;
+    activeTokens[token] = ip; // لأول مرة نسجل الـ IP
   }
 
   if (activeTokens[token] !== ip) {
     return res.status(403).json({ error: "IP_MISMATCH" });
   }
 
-  /* =====================
-     ⏱️ RATE LIMIT
-  ===================== */
-
+  // Rate limit (20 طلب / 10 ثواني)
   const now = Date.now();
   const windowMs = 10 * 1000;
   const maxReq = 20;
@@ -124,37 +81,20 @@ export default async function handler(req, res) {
   rateLimit.set(ip, user);
 
   /* =====================
-     📦 PROXY LOGIC
+     📦 ORIGINAL CODE
   ===================== */
 
-  const {
-    type,
-    yearId,
-    subjectId,
-    teacherId,
-    chapterId,
-    lectureId
-  } = req.query;
-
-  const BASE_URL = "https://platform-sigma-seven.vercel.app";
+  const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
+  const BASE_URL = "https://platform-sigma-seven.vercel.app/";
 
   let url = "";
-
-  if (type === "years") {
-    url = `${BASE_URL}/api/years`;
-  } else if (type === "subjects") {
-    url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
-  } else if (type === "teachers") {
-    url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
-  } else if (type === "chapters") {
-    url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
-  } else if (type === "lectures") {
-    url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
-  } else if (type === "videos") {
-    url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
-  } else {
-    return res.status(400).json({ error: "INVALID_TYPE" });
-  }
+  if (type === "years") url = `${BASE_URL}/api/years`;
+  else if (type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
+  else if (type === "teachers") url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
+  else if (type === "chapters") url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
+  else if (type === "lectures") url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
+  else if (type === "videos") url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
+  else return res.status(400).json({ error: "INVALID_TYPE" });
 
   try {
     const response = await fetch(url, {
@@ -169,15 +109,11 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-
     res.setHeader("Cache-Control", "no-store");
-    res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("X-Frame-Options", "DENY");
-
-    return res.status(200).json(data);
+    res.status(200).json(data);
 
   } catch (err) {
     console.error("Proxy Error:", err.message);
-    return res.status(500).json({ error: "SERVER_ERROR" });
+    res.status(500).json({ error: "SERVER_ERROR" });
   }
 }
