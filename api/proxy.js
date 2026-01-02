@@ -12,11 +12,45 @@ const rateLimit = new Map();
 export default async function handler(req, res) {
 
   /* =====================
-     🔒 SITE ONLY (الأهم)
+     🛑 1) BLOCK CORS / PROXY
   ===================== */
+  const forbiddenProxies = [
+    "corsproxy",
+    "cors-anywhere",
+    "allorigins",
+    "thingproxy",
+    "proxy"
+  ];
+
   const origin = req.headers.origin || "";
   const referer = req.headers.referer || "";
 
+  if (
+    forbiddenProxies.some(p =>
+      origin.includes(p) || referer.includes(p)
+    )
+  ) {
+    return res.status(403).json({ error: "CORS_PROXY_BLOCKED" });
+  }
+
+  /* =====================
+     🤖 2) REAL BROWSER ONLY
+  ===================== */
+  const ua = req.headers["user-agent"] || "";
+
+  if (
+    !ua.includes("Mozilla") ||
+    ua.includes("node-fetch") ||
+    ua.includes("axios") ||
+    ua.includes("curl") ||
+    ua.includes("Postman")
+  ) {
+    return res.status(403).json({ error: "FAKE_CLIENT" });
+  }
+
+  /* =====================
+     🔒 SITE ONLY (الأهم)
+  ===================== */
   if (
     !origin.startsWith(ALLOWED_SITE) &&
     !referer.startsWith(ALLOWED_SITE)
@@ -112,4 +146,4 @@ export default async function handler(req, res) {
     console.error("Proxy Error:", err.message);
     return res.status(500).json({ error: "SERVER_ERROR" });
   }
-        }
+     }
