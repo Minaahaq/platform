@@ -1,69 +1,80 @@
 import fetch from "node-fetch";
 
-// Rate limit بسيط
+/* =====================
+   🔒 CONFIG
+===================== */
+const ALLOWED_SITE = "https://platform-sigma-seven.vercel.app"; // ← غيّرها
 const rateLimit = new Map();
-const activeTokens = {}; // لتخزين IP لكل توكن
 
+/* =====================
+   🚀 HANDLER
+===================== */
 export default async function handler(req, res) {
-  // 🔒 APP ONLY CHECK
-  const ua = req.headers["user-agent"] || "";
-  if (
-    !ua.includes("AppCreator24") &&
-    !ua.includes("wv") &&
-    !ua.includes("WebView")
-  ) {
-    return res.status(403).json({ error: "No_TOKEN" });
-  }
-  /* =====================
-     🔒 BASIC SECURITY
-  ===================== */
 
-  // السماح بـ GET فقط
+  /* =====================
+     🛑 1) BLOCK CORS / PROXY
+  ===================== */
+  const forbiddenProxies = [
+    "corsproxy",
+    "cors-anywhere",
+    "allorigins",
+    "thingproxy",
+    "proxy"
+  ];
+
+  const origin = req.headers.origin || "";
+  const referer = req.headers.referer || "";
+
+  if (
+    forbiddenProxies.some(p =>
+      origin.includes(p) || referer.includes(p)
+    )
+  ) {
+    return res.status(403).json({ error: "CORS_PROXY_BLOCKED" });
+  }
+
+  /* =====================
+     🤖 2) REAL BROWSER ONLY
+  ===================== */
+  const ua = req.headers["user-agent"] || "";
+
+  if (
+    !ua.includes("Mozilla") ||
+    ua.includes("node-fetch") ||
+    ua.includes("axios") ||
+    ua.includes("curl") ||
+    ua.includes("Postman")
+  ) {
+    return res.status(403).json({ error: "FAKE_CLIENT" });
+  }
+
+  /* =====================
+     🔒 SITE ONLY (الأهم)
+  ===================== */
+  if (
+    !origin.startsWith(ALLOWED_SITE) &&
+    !referer.startsWith(ALLOWED_SITE)
+  ) {
+    return res.status(403).json({ error: "SITE_ONLY" });
+  }
+
+  /* =====================
+     🔒 METHOD CHECK
+  ===================== */
   if (req.method !== "GET") {
     return res.status(405).json({ error: "NOT_ALLOWED" });
   }
 
-  // فحص Dynamic Token
-  const token = req.headers["x-client-token"];
-  if (!token) {
-    return res.status(403).json({ error: "NO_TOKEN" });
-  }
-
-  let secret, expires;
-  try {
-    const decoded = Buffer.from(token, "base64").toString("utf8");
-    [secret, expires] = decoded.split(":");
-
-    if (secret !== process.env.CLIENT_SECRET) {
-      return res.status(403).json({ error: "INVALID_TOKEN" });
-    }
-
-    if (Date.now() > Number(expires)) {
-      return res.status(403).json({ error: "TOKEN_EXPIRED" });
-    }
-
-  } catch {
-    return res.status(403).json({ error: "BAD_TOKEN" });
-  }
-
-  // =====================
-  // 🔐 ربط التوكن بالـ IP
+  /* =====================
+     🔒 RATE LIMIT (IP)
+  ===================== */
   const ip =
     req.headers["x-forwarded-for"] ||
     req.socket.remoteAddress ||
     "unknown";
 
-  if (!activeTokens[token]) {
-    activeTokens[token] = ip; // لأول مرة نسجل الـ IP
-  }
-
-  if (activeTokens[token] !== ip) {
-    return res.status(403).json({ error: "IP_MISMATCH" });
-  }
-
-  // Rate limit (20 طلب / 10 ثواني)
   const now = Date.now();
-  const windowMs = 10 * 1000;
+  const windowMs = 10 * 1000; // 10 ثواني
   const maxReq = 20;
 
   const user = rateLimit.get(ip) || { count: 0, time: now };
@@ -81,25 +92,43 @@ export default async function handler(req, res) {
   rateLimit.set(ip, user);
 
   /* =====================
-     📦 ORIGINAL CODE
+     📦 PROXY LOGIC
   ===================== */
+  const {
+    type,
+    yearId,
+    subjectId,
+    teacherId,
+    chapterId,
+    lectureId
+  } = req.query;
 
-  const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
   const BASE_URL = "https://plus-teal.vercel.app";
-
   let url = "";
-  if (type === "years") url = `${BASE_URL}/api/years`;
-  else if (type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
-  else if (type === "teachers") url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
-  else if (type === "chapters") url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
-  else if (type === "lectures") url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
-  else if (type === "videos") url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
-  else return res.status(400).json({ error: "INVALID_TYPE" });
 
+  if (type === "years") {
+    url = `${BASE_URL}/api/years`;
+  } else if (type === "subjects") {
+    url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
+  } else if (type === "teachers") {
+    url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
+  } else if (type === "chapters") {
+    url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
+  } else if (type === "lectures") {
+    url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
+  } else if (type === "videos") {
+    url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
+  } else {
+    return res.status(400).json({ error: "INVALID_TYPE" });
+  }
+
+  /* =====================
+     🔁 FETCH DATA
+  ===================== */
   try {
     const response = await fetch(url, {
       headers: {
-        "x-api-key": process.env.API_KEY,
+        "x-api-key": process.env.API_KEY, // 🔒 سري – في السيرفر بس
         "User-Agent": "Secure-Proxy/1.0"
       }
     });
@@ -109,11 +138,12 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
+
     res.setHeader("Cache-Control", "no-store");
-    res.status(200).json(data);
+    return res.status(200).json(data);
 
   } catch (err) {
     console.error("Proxy Error:", err.message);
-    res.status(500).json({ error: "SERVER_ERROR" });
+    return res.status(500).json({ error: "SERVER_ERROR" });
   }
-      }
+}
