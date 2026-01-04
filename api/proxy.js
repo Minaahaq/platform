@@ -1,76 +1,111 @@
 import fetch from "node-fetch";
-import { getSession } from "./get-token";
 
+// Rate limit بسيط
 const rateLimit = new Map();
+const activeTokens = {}; // لتخزين IP لكل توكن
 
 export default async function handler(req, res) {
 
-  /* ====== TOKEN CHECK ====== */
+  /* =====================
+     🔒 BASIC SECURITY
+  ===================== */
+
+  // السماح بـ GET فقط
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "NOT_ALLOWED" });
+  }
+
+  // فحص Dynamic Token
   const token = req.headers["x-client-token"];
-  const device = req.headers["x-device-id"];
-
-  if (!token || !device) {
-    return res.status(401).json({ error: "NO_TOKEN" });
+  if (!token) {
+    return res.status(403).json({ error: "NO_TOKEN" });
   }
 
-  const session = getSession(token);
+  let secret, expires;
+  try {
+    const decoded = Buffer.from(token, "base64").toString("utf8");
+    [secret, expires] = decoded.split(":");
 
-  if (!session) {
-    return res.status(403).json({ error: "INVALID_SESSION" });
+    if (secret !== process.env.CLIENT_SECRET) {
+      return res.status(403).json({ error: "INVALID_TOKEN" });
+    }
+
+    if (Date.now() > Number(expires)) {
+      return res.status(403).json({ error: "TOKEN_EXPIRED" });
+    }
+
+  } catch {
+    return res.status(403).json({ error: "BAD_TOKEN" });
   }
 
-  if (session.device !== device) {
-    return res.status(403).json({ error: "DEVICE_MISMATCH" });
-  }
-
+  // =====================
+  // 🔐 ربط التوكن بالـ IP
   const ip =
     req.headers["x-forwarded-for"] ||
-    req.socket.remoteAddress;
+    req.socket.remoteAddress ||
+    "unknown";
 
-  if (session.ip !== ip) {
-    return res.status(403).json({ error: "IP_CHANGED" });
+  if (!activeTokens[token]) {
+    activeTokens[token] = ip; // لأول مرة نسجل الـ IP
   }
 
-  /* ====== RATE LIMIT (TOKEN) ====== */
-  const now = Date.now();
-  const user = rateLimit.get(token) || { c: 0, t: now };
+  if (activeTokens[token] !== ip) {
+    return res.status(403).json({ error: "IP_MISMATCH" });
+  }
 
-  if (now - user.t < 10000) {
-    user.c++;
-    if (user.c > 20) {
-      return res.status(429).json({ error: "RATE_LIMIT" });
+  // Rate limit (20 طلب / 10 ثواني)
+  const now = Date.now();
+  const windowMs = 10 * 1000;
+  const maxReq = 20;
+
+  const user = rateLimit.get(ip) || { count: 0, time: now };
+
+  if (now - user.time < windowMs) {
+    user.count++;
+    if (user.count > maxReq) {
+      return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
     }
   } else {
-    user.c = 1;
-    user.t = now;
+    user.count = 1;
+    user.time = now;
   }
 
-  rateLimit.set(token, user);
+  rateLimit.set(ip, user);
 
-  /* ====== ROUTING ====== */
-  const { type, yearId } = req.query;
-  const BASE = "https://platform-sigma-seven.vercel.app";
+  /* =====================
+     📦 ORIGINAL CODE
+  ===================== */
 
-  const routes = {
-    years: `${BASE}/api/years`,
-    subjects: `${BASE}/api/subjects?yearId=${yearId}`
-  };
+  const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
+  const BASE_URL = "https://platform-sigma-seven.vercel.app";
 
-  if (!routes[type]) {
-    return res.status(400).json({ error: "INVALID_TYPE" });
-  }
+  let url = "";
+  if (type === "years") url = `${BASE_URL}/api/years`;
+  else if (type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
+  else if (type === "teachers") url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
+  else if (type === "chapters") url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
+  else if (type === "lectures") url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
+  else if (type === "videos") url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
+  else return res.status(400).json({ error: "INVALID_TYPE" });
 
   try {
-    const r = await fetch(routes[type], {
+    const response = await fetch(url, {
       headers: {
-        "x-api-key": process.env.API_KEY
+        "x-api-key": process.env.API_KEY,
+        "User-Agent": "Secure-Proxy/1.0"
       }
     });
 
-    const data = await r.json();
-    return res.json(data);
+    if (!response.ok) {
+      return res.status(502).json({ error: "UPSTREAM_ERROR" });
+    }
 
-  } catch {
-    return res.status(500).json({ error: "SERVER_ERROR" });
+    const data = await response.json();
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json(data);
+
+  } catch (err) {
+    console.error("Proxy Error:", err.message);
+    res.status(500).json({ error: "SERVER_ERROR" });
   }
-}
+      }
