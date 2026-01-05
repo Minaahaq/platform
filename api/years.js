@@ -1,9 +1,7 @@
-export default function handler(req, res) {
-  const token = req.headers["x-client-token"];
-  if (token !== process.env.CLIENT_SECRET) {
-    return res.status(403).json({ error: "FORBIDDEN" });
-  }
+import fs from 'fs';
+import path from 'path';
 
+export default function handler(req, res) {
   const dataPath = path.join(process.cwd(), 'data', 'organized_output.json');
   const siteData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 
