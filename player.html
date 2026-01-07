@@ -3,166 +3,261 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>تشغيل الفيديو - منصة THE BEST</title>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<title>Video Player | THE BEST</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-  body {
-    font-family: 'Cairo', sans-serif;
-    background: radial-gradient(circle at top, #0a0a0a, #000);
-    color: #fff;
-    margin: 0;
-    text-align: center;
-    overflow-x: hidden;
-  }
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #111;
-    padding: 14px 18px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
-  }
-  .title {
-    color: #ffd700;
-    font-weight: 700;
-    font-size: 18px;
-    text-shadow: 0 0 8px #ffd700;
-  }
-  .back {
-    font-size: 22px;
-    cursor: pointer;
-    color: #ffd700;
-    transition: transform 0.3s;
-    user-select: none;
-  }
-  .back:hover { transform: translateX(-5px); }
-
-  #player {
-    max-width: 950px;
-    width: 100%;
-    height: 60vh;
-    border-radius: 18px;
-    margin: 25px auto;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-    background: #000;
-  }
-
-  #hint {
-    margin-top: 12px;
-    color: #ffd700;
-    font-size: 14px;
-    text-shadow: 0 0 4px #ffd700;
-  }
-
-  .error-msg {
-    margin: 40px auto;
-    color: #ff4d4d;
-    font-size: 20px;
-    font-weight: 700;
-    text-shadow: 0 0 8px #ff0000;
-  }
+:root{
+  --neon:#00F5C4;
+}
+body{
+  margin:0;
+  background:#000;
+  font-family:'Cairo',sans-serif;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100vh;
+}
+.topbar{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 18px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
+}
+.back{
+  cursor:pointer;
+  font-size:20px;
+}
+.title{
+  color:var(--neon);
+  font-weight:800;
+}
+.player-box{
+  width:95%;
+  max-width:1000px;
+  aspect-ratio:16/9;
+  background:#000;
+  margin-top:20px;
+  position:relative;
+  box-shadow:0 0 40px rgba(0,245,196,.15);
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  cursor:pointer;
+}
+.controls{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.95));
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  opacity:0;
+  transform:translateY(15px);
+  transition:.3s;
+  pointer-events:none;
+}
+.show .controls{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.progress{
+  height:6px;
+  background:rgba(255,255,255,.2);
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:var(--neon);
+  border-radius:10px;
+  position:absolute;
+  right:0;
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.group{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+button{
+  background:none;
+  border:none;
+  font-size:1.2rem;
+  color:white;
+  cursor:pointer;
+}
+button:hover{color:var(--neon);}
+.time{font-size:.9rem;opacity:.9;}
+.speed-menu{
+  position:absolute;
+  bottom:80px;
+  left:20px;
+  background:rgba(0,0,0,.9);
+  border:1px solid rgba(0,245,196,.35);
+  border-radius:10px;
+  display:none;
+}
+.speed-menu.active{display:block;}
+.speed-menu button{
+  display:block;
+  width:100%;
+  padding:8px 14px;
+}
 </style>
 </head>
-<body>
+
+<body class="show">
 
 <div class="topbar">
   <div class="back" onclick="history.back()">⬅</div>
-  <div class="title">𝑷𝒍𝒂𝒚 𝑽𝒊𝒅𝒆𝒐 🎬</div>
-  <div style="width:25px;"></div>
+  <div class="title" id="videoTitle">جاري التحميل…</div>
+  <div style="width:24px"></div>
 </div>
 
-<video id="player" playsinline controls poster="poster.jpg"></video>
-<div id="hint">💡 اسحب الفيديو لتقديمه أو تأخيره على الهاتف</div>
+<div class="player-box" id="box">
+  <video id="player" playsinline></video>
 
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <div class="controls" id="controls">
+    <div class="progress" id="progress">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <div class="row">
+      <div class="group">
+        <button id="playBtn">⏯</button>
+        <button onclick="skip(-10)">⏪ 10s</button>
+        <button onclick="skip(10)">⏩ 10s</button>
+        <span class="time" id="time">00:00 / 00:00</span>
+      </div>
+
+      <div class="group">
+        <button id="speedBtn">⚡</button>
+        <button id="fsBtn">⛶</button>
+      </div>
+    </div>
+
+    <div class="speed-menu" id="speedMenu">
+      <button onclick="setSpeed(0.5)">0.5x</button>
+      <button onclick="setSpeed(1)">عادي</button>
+      <button onclick="setSpeed(1.5)">1.5x</button>
+      <button onclick="setSpeed(2)">2x</button>
+    </div>
+  </div>
+</div>
 
 <script>
-let qualitySources = [];
-let videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-const savedSources = localStorage.getItem("video_sources");
+const video=document.getElementById("player");
+const bar=document.getElementById("bar");
+const progress=document.getElementById("progress");
+const playBtn=document.getElementById("playBtn");
+const timeTxt=document.getElementById("time");
+const box=document.getElementById("box");
+const speedMenu=document.getElementById("speedMenu");
+const fsBtn=document.getElementById("fsBtn");
 
-if (savedSources) {
-  try {
-    const videoData = JSON.parse(savedSources);
+let hideTimer;
 
-    // إذا كان الفيديو مخزن كمصفوفة (معظم الأحيان هتكون عنصر واحد)
-    if (Array.isArray(videoData)) {
-      qualitySources = videoData.map(v => ({
-        src: v.stream_url || v.src || v,  // استخدام stream_url أولًا
-        type: "application/x-mpegURL",
-        size: parseInt(v.label) || 720
-      }));
-    } else {
-      qualitySources = [{
-        src: videoData.stream_url || videoData.src || videoData,
-        type: "application/x-mpegURL",
-        size: parseInt(videoData.label) || 720
-      }];
-    }
+// تحميل البيانات من localStorage مثل كودك القديم
+const title=localStorage.getItem("video_title")||"Lecture Video";
+document.getElementById("videoTitle").innerText=title;
 
-  } catch (err) {
-    console.error("❌ Error parsing savedSources:", err);
+const sources=JSON.parse(localStorage.getItem("video_sources")||"[]");
+if(sources.length){
+  const url=sources[0].src||sources[0].stream_url||sources[0];
+  if(Hls.isSupported() && url.endsWith(".m3u8")){
+    const hls=new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  }else{
+    video.src=url;
   }
-} else {
-  document.body.innerHTML = "<div class='error-msg'>لم يتم تحديد رابط الفيديو 😢</div>";
+}else{
+  alert("لا يوجد رابط فيديو");
 }
 
-// إنشاء المشغل مع أزرار مدمجة
-const player = new Plyr('#player', {
-  controls: [
-    'play-large','play','rewind','fast-forward','progress','current-time','duration',
-    'mute','volume','settings','fullscreen'
-  ],
-  settings: ['quality','speed','loop'],
-  rewindTime: 10,
-  forwardTime: 10
-});
-
-// تشغيل HLS إذا كان الفيديو بصيغة m3u8
-if (qualitySources.length > 0) {
-  const firstSrc = qualitySources[0].src;
-  if (typeof firstSrc === "string" && firstSrc.endsWith(".m3u8") && Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(firstSrc);
-    hls.attachMedia(document.getElementById('player'));
-  } else {
-    player.source = {
-      type: 'video',
-      title: videoTitle,
-      sources: qualitySources
-    };
+// UI show / hide
+function showUI(){
+  document.body.classList.add("show");
+  clearTimeout(hideTimer);
+  if(!video.paused){
+    hideTimer=setTimeout(()=>document.body.classList.remove("show"),3000);
   }
 }
+box.addEventListener("mousemove",showUI);
+box.addEventListener("click",showUI);
 
-// 🔄 Fullscreen وتدوير تلقائي عند التشغيل
-player.on('play', async () => {
-  try {
-    if (!player.fullscreen.active) player.fullscreen.enter();
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock('landscape');
-      console.log("📱 تم تفعيل الوضع الأفقي تلقائياً");
-    }
-  } catch (err) {
-    console.warn("⚠️ لا يمكن تفعيل التدوير التلقائي:", err);
+// play / pause
+function togglePlay(){
+  if(video.paused){video.play(); playBtn.textContent="⏸";}
+  else{video.pause(); playBtn.textContent="▶";}
+  showUI();
+}
+playBtn.onclick=togglePlay;
+video.onclick=togglePlay;
+
+// progress & time
+video.addEventListener("timeupdate",()=>{
+  if(video.duration){
+    bar.style.width=(video.currentTime/video.duration*100)+"%";
+    timeTxt.textContent=`${fmt(video.currentTime)} / ${fmt(video.duration)}`;
   }
 });
+function fmt(t){
+  const m=Math.floor(t/60),s=Math.floor(t%60);
+  return `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+}
+progress.onclick=e=>{
+  const r=progress.getBoundingClientRect();
+  const x=r.right-e.clientX;
+  video.currentTime=(x/r.width)*video.duration;
+};
 
-// ⏰ نهاية الفيديو
-player.on('ended', () => {
-  alert("🎬 انتهى الفيديو");
+// skip
+window.skip=v=>{video.currentTime+=v; showUI();};
+
+// speed
+document.getElementById("speedBtn").onclick=e=>{
+  e.stopPropagation();
+  speedMenu.classList.toggle("active");
+};
+window.setSpeed=s=>{
+  video.playbackRate=s;
+  speedMenu.classList.remove("active");
+};
+
+// fullscreen
+function toggleFS(){
+  if(!document.fullscreenElement) box.requestFullscreen();
+  else document.exitFullscreen();
+}
+fsBtn.onclick=toggleFS;
+
+// keyboard
+document.addEventListener("keydown",e=>{
+  showUI();
+  if(e.code==="Space"){e.preventDefault();togglePlay();}
+  if(e.code==="ArrowRight")skip(10);
+  if(e.code==="ArrowLeft")skip(-10);
+  if(e.code==="KeyF")toggleFS();
 });
-
-// رسالة تلميحية للمستخدم (مخفية بعد 5 ثواني)
-setTimeout(() => document.getElementById('hint').style.display = 'none', 5000);
 </script>
-
 
 </body>
 </html>
