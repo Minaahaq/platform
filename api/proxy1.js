@@ -1,36 +1,29 @@
-export default async function handler(req, res) {
-  const ALLOWED_ORIGINS = [
-    "https://platform-sigma-seven.vercel.app"
-  ];
+import crypto from "crypto";
 
-  // ❌ GET فقط
+export default async function handler(req, res) {
+
+  const ALLOWED_ORIGINS = ["https://platform-sigma-seven.vercel.app"];
+
   if (req.method !== "GET") {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
   }
 
-  // 🎯 تحديد origin الحقيقي
+  // ===== origin check =====
   let origin = req.headers.origin || null;
   if (!origin && req.headers.referer) {
-    try {
-      origin = new URL(req.headers.referer).origin;
-    } catch {}
+    try { origin = new URL(req.headers.referer).origin; } catch {}
   }
-
   if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
     return res.status(403).json({ error: "FORBIDDEN_ORIGIN" });
   }
 
-  // 🔐 التحقق من التوكن
+  // ===== token check =====
   const token = req.headers["x-client-token"];
-  if (!token) {
-    return res.status(403).json({ error: "NO_TOKEN" });
-  }
+  if (!token) return res.status(403).json({ error: "NO_TOKEN" });
 
   let decoded;
   try {
-    decoded = JSON.parse(
-      Buffer.from(token, "base64").toString("utf8")
-    );
+    decoded = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
   } catch {
     return res.status(403).json({ error: "BAD_TOKEN" });
   }
@@ -40,33 +33,46 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "SERVER_SECRET_MISSING" });
   }
 
-  // 🧾 إعادة احتساب التوقيع للتأكد من سلامة التوكن
-  const expectedSig = Buffer.from(
-    `${decoded.o}|${decoded.t}|${secret}`
-  ).toString("base64");
+  // ===== recompute device hash (MUST match token) =====
+  const ua = req.headers["user-agent"] || "";
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0] ||
+    req.socket?.remoteAddress ||
+    "0.0.0.0";
+
+  const deviceHash = crypto
+    .createHash("sha256")
+    .update(ua + "|" + ip)
+    .digest("hex");
+
+  if (decoded.d !== deviceHash) {
+    return res.status(403).json({ error: "INVALID_DEVICE" });
+  }
+
+  // ===== verify signature =====
+  const expectedSig = crypto
+    .createHmac("sha256", secret)
+    .update(`${decoded.o}|${decoded.t}|${decoded.d}|${decoded.sid}`)
+    .digest("hex");
 
   if (decoded.s !== expectedSig) {
     return res.status(403).json({ error: "SIGNATURE_INVALID" });
   }
 
-  // 🛡️ التوكن مرتبط بنفس الدومين فقط
   if (decoded.o !== origin) {
     return res.status(403).json({ error: "ORIGIN_MISMATCH" });
   }
 
-  // ⏳ انتهاء الصلاحية
   if (Date.now() > decoded.t) {
     return res.status(403).json({ error: "TOKEN_EXPIRED" });
   }
 
-  // 🚫 منع Postman / curl / scrapers
-  const ua = req.headers["user-agent"] || "";
-  if (/curl|postman|python|node|fetch/i.test(ua)) {
+  // block bots / tools
+  if (/curl|postman|python|node|wget|httpclient/i.test(ua)) {
     return res.status(403).json({ error: "BLOCKED_CLIENT" });
   }
 
-  // ⚖️ Rate limit خفيف حسب الـ IP
-  const ip = req.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
+  // ===== rate‑limit =====
   const now = Date.now();
   if (!handler.requests) handler.requests = new Map();
   let list = handler.requests.get(ip) || [];
@@ -77,7 +83,7 @@ export default async function handler(req, res) {
   list.push(now);
   handler.requests.set(ip, list);
 
-  // 🌐 بناء الرابط الداخلي
+  // ===== API routing =====
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
   const BASE_URL = "https://plus-teal.vercel.app";
 
@@ -109,7 +115,6 @@ export default async function handler(req, res) {
 
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Cache-Control", "no-store");
-
     return res.status(200).json(data);
 
   } catch (err) {
