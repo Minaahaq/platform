@@ -224,20 +224,32 @@
         let controlsTimeout;
 
         // استيراد البيانات
-        const videoSources = JSON.parse(localStorage.getItem('video_sources') || '[]');
-        const videoTitle = localStorage.getItem('video_title') || "المحاضرة";
-        document.getElementById('display-title').innerText = videoTitle;
+        // ===== قراءة الفيديو من localStorage مثل كودك القديم =====
+const savedSources = JSON.parse(localStorage.getItem('video_sources') || '[]');
+const videoTitleFromStorage = localStorage.getItem('video_title') || "المحاضرة";
+document.getElementById('display-title').innerText = videoTitleFromStorage;
 
-        if (videoSources.length > 0) {
-            const videoUrl = videoSources[0].src;
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(videoUrl);
-                hls.attachMedia(video);
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = videoUrl;
-            }
-        }
+if(savedSources.length>0){
+    // خذ أول مصدر
+    const source = savedSources[0];
+    // دعم HLS أو MP4
+    const videoUrl = source.stream_url || source.src || source;
+
+    if(Hls.isSupported() && videoUrl.endsWith('.m3u8')){
+        const hls = new Hls();
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+        video.play(); // تشغيل تلقائي
+    } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+        video.src = videoUrl;
+        video.play();
+    } else {
+        video.src = videoUrl; // MP4 أو أي صيغة متوافقة
+        video.play();
+    }
+} else {
+    alert("⚠️ لم يتم تحديد رابط الفيديو في localStorage");
+}
 
         function showUI() {
             document.body.classList.add('show-ui');
