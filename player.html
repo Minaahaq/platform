@@ -1,184 +1,202 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Player | THE BEST</title>
+<title>Premium Video Player</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
-:root {
-  --neon: #00F5C4;
-  --panel-bg: rgba(0,0,0,0.8);
-  --btn-bg: rgba(0,0,0,0.3);
+:root{
+  --neon:#00f5c4;
 }
 
-body {
-  margin: 0;
-  font-family: 'Cairo', sans-serif;
-  background: radial-gradient(circle at top, #0a0a0a, #000);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  overflow: hidden;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  background:#000;
+  overflow:hidden;
+  color:#fff;
 }
 
-.topbar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  z-index: 100;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+/* ===== Player ===== */
+.player-box{
+  width:95%;
+  max-width:1000px;
+  aspect-ratio:16/9;
+  margin:80px auto;
+  position:relative;
+  background:#000;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 0 40px rgba(0,245,196,.25);
 }
 
-.topbar .title {
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--neon);
-  text-shadow: 0 0 8px var(--neon);
+/* ===== Video ===== */
+video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  cursor:pointer;
 }
 
-.topbar .back {
-  font-size: 22px;
-  cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 10px;
-  background: var(--btn-bg);
-  transition: 0.3s;
-}
-.topbar .back:hover { background: var(--neon); color:#000; transform: scale(1.1); }
-
-.player-box {
-  width: 95%;
-  max-width: 1000px;
-  aspect-ratio: 16/9;
-  margin: auto;
-  margin-top: 80px;
-  position: relative;
-  background: #000;
-  box-shadow: 0 0 50px rgba(0,245,196,0.2);
-  border-radius: 18px;
-  overflow: hidden;
+/* ===== Top Overlay ===== */
+.topbar{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+  pointer-events:none;
+  background:linear-gradient(to bottom,rgba(0,0,0,.7),transparent);
 }
 
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  cursor: pointer;
+.topbar .title{
+  font-weight:800;
+  color:var(--neon);
+  text-shadow:0 0 12px var(--neon);
+  background:rgba(0,0,0,.4);
+  padding:6px 18px;
+  border-radius:14px;
+  backdrop-filter:blur(6px);
 }
 
-.controls {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,0.95));
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.3s;
-  pointer-events: none;
+.back{
+  position:absolute;
+  left:16px;
+  pointer-events:auto;
+  cursor:pointer;
+  padding:6px 12px;
+  border-radius:10px;
+  background:rgba(0,0,0,.4);
+  transition:.3s;
 }
-.show .controls {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.back:hover{background:var(--neon);color:#000}
+
+/* ===== Center Play ===== */
+.center-play{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:90px;
+  color:var(--neon);
+  text-shadow:0 0 35px var(--neon);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+}
+.player-box.paused .center-play{opacity:1}
+
+/* ===== Controls ===== */
+.controls{
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  right:12px;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(14px);
+  border-radius:18px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:.3s;
+}
+.player-box.show .controls{
+  opacity:1;
+  transform:none;
 }
 
-.progress {
-  height: 6px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  cursor: pointer;
-  position: relative;
+/* ===== Progress ===== */
+.progress{
+  height:5px;
+  background:rgba(255,255,255,.25);
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+  transition:.2s;
 }
-.bar {
-  height: 100%;
-  width: 0%;
-  background: var(--neon);
-  border-radius: 10px;
-  position: absolute;
-  right: 0;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.group {
-  display: flex;
-  gap: 14px;
-  align-items: center;
+.progress:hover{height:8px}
+.bar{
+  height:100%;
+  width:0%;
+  background:var(--neon);
+  border-radius:10px;
+  box-shadow:0 0 12px var(--neon);
 }
 
-button {
-  background: var(--btn-bg);
-  border: none;
-  font-size: 1.3rem;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
+/* ===== Buttons ===== */
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-button:hover {
-  background: var(--neon);
-  color: #000;
-  transform: scale(1.1);
+.group{display:flex;gap:12px;align-items:center}
+
+button{
+  background:rgba(255,255,255,.1);
+  border:none;
+  color:#fff;
+  font-size:1.1rem;
+  padding:6px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.25s cubic-bezier(.4,2,.6,1);
+}
+button:hover{
+  background:var(--neon);
+  color:#000;
+  box-shadow:0 0 14px var(--neon);
 }
 
-.time {
-  font-family: monospace;
-  font-size: 0.9rem;
-  opacity: 0.9;
+.time{
+  font-family:monospace;
+  font-size:.9rem;
+  opacity:.9;
 }
 
-.speed-menu {
-  position: absolute;
-  bottom: 80px;
-  left: 20px;
-  background: var(--panel-bg);
-  border-radius: 12px;
-  padding: 8px;
-  display: none;
-  border: 1px solid rgba(0,245,196,0.3);
+/* ===== Speed Menu ===== */
+.speed-menu{
+  position:absolute;
+  bottom:85px;
+  left:20px;
+  background:rgba(0,0,0,.85);
+  border:1px solid rgba(0,245,196,.4);
+  border-radius:14px;
+  display:none;
+  overflow:hidden;
 }
-.speed-menu.active { display: block; }
-.speed-menu button {
-  width: 100%;
-  background: none;
-  border: none;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  border-radius: 8px;
-  transition: 0.2s;
+.speed-menu button{width:100%;background:none}
+.speed-menu.active{display:block}
+
+/* ===== Pause Blur ===== */
+.player-box.paused video{
+  filter:blur(2px) brightness(.85);
 }
-.speed-menu button:hover { background: var(--neon); color:#000; }
 </style>
 </head>
 
-<body class="show">
+<body>
 
-<div class="topbar">
-  <div class="back" onclick="history.back()">⬅</div>
-  <div class="title" id="videoTitle">جاري التحميل…</div>
-  <div style="width:24px"></div>
-</div>
+<div class="player-box paused show" id="box">
 
-<div class="player-box" id="box">
-  <video id="player" playsinline autoplay></video>
+  <div class="topbar">
+    <div class="back" onclick="history.back()">⬅</div>
+    <div class="title" id="videoTitle">Lecture Video</div>
+  </div>
 
-  <div class="controls" id="controls">
+  <video id="video" playsinline></video>
+  <div class="center-play">▶</div>
+
+  <div class="controls">
     <div class="progress" id="progress">
       <div class="bar" id="bar"></div>
     </div>
@@ -186,8 +204,8 @@ button:hover {
     <div class="row">
       <div class="group">
         <button id="playBtn">⏯</button>
-        <button onclick="skip(-10)">⏪ 10s</button>
-        <button onclick="skip(10)">⏩ 10s</button>
+        <button onclick="skip(-10)">⏪</button>
+        <button onclick="skip(10)">⏩</button>
         <span class="time" id="time">00:00 / 00:00</span>
       </div>
 
@@ -198,144 +216,79 @@ button:hover {
     </div>
 
     <div class="speed-menu" id="speedMenu">
-      <button onclick="setSpeed(0.5)">0.5x</button>
-      <button onclick="setSpeed(1)">عادي</button>
+      <button onclick="setSpeed(.5)">0.5x</button>
+      <button onclick="setSpeed(1)">1x</button>
       <button onclick="setSpeed(1.5)">1.5x</button>
       <button onclick="setSpeed(2)">2x</button>
     </div>
   </div>
+
 </div>
 
 <script>
-const video = document.getElementById("player");
-const box = document.getElementById("box");
-const progress = document.getElementById("progress");
-const bar = document.getElementById("bar");
-const playBtn = document.getElementById("playBtn");
-const timeTxt = document.getElementById("time");
-const speedMenu = document.getElementById("speedMenu");
-const fsBtn = document.getElementById("fsBtn");
+const video=document.getElementById("video"),
+box=document.getElementById("box"),
+bar=document.getElementById("bar"),
+progress=document.getElementById("progress"),
+timeTxt=document.getElementById("time"),
+playBtn=document.getElementById("playBtn"),
+speedMenu=document.getElementById("speedMenu");
 
-let hideTimer;
+const title=localStorage.getItem("video_title")||"Lecture Video";
+document.getElementById("videoTitle").innerText=title;
 
-// ===== عنوان الفيديو =====
-const videoTitle = localStorage.getItem("video_title") || "Lecture Video";
-document.getElementById("videoTitle").innerText = videoTitle;
+const src=localStorage.getItem("video_src")||
+"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
 
-// ===== قراءة المصادر من localStorage =====
-let sources = [];
-try {
-  const saved = JSON.parse(localStorage.getItem("video_sources") || "[]");
-  if (Array.isArray(saved)) {
-    sources = saved.map(v=>({
-      src: v.stream_url || v.src || v,
-      type: (v.stream_url?.endsWith(".m3u8") || v.src?.endsWith(".m3u8")) ? "application/x-mpegURL" : "video/mp4"
-    }));
-  } else {
-    sources = [{
-      src: saved.stream_url || saved.src || saved,
-      type: (saved.stream_url?.endsWith(".m3u8") || saved.src?.endsWith(".m3u8")) ? "application/x-mpegURL" : "video/mp4"
-    }];
-  }
-} catch(e) {
-  console.error(e);
-  alert("❌ لم يتم تحميل رابط الفيديو");
+if(src.endsWith(".m3u8")&&Hls.isSupported()){
+  const hls=new Hls();
+  hls.loadSource(src);
+  hls.attachMedia(video);
+}else video.src=src;
+
+function toggle(){
+  video.paused?video.play():video.pause();
 }
+video.onclick=toggle;
+playBtn.onclick=toggle;
 
-// ===== تشغيل الفيديو تلقائيًا =====
-if (sources.length>0) {
-  const url = sources[0].src;
-  if (url.endsWith(".m3u8")) {
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(url);
-      hls.attachMedia(video);
-      video.play();
-    } else if (video.canPlayType("application/vnd.apple.mpegURL")) {
-      video.src = url;
-      video.play();
-    } else {
-      alert("⚠️ متصفحك لا يدعم HLS");
-    }
-  } else {
-    video.src = url;
-    video.play();
-  }
-}
+video.addEventListener("play",()=>box.classList.remove("paused"));
+video.addEventListener("pause",()=>box.classList.add("paused"));
 
-// ===== UI show/hide =====
-function showUI() {
-  document.body.classList.add("show");
-  clearTimeout(hideTimer);
-  if (!video.paused) hideTimer = setTimeout(()=>document.body.classList.remove("show"),3000);
-}
-box.addEventListener("mousemove", showUI);
-box.addEventListener("click", showUI);
-
-// ===== Play/Pause =====
-function togglePlay() {
-  if (video.paused) { video.play(); playBtn.textContent="⏸"; }
-  else { video.pause(); playBtn.textContent="▶"; }
-  showUI();
-}
-playBtn.onclick = togglePlay;
-video.onclick = togglePlay;
-
-// ===== Time & Progress =====
-function fmt(t){
-  const h=Math.floor(t/3600);
-  const m=Math.floor((t%3600)/60);
-  const s=Math.floor(t%60);
-  return (h>0? h+":":"")+`${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
-}
-video.addEventListener("timeupdate", ()=>{
+video.addEventListener("timeupdate",()=>{
   if(video.duration){
-    bar.style.width = (video.currentTime/video.duration*100)+"%";
-    timeTxt.textContent = `${fmt(video.currentTime)} / ${fmt(video.duration)}`;
+    bar.style.width=(video.currentTime/video.duration*100)+"%";
+    timeTxt.textContent=format(video.currentTime)+" / "+format(video.duration);
   }
 });
 
-// ===== Seek =====
-progress.onclick = e=>{
-  const r = progress.getBoundingClientRect();
-  const x = e.clientX - r.left;
-  video.currentTime = (x/r.width)*video.duration;
+function format(t){
+  const m=Math.floor(t/60),s=Math.floor(t%60);
+  return `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+}
+
+progress.onclick=e=>{
+  const r=progress.getBoundingClientRect();
+  video.currentTime=(e.clientX-r.left)/r.width*video.duration;
 };
 
-// ===== Skip =====
-window.skip = v=>{ video.currentTime += v; showUI(); };
+window.skip=s=>video.currentTime+=s;
 
-// ===== Speed =====
-document.getElementById("speedBtn").onclick = e=>{
+speedBtn.onclick=e=>{
   e.stopPropagation();
   speedMenu.classList.toggle("active");
 };
-window.setSpeed = s=>{ video.playbackRate=s; speedMenu.classList.remove("active"); };
-document.addEventListener("click", ()=>speedMenu.classList.remove("active"));
+window.setSpeed=s=>{
+  video.playbackRate=s;
+  speedMenu.classList.remove("active");
+};
+document.addEventListener("click",()=>speedMenu.classList.remove("active"));
 
-// ===== Fullscreen =====
-function toggleFS(){
-  if(!document.fullscreenElement) box.requestFullscreen();
-  else document.exitFullscreen();
-}
-fsBtn.onclick = toggleFS;
+fsBtn.onclick=()=>{
+  !document.fullscreenElement?box.requestFullscreen():document.exitFullscreen();
+};
 
-// ===== Keyboard shortcuts =====
-document.addEventListener("keydown", e=>{
-  showUI();
-  if(e.code==="Space"){ e.preventDefault(); togglePlay(); }
-  if(e.code==="ArrowRight") skip(10);
-  if(e.code==="ArrowLeft") skip(-10);
-  if(e.code==="KeyF") toggleFS();
-});
-
-// ===== Auto fullscreen landscape عند التشغيل =====
-video.addEventListener("play", async ()=>{
-  try {
-    if(!document.fullscreenElement) box.requestFullscreen();
-    if(screen.orientation?.lock) await screen.orientation.lock('landscape');
-  } catch(e){ console.warn(e); }
-});
+box.onmousemove=()=>box.classList.add("show");
 </script>
 
 </body>
