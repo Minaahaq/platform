@@ -163,99 +163,149 @@ button:hover{color:var(--neon);}
 </div>
 
 <script>
-const video=document.getElementById("player");
-const bar=document.getElementById("bar");
-const progress=document.getElementById("progress");
-const playBtn=document.getElementById("playBtn");
-const timeTxt=document.getElementById("time");
-const box=document.getElementById("box");
-const speedMenu=document.getElementById("speedMenu");
-const fsBtn=document.getElementById("fsBtn");
+const video = document.getElementById("player");
+const box = document.getElementById("box");
+const progress = document.getElementById("progress");
+const bar = document.getElementById("bar");
+const playBtn = document.getElementById("playBtn");
+const timeTxt = document.getElementById("time");
+const speedMenu = document.getElementById("speedMenu");
+const fsBtn = document.getElementById("fsBtn");
 
 let hideTimer;
 
-// تحميل البيانات من localStorage مثل كودك القديم
-const title=localStorage.getItem("video_title")||"Lecture Video";
-document.getElementById("videoTitle").innerText=title;
+// ====== تحميل العنوان ======
+const title = localStorage.getItem("video_title") || "Lecture Video";
+document.getElementById("videoTitle").innerText = title;
 
-const sources=JSON.parse(localStorage.getItem("video_sources")||"[]");
-if(sources.length){
-  const url=sources[0].src||sources[0].stream_url||sources[0];
-  if(Hls.isSupported() && url.endsWith(".m3u8")){
-    const hls=new Hls();
-    hls.loadSource(url);
-    hls.attachMedia(video);
-  }else{
-    video.src=url;
-  }
-}else{
+// ====== تحميل مصدر الفيديو ======
+const sources = JSON.parse(localStorage.getItem("video_sources") || "[]");
+
+const url =
+  sources[0]?.stream_url ||
+  sources[0]?.src ||
+  sources[0];
+
+if (!url) {
   alert("لا يوجد رابط فيديو");
 }
 
-// UI show / hide
-function showUI(){
+// ====== تشغيل HLS / MP4 ======
+if (url.endsWith(".m3u8")) {
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+  }
+
+  else if (video.canPlayType("application/vnd.apple.mpegURL")) {
+    video.src = url; // Safari / iOS
+  }
+
+  else {
+    alert("متصفحك لا يدعم تشغيل HLS");
+  }
+
+} else {
+  video.src = url;
+}
+
+// ====== UI Show / Hide ======
+function showUI() {
   document.body.classList.add("show");
   clearTimeout(hideTimer);
-  if(!video.paused){
-    hideTimer=setTimeout(()=>document.body.classList.remove("show"),3000);
+
+  if (!video.paused) {
+    hideTimer = setTimeout(() => {
+      document.body.classList.remove("show");
+    }, 3000);
   }
 }
-box.addEventListener("mousemove",showUI);
-box.addEventListener("click",showUI);
 
-// play / pause
-function togglePlay(){
-  if(video.paused){video.play(); playBtn.textContent="⏸";}
-  else{video.pause(); playBtn.textContent="▶";}
+box.addEventListener("mousemove", showUI);
+box.addEventListener("click", showUI);
+
+// ====== Play / Pause ======
+function togglePlay() {
+  if (video.paused) {
+    video.play();
+    playBtn.textContent = "⏸";
+  } else {
+    video.pause();
+    playBtn.textContent = "▶";
+  }
   showUI();
 }
-playBtn.onclick=togglePlay;
-video.onclick=togglePlay;
 
-// progress & time
-video.addEventListener("timeupdate",()=>{
-  if(video.duration){
-    bar.style.width=(video.currentTime/video.duration*100)+"%";
-    timeTxt.textContent=`${fmt(video.currentTime)} / ${fmt(video.duration)}`;
+playBtn.onclick = togglePlay;
+video.onclick = togglePlay;
+
+// ====== تنسيق الوقت ======
+function fmt(t) {
+  const h = Math.floor(t / 3600);
+  const m = Math.floor((t % 3600) / 60);
+  const s = Math.floor(t % 60);
+  return (h > 0 ? `${h}:` : "") +
+    `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+}
+
+// ====== الوقت والشريط ======
+video.addEventListener("timeupdate", () => {
+  if (video.duration) {
+    bar.style.width = (video.currentTime / video.duration * 100) + "%";
+    timeTxt.textContent =
+      `${fmt(video.currentTime)} / ${fmt(video.duration)}`;
   }
 });
-function fmt(t){
-  const m=Math.floor(t/60),s=Math.floor(t%60);
-  return `${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
-}
-progress.onclick=e=>{
-  const r=progress.getBoundingClientRect();
-  const x=r.right-e.clientX;
-  video.currentTime=(x/r.width)*video.duration;
+
+// ====== التقديم من الشريط ======
+progress.onclick = e => {
+  const r = progress.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  video.currentTime = (x / r.width) * video.duration;
 };
 
-// skip
-window.skip=v=>{video.currentTime+=v; showUI();};
+// ====== Skip ======
+window.skip = v => {
+  video.currentTime += v;
+  showUI();
+};
 
-// speed
-document.getElementById("speedBtn").onclick=e=>{
+// ====== السرعة ======
+document.getElementById("speedBtn").onclick = e => {
   e.stopPropagation();
   speedMenu.classList.toggle("active");
 };
-window.setSpeed=s=>{
-  video.playbackRate=s;
+
+window.setSpeed = s => {
+  video.playbackRate = s;
   speedMenu.classList.remove("active");
 };
 
-// fullscreen
-function toggleFS(){
-  if(!document.fullscreenElement) box.requestFullscreen();
+document.addEventListener("click", () => {
+  speedMenu.classList.remove("active");
+});
+
+// ====== Fullscreen ======
+function toggleFS() {
+  if (!document.fullscreenElement) box.requestFullscreen();
   else document.exitFullscreen();
 }
-fsBtn.onclick=toggleFS;
+fsBtn.onclick = toggleFS;
 
-// keyboard
-document.addEventListener("keydown",e=>{
+// ====== اختصارات الكيبورد ======
+document.addEventListener("keydown", e => {
   showUI();
-  if(e.code==="Space"){e.preventDefault();togglePlay();}
-  if(e.code==="ArrowRight")skip(10);
-  if(e.code==="ArrowLeft")skip(-10);
-  if(e.code==="KeyF")toggleFS();
+
+  if (e.code === "Space") {
+    e.preventDefault();
+    togglePlay();
+  }
+
+  if (e.code === "ArrowRight") skip(10);
+  if (e.code === "ArrowLeft") skip(-10);
+  if (e.code === "KeyF") toggleFS();
 });
 </script>
 
