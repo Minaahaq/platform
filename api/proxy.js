@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
 
-  const ALLOWED_ORIGINS = ["https://plus-teal.vercel.app"];
+  const ALLOWED_ORIGINS = ["https://platform-sigma-seven.vercel.app"];
 
   if (req.method !== "GET") {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
