@@ -175,6 +175,16 @@ async function checkCode(){
         localStorage.setItem("access_token", token);
       }
 
+      // ====== GET SESSION TOKEN ======
+const tokenRes = await fetch("/api/get-token", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    code,
+    device: getDeviceID()
+  })
+});
+
       /* ===== Firebase Auth ===== */
       const email = `${code}@myapp.local`;
       const password = code;
