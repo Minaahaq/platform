@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
   // ===== API routing =====
   const { type, yearId, subjectId, teacherId, chapterId, lectureId, examId, rid } = req.query;
-  const BASE_URL = "https://platform-sigma-seven.vercel.app";
+  const BASE_URL = "https://test1-psi-nine-91.vercel.app";
 
   try {
     let url = "";
