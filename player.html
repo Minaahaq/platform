@@ -224,39 +224,62 @@
     let controlsTimeout;
 
     // ===== استيراد البيانات =====
-    const savedSources = JSON.parse(localStorage.getItem('video_sources') || '[]');
-    const videoTitleFromStorage = localStorage.getItem('video_title') || "المحاضرة";
-    const resumeTime = parseFloat(localStorage.getItem('resume_time') || '0'); // استرجاع وقت المشاهدة
-    document.getElementById('display-title').innerText = videoTitleFromStorage;
+   // ===== استيراد البيانات =====
+const savedSources = JSON.parse(localStorage.getItem('video_sources') || '[]');
+const videoTitleFromStorage = localStorage.getItem('video_title') || "المحاضرة";
+const resumeTime = parseFloat(localStorage.getItem('resume_time') || '0'); // استرجاع وقت المشاهدة
+document.getElementById('display-title').innerText = videoTitleFromStorage;
 
-    if(savedSources.length>0){
-        const source = savedSources[0];
-        const videoUrl = source.stream_url || source.src || source;
+if(savedSources.length>0){
+    const source = savedSources[0];
+    const videoUrl = source.stream_url || source.src || source;
 
-        if(Hls.isSupported() && videoUrl.endsWith('.m3u8')){
-            const hls = new Hls();
-            hls.loadSource(videoUrl);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                video.currentTime = resumeTime; // ارجع للوقت المحفوظ
-                video.play();
-            });
-        } else if(video.canPlayType('application/vnd.apple.mpegurl')){
-            video.src = videoUrl;
-            video.addEventListener('loadedmetadata', () => {
-                video.currentTime = resumeTime;
-                video.play();
-            });
-        } else {
-            video.src = videoUrl;
-            video.addEventListener('loadedmetadata', () => {
-                video.currentTime = resumeTime;
-                video.play();
-            });
-        }
+    if(Hls.isSupported() && videoUrl.endsWith('.m3u8')){
+        const hls = new Hls();
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.currentTime = resumeTime; // ارجع للوقت المحفوظ
+            video.play();
+
+            // ✨ Fullscreen تلقائي
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    console.warn("تعذر فتح الشاشة الكاملة:", err);
+                });
+            }
+        });
+    } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+        video.src = videoUrl;
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = resumeTime;
+            video.play();
+
+            // ✨ Fullscreen تلقائي
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    console.warn("تعذر فتح الشاشة الكاملة:", err);
+                });
+            }
+        });
     } else {
-        alert("⚠️ لم يتم تحديد رابط الفيديو في localStorage");
+        video.src = videoUrl;
+        video.addEventListener('loadedmetadata', () => {
+            video.currentTime = resumeTime;
+            video.play();
+
+            // ✨ Fullscreen تلقائي
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    console.warn("تعذر فتح الشاشة الكاملة:", err);
+                });
+            }
+        });
     }
+} else {
+    alert("⚠️ لم يتم تحديد رابط الفيديو في localStorage");
+}
+
 
     // ===== وظيفة اظهار واجهة التحكم =====
     function showUI() {
