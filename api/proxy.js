@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  const ALLOWED_ORIGINS = ["https://test1-psi-nine-91.vercel.app"];
+  const ALLOWED_ORIGINS = ["https://platform-sigma-seven.vercel.app"];
 
   // ===== التحقق من الميثود =====
   if (!["GET", "POST"].includes(req.method)) {
