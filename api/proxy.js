@@ -76,7 +76,7 @@ export default async function handler(req, res) {
     else if (type === "videos") url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
     else if (type === "exams") {
       if (!lectureId) return res.status(400).json({ error: "LECTURE_ID_REQUIRED" });
-      url = `https://zeta-gray.vercel.app/api/proxy/lecture-content/${lectureId}`;
+      url = `https://zeta-gray.vercel.app/api/proxy55/lecture-content/${lectureId}`;
       isExternal = true;
     }
     else if (type === "exam_questions") {
