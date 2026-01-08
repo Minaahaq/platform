@@ -1,134 +1,103 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  const ALLOWED_ORIGINS = ["https://platform-sigma-seven.vercel.app"];
 
-  // ===== التحقق من الميثود =====
   if (!["GET", "POST"].includes(req.method)) {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
   }
 
-  // ===== origin check =====
-  let origin = req.headers.origin || null;
-  if (!origin && req.headers.referer) {
-    try { origin = new URL(req.headers.referer).origin; } catch {}
-  }
-  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
-    return res.status(403).json({ error: "FORBIDDEN_ORIGIN" });
-  }
+  // ===== session =====
+  const cookie = req.headers.cookie || "";
+  const match = cookie.match(/session=([^;]+)/);
+  if (!match) return res.status(401).json({ error: "NO_SESSION" });
 
-  // ===== token check =====
-  const token = req.headers["x-client-token"];
-  if (!token) return res.status(403).json({ error: "NO_TOKEN" });
-
-  let decoded;
+  let session;
   try {
-    decoded = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
+    session = JSON.parse(Buffer.from(match[1], "base64").toString("utf8"));
   } catch {
-    return res.status(403).json({ error: "BAD_TOKEN" });
+    return res.status(401).json({ error: "BAD_SESSION" });
   }
 
-  const secret = process.env.CLIENT_SECRET;
-  if (!secret) return res.status(500).json({ error: "SERVER_SECRET_MISSING" });
+  const SECRET = process.env.SESSION_SECRET;
+  if (!SECRET) return res.status(500).json({ error: "NO_SECRET" });
+
+  // ===== verify =====
+  const expectedSig = crypto
+    .createHmac("sha256", SECRET)
+    .update(JSON.stringify(session.payload))
+    .digest("hex");
+
+  if (session.sig !== expectedSig) {
+    return res.status(401).json({ error: "SESSION_INVALID" });
+  }
 
   const ua = req.headers["user-agent"] || "";
   const ip =
     req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.socket?.remoteAddress ||
-    "0.0.0.0";
+    req.socket.remoteAddress;
 
-  const deviceHash = crypto.createHash("sha256").update(ua + "|" + ip).digest("hex");
-  if (decoded.d !== deviceHash) return res.status(403).json({ error: "INVALID_DEVICE" });
+  if (session.payload.ua !== ua || session.payload.i !== ip) {
+    return res.status(401).json({ error: "DEVICE_MISMATCH" });
+  }
 
-  const expectedSig = crypto
-    .createHmac("sha256", secret)
-    .update(`${decoded.o}|${decoded.t}|${decoded.d}|${decoded.sid}`)
+  // ===== 5 minutes expiry =====
+  if (Date.now() - session.payload.t > 5 * 60 * 1000) {
+    return res.status(401).json({ error: "SESSION_EXPIRED" });
+  }
+
+  if (/curl|postman|python|wget|httpclient/i.test(ua)) {
+    return res.status(403).json({ error: "BLOCKED_CLIENT" });
+  }
+
+  // ===== rate limit =====
+  const now = Date.now();
+  handler.r = handler.r || new Map();
+  const list = handler.r.get(ip) || [];
+  const recent = list.filter(t => now - t < 30000);
+  if (recent.length >= 20) {
+    return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
+  }
+  recent.push(now);
+  handler.r.set(ip, recent);
+
+  // ===== routing =====
+  const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
+  const BASE = "https://platform-sigma-seven.vercel.app";
+
+  let url = "";
+  if (type === "years") url = `${BASE}/api/years`;
+  else if (type === "subjects") url = `${BASE}/api/subjects?yearId=${yearId}`;
+  else if (type === "teachers") url = `${BASE}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
+  else if (type === "chapters") url = `${BASE}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
+  else if (type === "lectures") url = `${BASE}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
+  else if (type === "videos") url = `${BASE}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
+  else return res.status(400).json({ error: "INVALID_TYPE" });
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Secure-Proxy/1.0",
+      "x-api-key": process.env.API_KEY
+    }
+  });
+
+  if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
+  const data = await response.json();
+
+  // ===== renew session (auto) =====
+  session.payload.t = Date.now();
+
+  const newSig = crypto
+    .createHmac("sha256", SECRET)
+    .update(JSON.stringify(session.payload))
     .digest("hex");
 
-  if (decoded.s !== expectedSig) return res.status(403).json({ error: "SIGNATURE_INVALID" });
-  if (decoded.o !== origin) return res.status(403).json({ error: "ORIGIN_MISMATCH" });
-  if (Date.now() > decoded.t) return res.status(403).json({ error: "TOKEN_EXPIRED" });
-  if (/curl|postman|python|node|wget|httpclient/i.test(ua)) return res.status(403).json({ error: "BLOCKED_CLIENT" });
+  const newSession = Buffer
+    .from(JSON.stringify({ payload: session.payload, sig: newSig }))
+    .toString("base64");
 
-  // ===== rate-limit =====
-  const now = Date.now();
-  if (!handler.requests) handler.requests = new Map();
-  let list = handler.requests.get(ip) || [];
-  list = list.filter(t => now - t < 30000);
-  if (list.length >= 15) return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
-  list.push(now);
-  handler.requests.set(ip, list);
+  res.setHeader("Set-Cookie", [
+    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
+  ]);
 
-  // ===== API routing =====
-  const { type, yearId, subjectId, teacherId, chapterId, lectureId, examId, rid } = req.query;
-  const BASE_URL = "https://platform-sigma-seven.vercel.app";
-
-  try {
-    let url = "";
-    let isExternal = false;
-
-    // ===== أنواع الـ API =====
-    if (type === "years") url = `${BASE_URL}/api/years`;
-    else if (type === "subjects") url = `${BASE_URL}/api/subjects?yearId=${yearId}`;
-    else if (type === "teachers") url = `${BASE_URL}/api/teachers?yearId=${yearId}&subjectId=${subjectId}`;
-    else if (type === "chapters") url = `${BASE_URL}/api/chapters?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}`;
-    else if (type === "lectures") url = `${BASE_URL}/api/lectures?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}`;
-    else if (type === "videos") url = `${BASE_URL}/api/videos?yearId=${yearId}&subjectId=${subjectId}&teacherId=${teacherId}&chapterId=${chapterId}&lectureId=${lectureId}`;
-    else if (type === "exams") {
-      if (!lectureId) return res.status(400).json({ error: "LECTURE_ID_REQUIRED" });
-      url = `https://zeta-gray.vercel.app/api/proxy55/lecture-content/${lectureId}`;
-      isExternal = true;
-    }
-    else if (type === "exam_questions") {
-      if (!examId) return res.status(400).json({ error: "EXAM_ID_REQUIRED" });
-      url = `https://zeta-gray.vercel.app/user/exams/${examId}/questions`;
-      isExternal = true;
-    }
-    else if (type === "exam_submit") {
-      if (!examId) return res.status(400).json({ error: "EXAM_ID_REQUIRED" });
-      if (req.method !== "POST") return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
-      const body = req.body;
-      if (!body?.answers) return res.status(400).json({ error: "ANSWERS_REQUIRED" });
-
-      const submitUrl = `https://zeta-gray.vercel.app/user/exams/${examId}/submit`;
-      const submitResponse = await fetch(submitUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "User-Agent": "Secure-Proxy/1.0"
-        },
-        body: JSON.stringify(body)
-      });
-      if (!submitResponse.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
-      const submitData = await submitResponse.json();
-      return res.status(200).json(submitData);
-    }
-    else if (type === "exam_result") {
-      if (!rid) return res.status(400).json({ error: "RESULT_ID_REQUIRED" });
-      url = `https://zeta-gray.vercel.app/user/exams/result/${rid}`;
-      isExternal = true;
-    }
-    else return res.status(400).json({ error: "INVALID_TYPE" });
-
-    // ===== fetch data =====
-    const headers = { "User-Agent": "Secure-Proxy/1.0" };
-    if (!isExternal) {
-      const apiKey = process.env.API_KEY;
-      if (!apiKey) return res.status(500).json({ error: "NO_API_KEY" });
-      headers["x-api-key"] = apiKey;
-    }
-
-    const response = await fetch(url, { headers });
-    if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
-
-    const data = await response.json();
-
-    // ===== إعادة البيانات =====
-    if (type === "exam_questions" || type === "exam_result") return res.status(200).json(data);
-    return res.status(200).json(isExternal ? { exams: data?.content?.exams || [] } : data);
-
-  } catch (err) {
-    console.error("Proxy error:", err);
-    return res.status(500).json({ error: "SERVER_ERROR" });
-  }
+  return res.status(200).json(data);
 }
