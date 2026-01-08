@@ -232,14 +232,42 @@ const videosContainer = document.getElementById("videos-container");
 const examsContainer = document.getElementById("exams-container");
 const backBtn = document.getElementById("back");
 
+// جلب البيانات من localStorage
 const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
 const selectedLecture = JSON.parse(localStorage.getItem("selected_lecture"));
 
+// زر العودة
 backBtn.onclick = () => window.location.href = 'lecture_name.html';
 
+// ===== دالة الطرد الموحدة =====
+function logoutAndRedirect() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'index.html';
+}
+
+// ===== fetch آمنة تتحقق من انتهاء الجلسة =====
+async function safeFetch(url, options = {}) {
+  try {
+    const res = await fetch(url, { credentials: "include", ...options });
+
+    if (res.status === 401) {
+      logoutAndRedirect();
+      return null;
+    }
+
+    if (!res.ok) throw new Error("❌ حدث خطأ أثناء جلب البيانات");
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+// ===== إشعارات toast =====
 function showToast(msg, type='success', duration=3500){
   const container = document.getElementById("toast-container");
   const toast = document.createElement("div");
@@ -249,111 +277,96 @@ function showToast(msg, type='success', duration=3500){
   setTimeout(()=>toast.remove(), duration);
 }
 
+// ===== تحميل الفيديوهات =====
 async function loadVideos() {
   if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter || !selectedLecture) {
     showToast("⚠️ البيانات المطلوبة غير مكتملة", "error");
     return;
   }
 
-  try {
-    const tokenRes = await fetch("/api/get-token");
-    const { token } = await tokenRes.json();
+  const data = await safeFetch(
+    `/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`
+  );
 
-    const res = await fetch(
-      `/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`,
-      { headers: { "x-client-token": token } }
-    );
-
-    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
-    const data = await res.json();
-
-    videosContainer.innerHTML = "";
-    if (!data.videos || data.videos.length === 0) {
-      showToast("⚠️ لا توجد فيديوهات لهذه المحاضرة", "error");
-      return;
-    }
-
-    data.videos.forEach((video, index) => {
-      const div = document.createElement("div");
-      div.className = "video-box";
-
-      const title = document.createElement("div");
-      title.className = "video-title";
-      title.textContent = `فيديو ${index + 1}: ${video.title || "بدون اسم"}`;
-
-      const thumb = document.createElement("div");
-      thumb.className = "thumb";
-      thumb.onclick = () => {
-        if (!video.stream_url) { showToast("⚠️ لا يوجد رابط لهذا الفيديو", "error"); return; }
-        localStorage.setItem("video_sources", JSON.stringify([{ src: video.stream_url, type: "application/x-mpegURL" }]));
-        localStorage.setItem("video_title", video.title || `فيديو`);
-        window.location.href = 'player.html';
-      };
-
-      div.appendChild(title);
-      div.appendChild(thumb);
-      videosContainer.appendChild(div);
-    });
-  } catch(err){
-    console.error(err);
+  if (!data || !data.videos) {
     showToast("❌ حدث خطأ أثناء تحميل الفيديوهات", "error");
+    return;
   }
+
+  videosContainer.innerHTML = "";
+  if (!data.videos.length) {
+    showToast("⚠️ لا توجد فيديوهات لهذه المحاضرة", "error");
+    return;
+  }
+
+  data.videos.forEach((video, index) => {
+    const div = document.createElement("div");
+    div.className = "video-box";
+
+    const title = document.createElement("div");
+    title.className = "video-title";
+    title.textContent = `فيديو ${index + 1}: ${video.title || "بدون اسم"}`;
+
+    const thumb = document.createElement("div");
+    thumb.className = "thumb";
+    thumb.onclick = () => {
+      if (!video.stream_url) { showToast("⚠️ لا يوجد رابط لهذا الفيديو", "error"); return; }
+      localStorage.setItem("video_sources", JSON.stringify([{ src: video.stream_url, type: "application/x-mpegURL" }]));
+      localStorage.setItem("video_title", video.title || `فيديو`);
+      window.location.href = 'player.html';
+    };
+
+    div.append(title, thumb);
+    videosContainer.appendChild(div);
+  });
 }
 
+// ===== تحميل الامتحانات =====
 async function loadExams() {
   if (!selectedLecture) { showToast("⚠️ لم يتم تحديد المحاضرة", "error"); return; }
 
-  try {
-    const tokenRes = await fetch("/api/get-token");
-    const { token } = await tokenRes.json();
-
-    const res = await fetch(`/api/proxy?type=exams&lectureId=${selectedLecture.id}`, {
-      headers: { "x-client-token": token }
-    });
-    if (!res.ok) throw new Error("لم يتم العثور على الامتحانات");
-    const data = await res.json();
-
-    examsContainer.innerHTML = "";
-    if (!data.exams || data.exams.length === 0) {
-      showToast("⚠️ لا توجد امتحانات لهذه المحاضرة", "error");
-      return;
-    }
-
-    data.exams.forEach((exam) => {
-      const div = document.createElement("div");
-      div.className = "exam-box";
-
-      const duration = document.createElement("div");
-      duration.className = "exam-duration";
-      duration.textContent = exam.duration_minutes ? `⌛ ${exam.duration_minutes} دقيقة` : "اختبار شامل";
-
-      const title = document.createElement("div");
-      title.className = "exam-title";
-      title.textContent = exam.title || "بدون اسم";
-
-      const startBtn = document.createElement("button");
-      startBtn.className = "btn";
-      startBtn.textContent = "ابدأ الامتحان";
-      startBtn.onclick = () => {
-        localStorage.setItem("currentExamId", exam.id);
-        // تحويل مباشرة للامتحان
-        window.location.href = `exam.html?id=${exam.id}`;
-      };
-
-      div.appendChild(duration);
-      div.appendChild(title);
-      div.appendChild(startBtn);
-      examsContainer.appendChild(div);
-    });
-  } catch(err){
-    console.error(err);
+  const data = await safeFetch(`/api/proxy?type=exams&lectureId=${selectedLecture.id}`);
+  if (!data || !data.exams) {
     showToast("❌ فشل تحميل الامتحانات", "error");
+    return;
   }
+
+  examsContainer.innerHTML = "";
+  if (!data.exams.length) {
+    showToast("⚠️ لا توجد امتحانات لهذه المحاضرة", "error");
+    return;
+  }
+
+  data.exams.forEach((exam) => {
+    const div = document.createElement("div");
+    div.className = "exam-box";
+
+    const duration = document.createElement("div");
+    duration.className = "exam-duration";
+    duration.textContent = exam.duration_minutes ? `⌛ ${exam.duration_minutes} دقيقة` : "اختبار شامل";
+
+    const title = document.createElement("div");
+    title.className = "exam-title";
+    title.textContent = exam.title || "بدون اسم";
+
+    const startBtn = document.createElement("button");
+    startBtn.className = "btn";
+    startBtn.textContent = "ابدأ الامتحان";
+    startBtn.onclick = () => {
+      localStorage.setItem("currentExamId", exam.id);
+      window.location.href = `exam.html?id=${exam.id}`;
+    };
+
+    div.append(duration, title, startBtn);
+    examsContainer.appendChild(div);
+  });
 }
 
+// تشغيل التحميل
 loadVideos();
 loadExams();
 </script>
+
 
 </body>
 </html>

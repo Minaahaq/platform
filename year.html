@@ -152,33 +152,49 @@ h1 {
     <div class="year-meta">----</div>
   </div>
 </div>
-<script src="check_code.js"></script>
+
+  
 <script>
 const grid = document.getElementById("grid");
 
-async function fetchProtectedData() {
-  const tokenRes = await fetch("/api/get-token");
-  const { token } = await tokenRes.json();
-
-  const res = await fetch("/api/proxy?type=years", {
-    headers: {
-      "x-client-token": token
-    }
-  });
-
-  return res.json();
+// ===== دالة الطرد الموحدة =====
+function logoutAndRedirect() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'index.html';
 }
 
+// ===== fetch آمنة تتحقق من انتهاء الجلسة =====
+async function safeFetch(url, options = {}) {
+  try {
+    const res = await fetch(url, { credentials: "include", ...options });
+
+    if (res.status === 401) {
+      logoutAndRedirect();
+      return null;
+    }
+
+    if (!res.ok) throw new Error("❌ حدث خطأ أثناء جلب البيانات");
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+// ===== تحميل السنوات =====
 async function loadYears() {
   try {
-    grid.innerHTML = "";
-    const data = await fetchProtectedData();
+    grid.innerHTML = `<p style="text-align:center;color:#ffd700">⏳ جاري تحميل البيانات...</p>`;
+    const data = await safeFetch("/api/proxy?type=years");
 
-    if (!Array.isArray(data)) {
+    if (!data || !Array.isArray(data)) {
       console.error("Unexpected response:", data);
-      grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
+      grid.innerHTML = `<p style="text-align:center;color:#f55">❌ فشل تحميل البيانات</p>`;
       return;
     }
+
+    grid.innerHTML = ""; // تفريغ محتوى التحميل
 
     data.forEach(year => {
       const card = document.createElement("div");
@@ -190,20 +206,23 @@ async function loadYears() {
         <div class="year-name">${year.name}</div>
         <div class="year-meta">${year.subjects_count} مادة</div>
       `;
+
       card.onclick = () => {
         localStorage.setItem("selected_year", JSON.stringify(year));
         location.href = "subjects.html";
       };
+
       grid.appendChild(card);
     });
 
   } catch(err) {
-    grid.innerHTML = `<p style="text-align:center;color:#f55">فشل تحميل البيانات</p>`;
+    grid.innerHTML = `<p style="text-align:center;color:#f55">❌ فشل تحميل البيانات</p>`;
     console.error(err);
   }
 }
-  
+
 loadYears();
 </script>
+
 </body>
 </html>

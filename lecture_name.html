@@ -125,12 +125,15 @@
   <ul id="lectures-list">
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
-<script src="check_code.js"></script>
+
+  <script src="check_code.js"></script>
+
+  
 <script type="module">
 const lecturesList = document.getElementById("lectures-list");
 const backBtn = document.getElementById("backBtn");
 
-// جلب السنة والمادة والمدرس والفصل من localStorage
+// جلب السنة والمادة والمدرس والفصل
 const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
@@ -138,7 +141,7 @@ const selectedChapter = JSON.parse(localStorage.getItem("selected_chapter"));
 
 // التحقق من وجود كل البيانات
 if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) {
-  lecturesList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس أو الفصل.</li>';
+  lecturesList.innerHTML = '<li class="loading">⚠️ لم يتم تحديد السنة أو المادة أو المدرس أو الفصل.</li>';
 }
 
 // زر العودة
@@ -146,67 +149,82 @@ backBtn.onclick = () => {
   window.location.href = 'chapters.html';
 };
 
-// تحميل المحاضرات من API عبر Proxy
+// ===== دالة الطرد الموحدة =====
+function logoutAndRedirect() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'index.html';
+}
+
+// ===== fetch آمنة تتحقق من انتهاء الجلسة =====
+async function safeFetch(url, options = {}) {
+  try {
+    const res = await fetch(url, options);
+
+    // إذا انتهت الجلسة
+    if (res.status === 401) {
+      logoutAndRedirect();
+      return null;
+    }
+
+    if (!res.ok) throw new Error("❌ حدث خطأ أثناء جلب البيانات");
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+// ===== تحميل المحاضرات =====
 async function loadLectures() {
   if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) return;
 
-  try {
-    // 1️⃣ جلب التوكن
-    const tokenRes = await fetch("/api/get-token");
-    const { token } = await tokenRes.json();
+  const lectures = await safeFetch(
+    `/api/proxy?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`,
+    { credentials: "include" }
+  );
 
-    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
-    const res = await fetch(
-      `/api/proxy?type=lectures&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}`,
-      {
-        headers: {
-          "x-client-token": token
-        }
-      }
-    );
-
-    if (!res.ok) throw new Error("لم يتم العثور على البيانات");
-
-    const lectures = await res.json(); // المحاضرات
-    lecturesList.innerHTML = "";
-
-    if (!lectures || lectures.length === 0) {
-      lecturesList.innerHTML = "<li>⚠️ لا توجد محاضرات لهذا الفصل.</li>";
-      return;
-    }
-
-    // عرض المحاضرات مع عدد الفيديوهات
-    lectures.forEach(lec => {
-      const li = document.createElement("li");
-
-      const nameSpan = document.createElement("span");
-      nameSpan.textContent = lec.name;
-
-      const videoCount = document.createElement("div");
-      videoCount.style.fontSize = "0.85rem";
-      videoCount.style.color = "#ffd700";
-      videoCount.textContent = `${lec.videos_count || 0} فيديو`;
-
-      li.appendChild(nameSpan);
-      li.appendChild(videoCount);
-
-      li.onclick = () => {
-        localStorage.setItem('selected_lecture', JSON.stringify({ id: lec.id, name: lec.name }));
-        window.location.href = 'videos.html';
-      };
-
-      lecturesList.appendChild(li);
-    });
-
-  } catch (err) {
-    console.error("❌ خطأ أثناء جلب البيانات من API:", err);
-    lecturesList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
+  if (!lectures) {
+    lecturesList.innerHTML = '<li class="loading">❌ حدث خطأ أثناء تحميل البيانات.</li>';
+    return;
   }
+
+  lecturesList.innerHTML = "";
+
+  if (!lectures.length) {
+    lecturesList.innerHTML = '<li class="loading">⚠️ لا توجد محاضرات لهذا الفصل.</li>';
+    return;
+  }
+
+  // عرض المحاضرات مع عدد الفيديوهات
+  lectures.forEach(lec => {
+    const li = document.createElement("li");
+    li.className = "lecture-item"; // لتنسيق مشابه للمدرسين والفصول
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = lec.name;
+
+    const videoCount = document.createElement("div");
+    videoCount.style.fontSize = "0.85rem";
+    videoCount.style.color = "#ffd700";
+    videoCount.textContent = `${lec.videos_count || 0} فيديو`;
+
+    li.append(nameSpan, videoCount);
+
+    li.onclick = () => {
+      localStorage.setItem('selected_lecture', JSON.stringify({ id: lec.id, name: lec.name }));
+      window.location.href = 'videos.html';
+    };
+
+    lecturesList.appendChild(li);
+  });
 }
 
 // تنفيذ التحميل مباشرة
 loadLectures();
 </script>
+
 
 </body>
 </html>

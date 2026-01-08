@@ -183,7 +183,9 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
-<script src="check_code.js"></script>
+
+  <script src="check_code.js"></script>
+
 
 <script type="module">
 const chaptersList = document.getElementById("chapters-list");
@@ -195,7 +197,7 @@ const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedTeacher = JSON.parse(localStorage.getItem("selected_teacher"));
 
 if (!selectedYear || !selectedSubject || !selectedTeacher) {
-  chaptersList.innerHTML = '<li>⚠️ لم يتم تحديد السنة أو المادة أو المدرس.</li>';
+  chaptersList.innerHTML = '<li class="loading">⚠️ لم يتم تحديد السنة أو المادة أو المدرس.</li>';
 }
 
 // زر العودة
@@ -203,22 +205,29 @@ backBtn.onclick = () => {
   window.location.href = "teachers.html";
 };
 
-// تحميل الفصول عبر البروكسي
+// ===== دالة الخروج وطرد المستخدم =====
+function logoutAndRedirect() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'index.html';
+}
+
+// ===== تحميل الفصول =====
 async function loadChapters() {
   if (!selectedYear || !selectedSubject || !selectedTeacher) return;
 
   try {
-    // 1️⃣ جلب التوكن
-    const tokenRes = await fetch("/api/get-token");
-    const { token } = await tokenRes.json();
-
-    // 2️⃣ الطلب المحمي
+    // الطلب مباشرة عبر Proxy بدون توكن
     const res = await fetch(
       `/api/proxy?type=chapters&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}`,
-      {
-        headers: { "x-client-token": token }
-      }
+      { credentials: "include" }
     );
+
+    // ===== تحقق من الجلسة =====
+    if (res.status === 401) {
+      logoutAndRedirect();
+      return;
+    }
 
     if (!res.ok) throw new Error("لم يتم العثور على البيانات");
 
@@ -226,8 +235,8 @@ async function loadChapters() {
     chaptersList.innerHTML = "";
 
     // لا توجد فصول
-    if (chapters.length === 0) {
-      chaptersList.innerHTML = "<li>⚠️ لا يوجد أبواب لهذا المدرس.</li>";
+    if (!chapters.length) {
+      chaptersList.innerHTML = '<li class="loading">⚠️ لا يوجد أبواب لهذا المدرس.</li>';
       return;
     }
 
@@ -249,7 +258,7 @@ async function loadChapters() {
 
   } catch (err) {
     console.error("❌ خطأ أثناء جلب البيانات:", err);
-    chaptersList.innerHTML = "<li>❌ حدث خطأ أثناء تحميل البيانات.</li>";
+    chaptersList.innerHTML = '<li class="loading">❌ حدث خطأ أثناء تحميل البيانات.</li>';
   }
 }
 
@@ -271,6 +280,7 @@ darkToggle?.addEventListener("click", () => {
   darkToggle.classList.toggle("active");
 });
 </script>
+
 
 </body>
 </html>
