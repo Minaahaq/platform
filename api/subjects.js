@@ -1,36 +1,5 @@
 import fs from "fs/promises";
 import path from "path";
-
-const PLATFORM_NAME = "الثانوية بلس";
-
-// 👈 حط الموقعين هنا
-const ALLOWED_DOMAINS = [
-  "https://platform-sigma-seven.vercel.app",
-  "https://plus-teal.vercel.app"
-];
-
-// تحقق من الدومين
-function isAllowed(req) {
-  const origin = req.headers.origin || "";
-  const referer = req.headers.referer || "";
-
-  return ALLOWED_DOMAINS.some(domain =>
-    origin.includes(domain) || referer.includes(domain)
-  );
-}
-
-// داتا مزورة لغير المسموح
-function fakeSubjects() {
-  return [
-    {
-      id: 999,
-      name: "غير مصرح بالوصول | الثانوية بلس",
-      teachers_count: 0,
-      powered_by: PLATFORM_NAME
-    }
-  ];
-}
-
 export default async function handler(req, res) {
   const yearId = req.query.yearId;
   if (!yearId) return res.status(400).json({ error: "yearId مطلوب" });
