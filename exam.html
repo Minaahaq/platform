@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امتحان تفاعلي - Full Mark</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root { --green-neon: #00F5C4; --main-bg: #08402C; --dark-bg: #042016; --card-bg: rgba(255, 255, 255, 0.08); }
+body { background: linear-gradient(180deg, var(--main-bg) 0%, var(--dark-bg) 100%); font-family: 'Cairo', sans-serif; color: white; margin: 0; min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+.q-card { background: var(--card-bg); border-radius: 35px; border: 1px solid rgba(255,255,255,0.15); padding: 40px; backdrop-filter: blur(15px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.opt-btn { width: 100%; text-align: right; padding: 20px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; margin-bottom: 15px; transition: 0.2s; font-weight: bold; color: #ecfdf5; }
+.opt-btn:hover { border-color: var(--green-neon); background: rgba(0,245,196,0.05); }
+.opt-btn.selected { border-color: var(--green-neon); background: rgba(0,245,196,0.15); box-shadow: 0 0 20px rgba(0,245,196,0.1); }
+.nav-item { height: 45px; width: 45px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; cursor: pointer; transition: 0.2s; color: var(--green-neon); }
+.nav-item.current { border-color: var(--green-neon); background: rgba(0,245,196,0.2); color: white; box-shadow: 0 0 15px rgba(0,245,196,0.3); }
+.nav-item.answered { background: var(--green-neon); color: var(--dark-bg); border-color: var(--green-neon); }
+.btn-action { padding: 15px 40px; border-radius: 18px; font-weight: 800; transition: 0.3s; cursor: pointer; }
+.btn-next { background: var(--green-neon); color: var(--dark-bg); }
+.btn-prev { background: transparent; color: var(--green-neon); border: 1px solid var(--green-neon); }
+.stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 10% 20%, #fff 1px, transparent 1%); background-size: 100px 100px; z-index: -1; opacity: 0.5; }
+
+/* ===== TOAST CSS ===== */
+#toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: rgba(0,0,0,0.7); color: #00F5C4; padding: 15px 25px; border-radius: 15px; font-weight: bold; display: flex; align-items: center; gap: 10px; min-width: 250px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); animation: slideDown 0.3s ease forwards; }
+.toast.success { border-left: 5px solid #00F5C4; }
+.toast.error { border-left: 5px solid #FF4C4C; color: #FF4C4C; }
+@keyframes slideDown { from {opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
+
+/* ===== CONFIRM MODAL ===== */
+#confirm-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:99999; display:none; }
+#confirm-box { background: var(--dark-bg); padding:30px; border-radius:20px; text-align:center; min-width:280px; max-width:90%; }
+#confirm-box p { margin-bottom:20px; font-size:18px; }
+#confirm-box .flex { justify-content:center; gap:15px; flex-wrap:wrap; }
+#confirm-box button { padding:10px 20px; font-weight:bold; border-radius:12px; cursor:pointer; transition:0.3s; }
+#confirm-box .yes { background: var(--green-neon); color: var(--dark-bg); border:none; }
+#confirm-box .no { background:transparent; color:var(--green-neon); border:1px solid var(--green-neon); }
+
+/* ===== Responsive ===== */
+@media (max-width:1024px){ .grid {grid-template-columns:1fr;} .lg\\:col-span-3{grid-column: span 1 / span 1;} }
+@media (max-width:640px){ body{padding:10px;} .q-card{padding:25px;} .btn-action{padding:10px 20px; font-size:14px;} #confirm-box p{font-size:16px;} #confirm-box button{padding:8px 15px; font-size:14px;} }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div id="toast-container"></div>
+<div id="confirm-overlay">
+    <div id="confirm-box">
+        <p id="confirm-msg">هل أنت متأكد؟</p>
+        <div class="flex">
+            <button class="yes" id="confirm-yes">نعم</button>
+            <button class="no" id="confirm-no">لا</button>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-[1200px] w-full">
+    <header class="shadow-2xl mb-8 flex flex-col sm:flex-row justify-between items-center bg-[#0b2e24] p-5 rounded-[25px] border border-emerald-900/50 gap-4">
+        <div>
+            <h1 id="exam-title" class="text-2xl font-black text-white">جاري التحميل...</h1>
+            <p class="text-emerald-500/60 text-sm font-bold">لوحة امتحانات</p>
+        </div>
+        <div class="bg-[#00F5C4]/10 text-[#00F5C4] border border-[#00F5C4] px-6 py-2 rounded-2xl font-black text-xl flex gap-2">
+            <span class="animate-pulse">⏱️</span> <span id="timer">00:00:00</span>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div class="lg:col-span-3 space-y-6">
+            <div id="question-container"></div>
+            <div class="flex justify-between items-center pt-4 flex-wrap gap-4">
+                <button id="prevBtn" onclick="changeQ(-1)" class="btn-action btn-prev disabled:opacity-30">السابق</button>
+                <div class="flex gap-4 flex-wrap">
+                    <button id="nextBtn" onclick="changeQ(1)" class="btn-action btn-next">التالي</button>
+                    <button id="submitBtn" onclick="submitExam()" class="btn-action btn-next hidden">تسليم الامتحان</button>
+                </div>
+            </div>
+        </div>
+        <aside class="p-6 h-fit shadow-xl bg-[#0b2e24] border border-white/10 rounded-[35px]">
+            <h3 class="font-black mb-6 text-center text-emerald-400">خريطة الأسئلة</h3>
+            <div id="navGrid" class="grid grid-cols-4 gap-3"></div>
+            <div class="mt-8 pt-6 border-t border-emerald-900/50 text-sm flex justify-between font-bold text-white">
+                <span>تم الحل: <b id="ans-count" class="text-emerald-400">0</b></span>
+                <span>متبقي: <b id="rem-count" class="text-red-400">0</b></span>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+// ===== TOAST FUNCTION =====
+function showToast(msg, type='success', duration=4000){
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<i class="${type==='success'?'fas fa-check-circle':'fas fa-exclamation-circle'}"></i> ${msg}`;
+    container.appendChild(toast);
+    setTimeout(()=>{ toast.remove(); }, duration);
+}
+
+// ===== CONFIRM FUNCTION =====
+function showConfirm(message, callbackYes){
+    const overlay = document.getElementById('confirm-overlay');
+    const msgEl = document.getElementById('confirm-msg');
+    const yesBtn = document.getElementById('confirm-yes');
+    const noBtn = document.getElementById('confirm-no');
+
+    msgEl.innerText = message;
+    overlay.style.display = 'flex';
+
+    yesBtn.onclick = ()=>{
+        overlay.style.display = 'none';
+        callbackYes();
+    };
+    noBtn.onclick = ()=>{
+        overlay.style.display = 'none';
+    };
+}
+
+// ===== EXAM LOGIC =====
+const API_PROXY = '/api/proxy';
+const API_TOKEN = '/api/get-token';
+const urlParams = new URLSearchParams(window.location.search);
+const examId = urlParams.get("id");
+
+if (!examId) { showToast("رقم الامتحان مفقود!", "error"); window.location.href = "videos.html"; }
+
+let questions = [], currentIdx = 0, userAnswers = {}, timeLeft = 0, clientToken = null;
+
+async function fetchToken() {
+    try {
+        const res = await fetch(API_TOKEN);
+        const data = await res.json();
+        if (!data.token) throw new Error("لم يتم الحصول على التوكن");
+        clientToken = data.token;
+    } catch (e) { console.error("Token Error:", e); showToast("فشل الاتصال بالسيرفر!", "error"); }
+}
+
+async function initExam() {
+    await fetchToken();
+    try {
+        const res = await fetch(`${API_PROXY}?type=exam_questions&examId=${examId}`, {
+            headers: { "x-client-token": clientToken }
+        });
+        const result = await res.json();
+        const examData = result.data?.data?.exam || {};
+        const questionsData = result.data?.data?.questions || [];
+        if (!questionsData.length) { showToast("لا توجد أسئلة لهذا الامتحان.", "error"); return; }
+
+        questions = questionsData;
+        timeLeft = (examData.duration_minutes || 60)*60;
+        document.getElementById('exam-title').innerText = examData.title || "امتحان";
+
+        startTimer(); renderNav(); renderQuestion();
+    } catch (e) { console.error(e); document.getElementById('exam-title').innerText = "فشل التحميل!"; showToast("حدث خطأ أثناء التحميل.", "error"); }
+}
+
+function renderQuestion() {
+    const q = questions[currentIdx]; if(!q) return;
+    const container = document.getElementById('question-container');
+    container.innerHTML = `
+        <div class="q-card animate-fadeIn">
+            <div class="flex justify-between items-center mb-8">
+                <span class="bg-emerald-500/10 text-emerald-400 px-5 py-2 rounded-full text-xs font-black border border-emerald-500/20">
+                    سؤال ${currentIdx+1} من ${questions.length}
+                </span>
+            </div>
+            <p class="text-2xl font-bold mb-10 leading-relaxed text-emerald-50">${q.text}</p>
+            ${q.image_url? `<img src="${q.image_url}" class="w-full rounded-[30px] mb-10 border-2 border-emerald-900/50 shadow-2xl">` : ''}
+            <div class="grid gap-4">
+                ${q.answers.map(a=>`<button class="opt-btn ${userAnswers[q.id]==a.id?'selected':''}" onclick="selectAnswer('${q.id}','${a.id}',this)">${a.text}</button>`).join('')}
+            </div>
+        </div>
+    `;
+    document.getElementById('prevBtn').disabled = (currentIdx===0);
+    const isLast = (currentIdx === questions.length-1);
+    document.getElementById('nextBtn').classList.toggle('hidden', isLast);
+    document.getElementById('submitBtn').classList.toggle('hidden', !isLast);
+}
+
+function selectAnswer(qid, aid, btn) {
+    userAnswers[qid] = aid;
+    btn.parentElement.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    updateCounts(); renderNav();
+}
+
+function renderNav() {
+    const grid = document.getElementById('navGrid'); grid.innerHTML = '';
+    questions.forEach((q,i)=>{
+        const item = document.createElement('div');
+        let cls = (i===currentIdx)?'current':'';
+        if(userAnswers[q.id]) cls+=' answered';
+        item.className = `nav-item ${cls}`;
+        item.innerText = i+1;
+        item.onclick = ()=>{currentIdx=i; renderQuestion(); renderNav();};
+        grid.appendChild(item);
+    });
+    updateCounts();
+}
+
+function updateCounts() {
+    const answered = Object.keys(userAnswers).length;
+    document.getElementById('ans-count').innerText = answered;
+    document.getElementById('rem-count').innerText = questions.length-answered;
+}
+
+function changeQ(dir){ currentIdx+=dir; renderQuestion(); renderNav(); }
+
+function startTimer(){
+    const timerEl = document.getElementById('timer');
+    setInterval(()=>{
+        if(timeLeft<=0){ submitExam(true); return; }
+        timeLeft--;
+        const h=Math.floor(timeLeft/3600);
+        const m=Math.floor((timeLeft%3600)/60);
+        const s=timeLeft%60;
+        timerEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    },1000);
+}
+
+async function submitExam(auto=false){
+    if(!auto){
+        showConfirm("هل أنت متأكدة من تسليم إجاباتك؟", ()=>submitExam(true));
+        return;
+    }
+
+    const answersPayload = {};
+    for(const [k,v] of Object.entries(userAnswers)) answersPayload[k]=String(v);
+
+    try{
+        const res = await fetch(`${API_PROXY}?type=exam_submit&examId=${examId}`, {
+            method:'POST',
+            headers:{ "Content-Type":"application/json", "x-client-token": clientToken },
+            body: JSON.stringify({ answers: answersPayload })
+        });
+        const result = await res.json();
+        if(result.error){ showToast("خطأ من السيرفر: "+result.error,"error"); return; }
+
+        if(result.success && result.data && result.data.result){
+            const r = result.data.result;
+            localStorage.setItem('lastExamResult', JSON.stringify({
+                result_id:r.result_id, score:r.score, total:r.total_questions,
+                correct:r.correct_answers, exam_id:r.exam_id
+            }));
+            showToast("تم التسليم بنجاح! جاري الانتقال للنتيجة...");
+            setTimeout(()=>{ window.location.href=`results.html?rid=${r.result_id}`; },1500);
+        } else { showToast("حدث خطأ أثناء التسليم، يرجى المحاولة مرة أخرى.","error"); }
+    } catch(e){ console.error(e); showToast("خطأ في الشبكة!","error"); }
+}
+
+initExam();
+</script>
+
+</body>
+</html>
+

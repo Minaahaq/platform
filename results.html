@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تحليل نتيجتك - Full Mark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --green-neon: #00F5C4; --main-bg: #061b14; --card-bg: #0b2e24; }
+        body { background: var(--main-bg); font-family: 'Cairo', sans-serif; color: white; margin: 0; padding: 20px; }
+        .score-card { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border-radius: 35px; border: 1px solid var(--green-neon); }
+        .q-card { background: var(--card-bg); border-radius: 25px; border: 1px solid #14532d; margin-bottom: 20px; }
+        .opt { padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 2px solid #164e63; font-weight: bold; transition: 0.3s; }
+        .opt.correct { background: rgba(6, 95, 70, 0.8); border-color: var(--green-neon); color: white; box-shadow: 0 0 10px rgba(0, 245, 196, 0.2); }
+        .opt.wrong { background: rgba(127, 29, 29, 0.8); border-color: #ef4444; color: white; }
+        .opt.user-correct { border-left: 5px solid white; }
+        .map-box { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+        .bg-map-correct { background: var(--green-neon); color: #061b14; }
+        .bg-map-wrong { background: #ef4444; color: white; }
+        .bg-map-none { background: rgba(255,255,255,0.1); color: #94a3b8; }
+        .btn-main { background: var(--green-neon); color: #061b14; padding: 12px 30px; border-radius: 15px; font-weight: 900; transition: 0.3s; cursor: pointer; }
+        .loader { width: 30px; height: 30px; border: 4px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+<div class="max-w-4xl mx-auto">
+    <header class="flex justify-between items-center mb-8 bg-[#0b2e24] p-5 rounded-[25px] border border-emerald-900/50">
+        <h1 class="text-xl font-black">📊 نتيجة الاختبار</h1>
+    </header>
+
+    <div class="score-card p-10 text-center shadow-2xl mb-8">
+        <p class="text-emerald-300 font-bold mb-2 uppercase text-sm tracking-widest">مستوى الأداء</p>
+        <div class="text-6xl font-black mb-4" id="score-display">-- / --</div>
+        <div class="bg-black/30 inline-block px-8 py-2 rounded-full font-black text-emerald-400 text-2xl" id="percent-display">--%</div>
+        <div class="mt-8">
+            <button id="detailsBtn" onclick="fetchDetails()" class="btn-main">عرض تفاصيل الأسئلة</button>
+        </div>
+    </div>
+
+    <div id="mapSection" class="hidden bg-[#0b2e24] p-6 rounded-[30px] border border-emerald-900/50 mb-8">
+        <h3 class="text-center font-black mb-5 text-emerald-400">خريطة الإجابات</h3>
+        <div id="navMap" class="flex flex-wrap gap-3 justify-center"></div>
+    </div>
+
+    <div id="detailsArea" class="hidden space-y-6"></div>
+    <div id="loader" class="hidden text-center py-10"><span class="loader"></span><p class="mt-4 text-emerald-400 font-bold">جاري تحميل التفاصيل...</p></div>
+</div>
+
+<script>
+const PROXY_BASE = '/api/proxy';
+let currentRid = new URLSearchParams(window.location.search).get('rid');
+
+// وظيفة للحصول على توكن صالح
+async function getToken() {
+    let tokenData = JSON.parse(localStorage.getItem('client_token') || '{}');
+
+    // لو مفيش توكن أو انتهت صلاحيته
+    if (!tokenData.token || Date.now() > tokenData.expires) {
+        const res = await fetch('/api/get-token', { credentials: 'same-origin' });
+        tokenData = await res.json();
+        localStorage.setItem('client_token', JSON.stringify(tokenData));
+    }
+
+    return tokenData.token;
+}
+
+function init() {
+    const cached = JSON.parse(localStorage.getItem('lastExamResult'));
+    if (!currentRid && cached) currentRid = cached.result_id;
+
+    if (cached) {
+        document.getElementById('score-display').innerText = `${cached.correct} / ${cached.total}`;
+        const percent = Math.round((cached.correct / cached.total) * 100) || 0;
+        document.getElementById('percent-display').innerText = `${percent}%`;
+    }
+}
+
+async function fetchDetails() {
+    if(!currentRid) return alert("لا يوجد رقم نتيجة لعرضها!");
+
+    const loader = document.getElementById('loader');
+    const detailsBtn = document.getElementById('detailsBtn');
+    const mapSection = document.getElementById('mapSection');
+    const detailsArea = document.getElementById('detailsArea');
+
+    detailsBtn.classList.add('hidden');
+    loader.classList.remove('hidden');
+
+    try {
+        // ✅ جلب توكن جديد أو صالح قبل أي طلب
+        const CLIENT_TOKEN = await getToken();
+
+        const res = await fetch(`${PROXY_BASE}?type=exam_result&rid=${currentRid}`, {
+            headers: { "x-client-token": CLIENT_TOKEN }
+        });
+        const result = await res.json();
+
+        const dataRoot = result.data?.data || result.data || result;
+        const questions = dataRoot.questions || [];
+
+        const navMap = document.getElementById('navMap');
+        navMap.innerHTML = '';
+        questions.forEach((q, i) => {
+            const status = q.is_correct ? 'bg-map-correct' : (q.user_answer_id ? 'bg-map-wrong' : 'bg-map-none');
+            navMap.innerHTML += `<div class="map-box ${status}">${i+1}</div>`;
+        });
+
+        detailsArea.innerHTML = '<h2 class="text-2xl font-black mb-6 text-emerald-400">المراجعة التفصيلية:</h2>';
+
+        questions.forEach((q, idx) => {
+            detailsArea.innerHTML += `
+                <div class="q-card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-black text-emerald-400">السؤال ${idx+1}</span>
+                        <span class="${q.is_correct ? 'text-emerald-400' : 'text-red-400'} font-bold">
+                            ${q.is_correct ? 'إجابة صحيحة ✓' : 'إجابة خاطئة ✗'}
+                        </span>
+                    </div>
+                    <p class="text-xl font-bold mb-6">${q.text || 'نص السؤال'}</p>
+                    ${q.image_url ? `<img src="${q.image_url}" class="w-full rounded-2xl mb-6 border border-emerald-900/50 shadow-xl">` : ''}
+                    <div class="space-y-3">
+                        ${q.answers.map(a => {
+                            let cls = '';
+                            let label = '';
+                            if (a.is_correct) { cls = 'correct'; label = '<i class="fas fa-check float-left"></i>'; }
+                            if (q.user_answer_id === a.id) {
+                                if (!a.is_correct) { cls = 'wrong'; label = '<span class="float-left text-xs">(إجابتك) ✗</span>'; }
+                                else { cls += ' user-correct'; label = '<span class="float-left text-xs font-black">(إجابتك) ✓</span>'; }
+                            }
+                            return `<div class="opt ${cls}">${a.text} ${label}</div>`;
+                        }).join('')}
+                    </div>
+                </div>`;
+        });
+
+        loader.classList.add('hidden');
+        mapSection.classList.remove('hidden');
+        detailsArea.classList.remove('hidden');
+
+    } catch (e) {
+        console.error(e);
+        loader.innerHTML = "<p class='text-red-500'>فشل تحميل المراجعة، جرب تاني.</p>";
+        detailsBtn.classList.remove('hidden');
+    }
+}
+
+window.onload = init;
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>
