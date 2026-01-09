@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
   // ✅ إنشاء session جديدة
   res.setHeader("Set-Cookie", [
-    `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=1800`
+    `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
   ]);
 
   return res.status(200).json({ ok: true });
