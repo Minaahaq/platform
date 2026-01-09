@@ -26,12 +26,11 @@ export default async function handler(req, res) {
     .update(JSON.stringify(payload))
     .digest("hex");
 
-  const session = Buffer
-    .from(JSON.stringify({ payload, sig }))
-    .toString("base64");
+  const session = Buffer.from(JSON.stringify({ payload, sig })).toString("base64");
 
+  // ✅ هنا خليت Max-Age = شهر (30 يوم)
   res.setHeader("Set-Cookie", [
-    `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000000`
+    `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000`
   ]);
 
   return res.status(200).json({ ok: true });

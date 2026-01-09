@@ -40,8 +40,8 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "DEVICE_MISMATCH" });
   }
 
-  // ===== 5 minutes expiry =====
- if (Date.now() - session.payload.t > 2592000000) { // 30 يوم
+ // ===== 30 days expiry =====
+if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
   return res.status(401).json({ error: "SESSION_EXPIRED" });
 }
 
@@ -84,4 +84,21 @@ export default async function handler(req, res) {
   if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
   const data = await response.json();
 
-  
+  // ===== renew session (auto) =====
+  session.payload.t = Date.now();
+
+  const newSig = crypto
+    .createHmac("sha256", SECRET)
+    .update(JSON.stringify(session.payload))
+    .digest("hex");
+
+  const newSession = Buffer
+    .from(JSON.stringify({ payload: session.payload, sig: newSig }))
+    .toString("base64");
+
+  res.setHeader("Set-Cookie", [
+    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
+  ]);
+
+  return res.status(200).json(data);
+}
