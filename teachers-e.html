@@ -198,7 +198,7 @@
 
   <!-- ✅ الشريط العلوي -->
   <div class="topbar">
-    <div class="menu-btn" onclick="window.location.href='subjects.html'">⬅</div>
+    <div class="menu-btn" onclick="window.location.href='subjects-e.html'">⬅</div>
     <div class="title">𝑺𝒖𝒃𝒋𝒆𝒄𝒕 𝑻𝒆𝒂𝒄𝒉𝒆𝒓𝒔</div>
     <div class="icons">
       <div class="toggle-dark" id="darkToggle"></div>
@@ -218,7 +218,6 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
- <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
 
   <script src="check_code.js"></script>
 
@@ -307,7 +306,7 @@ async function loadTeachers(yearId, subjectId) {
       // الضغط على المدرس يحفظه وينتقل للفصول
       li.onclick = () => {
         localStorage.setItem('selected_teacher', JSON.stringify(teacher));
-        window.location.href = 'chapters.html';
+        window.location.href = 'chapters-e.html';
       };
 
       teachersList.appendChild(li);
