@@ -13,12 +13,21 @@ export default async function handler(req, res) {
   const SECRET = process.env.SESSION_SECRET;
   if (!SECRET) return res.status(500).json({ error: "NO_SECRET" });
 
+  const ua = req.headers["user-agent"] || "";
+
+  // ✅ السماح فقط للتطبيق أو WebView (اختياري)
+  if (!(/AppCreator24|wv|WebView/i.test(ua))) {
+    return res.status(403).json({ error: "APP_ONLY" });
+  }
+
+  // ===== توليد payload جديد للجلسة =====
   const payload = {
-    c: code,
-    d: device,
+    c: code,                    // الكود
+    d: device,                  // الجهاز الحالي
     i: req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress,
-    ua: req.headers["user-agent"] || "",
-    t: Date.now()
+    ua,                         // الـ user-agent
+    t: Date.now(),               // وقت توليد الجلسة
+    renewed: true                // علامة على تجديد الجلسة
   };
 
   const sig = crypto
@@ -28,10 +37,10 @@ export default async function handler(req, res) {
 
   const session = Buffer.from(JSON.stringify({ payload, sig })).toString("base64");
 
-  // ✅ هنا خليت Max-Age = شهر (30 يوم)
+  // ✅ جلسة لمدة شهر (30 يوم)
   res.setHeader("Set-Cookie", [
     `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000`
   ]);
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, message: "SESSION_CREATED" });
 }
