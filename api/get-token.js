@@ -13,9 +13,14 @@ export default async function handler(req, res) {
   }
 
   // ❌ منع المتصفح – السماح للتطبيق فقط (WebView / APK Creator)
-  if (!/Android|wv|WebView/i.test(ua)) {
-    return res.status(403).json({ error: "APP_ONLY" });
-  }
+  const isApp =
+  ua.includes("AppCreator24") ||
+  ua.includes("wv") ||
+  ua.includes("WebView");
+
+if (!isApp) {
+  return res.status(403).json({ error: "APP_ONLY" });
+}
 
   const { code, device } = req.body || {};
   if (!code || !device) {
