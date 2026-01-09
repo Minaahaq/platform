@@ -161,42 +161,20 @@ const grid = document.getElementById("grid");
 function logoutAndRedirect() {
   localStorage.clear();
   sessionStorage.clear();
-  location.replace("index.html");
+  window.location.href = 'index.html';
 }
 
-// ===== توليد الجلسة (بدل تسجيل الدخول) =====
-async function initSession() {
-  try {
-    const res = await fetch("/api/get-token", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        code: "APP_START",
-        device: getDeviceID()
-      })
-    });
-
-    if (!res.ok) throw new Error("SESSION_FAILED");
-  } catch (err) {
-    logoutAndRedirect();
-  }
-}
-
-// ===== fetch آمنة تتحقق من الجلسة =====
+// ===== fetch آمنة تتحقق من انتهاء الجلسة =====
 async function safeFetch(url, options = {}) {
   try {
-    const res = await fetch(url, {
-      credentials: "include",
-      ...options
-    });
+    const res = await fetch(url, { credentials: "include", ...options });
 
-    if (res.status === 401 || res.status === 403) {
+    if (res.status === 401) {
       logoutAndRedirect();
       return null;
     }
 
-    if (!res.ok) throw new Error("FETCH_ERROR");
+    if (!res.ok) throw new Error("❌ حدث خطأ أثناء جلب البيانات");
     return await res.json();
   } catch (err) {
     console.error(err);
@@ -206,42 +184,44 @@ async function safeFetch(url, options = {}) {
 
 // ===== تحميل السنوات =====
 async function loadYears() {
-  grid.innerHTML = `<p style="text-align:center;color:#ffd700">⏳ جاري تحميل البيانات...</p>`;
+  try {
+    grid.innerHTML = `<p style="text-align:center;color:#ffd700">⏳ جاري تحميل البيانات...</p>`;
+    const data = await safeFetch("/api/proxy?type=years");
 
-  const data = await safeFetch("/api/proxy?type=years");
+    if (!data || !Array.isArray(data)) {
+      console.error("Unexpected response:", data);
+      grid.innerHTML = `<p style="text-align:center;color:#f55">❌ فشل تحميل البيانات</p>`;
+      return;
+    }
 
-  if (!Array.isArray(data)) {
+    grid.innerHTML = ""; // تفريغ محتوى التحميل
+
+    data.forEach(year => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="icon">
+          <img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}">
+        </div>
+        <div class="year-name">${year.name}</div>
+        <div class="year-meta">${year.subjects_count} مادة</div>
+      `;
+
+      card.onclick = () => {
+        localStorage.setItem("selected_year", JSON.stringify(year));
+        location.href = "subjects.html";
+      };
+
+      grid.appendChild(card);
+    });
+
+  } catch(err) {
     grid.innerHTML = `<p style="text-align:center;color:#f55">❌ فشل تحميل البيانات</p>`;
-    return;
+    console.error(err);
   }
-
-  grid.innerHTML = "";
-
-  data.forEach(year => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="icon">
-        <img src="${year.image_url || 'https://img.icons8.com/ios-filled/100/ffd700/calendar.png'}">
-      </div>
-      <div class="year-name">${year.name}</div>
-      <div class="year-meta">${year.subjects_count} مادة</div>
-    `;
-
-    card.onclick = () => {
-      localStorage.setItem("selected_year", JSON.stringify(year));
-      location.href = "subjects.html";
-    };
-
-    grid.appendChild(card);
-  });
 }
 
-// ===== التشغيل =====
-(async () => {
-  await initSession(); // 🔥 يولد الجلسة
-  await loadYears();  // 🔥 يحمّل السنين
-})();
+loadYears();
 </script>
 
 </body>
