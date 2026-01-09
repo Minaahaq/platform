@@ -97,7 +97,7 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
     .toString("base64");
 
   res.setHeader("Set-Cookie", [
-    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
+    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000`
   ]);
 
   return res.status(200).json(data);
