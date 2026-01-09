@@ -202,7 +202,7 @@ if (!selectedYear || !selectedSubject || !selectedTeacher) {
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = "teachers.html";
+  window.location.href = "teachers-e.html";
 };
 
 // ===== دالة الخروج وطرد المستخدم =====
@@ -250,7 +250,7 @@ async function loadChapters() {
           "selected_chapter",
           JSON.stringify({ id: chapter.id, name: chapter.name })
         );
-        window.location.href = "lecture_name.html";
+        window.location.href = "lecture_name-e.html";
       };
 
       chaptersList.appendChild(li);
