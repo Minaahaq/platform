@@ -198,7 +198,7 @@
 
   <!-- ✅ الشريط العلوي -->
   <div class="topbar">
-    <div class="menu-btn" onclick="window.location.href='subjects-e.html'">⬅</div>
+    <div class="menu-btn" onclick="window.location.href='subjects.html'">⬅</div>
     <div class="title">𝑺𝒖𝒃𝒋𝒆𝒄𝒕 𝑻𝒆𝒂𝒄𝒉𝒆𝒓𝒔</div>
     <div class="icons">
       <div class="toggle-dark" id="darkToggle"></div>
@@ -218,6 +218,10 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
+ <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
+
+  <script src="check_code.js"></script>
+
   
 <script type="module">
 const teachersList = document.getElementById('teachers-list');
@@ -234,45 +238,42 @@ const subjectImages = {
   "ادبي": "https://www2.0zz0.com/2025/10/01/19/580067879.jpeg"
 };
 
-// جلب المادة المختارة من LocalStorage
+// جلب المادة المختارة والسنة
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
 const selectedYear = JSON.parse(localStorage.getItem("selected_year"));
 
 if (!selectedSubject || !selectedYear) {
-  teachersList.innerHTML = '<li>⚠️ لم يتم اختيار السنة أو المادة</li>';
+  teachersList.innerHTML = '<li class="loading">⚠️ لم يتم اختيار السنة أو المادة</li>';
 } else {
   loadTeachers(selectedYear.id, selectedSubject.id);
 }
 
-// تحميل المدرسين
+// ===== تحميل المدرسين =====
 async function loadTeachers(yearId, subjectId) {
   try {
     if (!yearId || !subjectId) return;
 
-    // 1️⃣ جلب التوكن
-    const tokenRes = await fetch("/api/get-token");
-    const { token } = await tokenRes.json();
+    // ===== الطلب مباشرة عبر Proxy بدون توكن =====
+    const res = await fetch(`/api/proxy1?type=teachers&yearId=${yearId}&subjectId=${subjectId}`, {
+      credentials: "include"
+    });
 
-    // 2️⃣ الطلب المحمي عبر Proxy (زي السنين)
-    const res = await fetch(
-      `/api/proxy1?type=teachers&yearId=${yearId}&subjectId=${subjectId}`,
-      {
-        headers: {
-          "x-client-token": token
-        }
-      }
-    );
+    if (res.status === 401) {
+      logoutAndRedirect();
+      return;
+    }
 
-    if (!res.ok) throw new Error("Failed to fetch teachers");
+    if (!res.ok) throw new Error("فشل تحميل المدرسين");
 
     const teachers = await res.json();
 
-    if (!teachers?.length) {
-      teachersList.innerHTML = '<li>لا يوجد مدرسون لهذه المادة.</li>';
-      return;
-  }
+    // ===== عرض المدرسين =====
+    teachersList.innerHTML = "";
 
-    teachersList.innerHTML = '';
+    if (!teachers?.length) {
+      teachersList.innerHTML = '<li class="loading">❌ لا يوجد مدرسون لهذه المادة.</li>';
+      return;
+    }
 
     teachers.forEach(teacher => {
       const li = document.createElement('li');
@@ -280,7 +281,7 @@ async function loadTeachers(yearId, subjectId) {
       // صورة المادة
       const subjectImg = document.createElement('img');
       subjectImg.className = 'subject-img';
-      subjectImg.src = selectedSubject.image_url || "https://www2.0zz0.com/2025/12/30/00/795134816.jpg";
+      subjectImg.src = subjectImages[selectedSubject.name] || "https://img.icons8.com/ios-filled/100/ffd700/book.png";
       subjectImg.alt = selectedSubject.name;
 
       // صورة المدرس داخل دائرة
@@ -303,10 +304,10 @@ async function loadTeachers(yearId, subjectId) {
 
       li.append(subjectImg, circle, nameSpan, chaptersCount);
 
-      // الضغط على المدرس يحفظه في LocalStorage وينتقل للفصول
+      // الضغط على المدرس يحفظه وينتقل للفصول
       li.onclick = () => {
         localStorage.setItem('selected_teacher', JSON.stringify(teacher));
-        window.location.href = 'chapters-e.html';
+        window.location.href = 'chapters.html';
       };
 
       teachersList.appendChild(li);
@@ -314,8 +315,15 @@ async function loadTeachers(yearId, subjectId) {
 
   } catch (err) {
     console.error(err);
-    teachersList.innerHTML = '<li>❌ حدث خطأ أثناء تحميل البيانات.</li>';
+    teachersList.innerHTML = '<li class="loading">❌ حدث خطأ أثناء تحميل البيانات.</li>';
   }
+}
+
+// ===== دالة الخروج =====
+function logoutAndRedirect() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = 'index.html';
 }
 
 // 🌙 الوضع الليلي والإشعارات
@@ -333,5 +341,6 @@ darkToggle?.addEventListener('click', () => {
   darkToggle.classList.toggle('active');
 });
 </script>
+
 </body>
 </html>
