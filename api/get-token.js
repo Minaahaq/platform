@@ -11,7 +11,14 @@ export default async function handler(req, res) {
   }
 
   const SECRET = process.env.SESSION_SECRET;
-  if (!SECRET) return res.status(500).json({ error: "NO_SECRET" });
+  if (!SECRET) {
+    return res.status(500).json({ error: "NO_SECRET" });
+  }
+
+  // ✅ امسح أي session قديمة قبل ما تنشئ واحدة جديدة
+  res.setHeader("Set-Cookie", [
+    `session=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
+  ]);
 
   const payload = {
     c: code,
@@ -30,6 +37,7 @@ export default async function handler(req, res) {
     .from(JSON.stringify({ payload, sig }))
     .toString("base64");
 
+  // ✅ إنشاء session جديدة
   res.setHeader("Set-Cookie", [
     `session=${session}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=1800`
   ]);
