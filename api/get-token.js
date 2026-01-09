@@ -12,15 +12,6 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "BLOCKED_CLIENT" });
   }
 
-  // ❌ منع المتصفح – السماح للتطبيق فقط (WebView / APK Creator)
-  const isApp =
-  ua.includes("AppCreator24") ||
-  ua.includes("wv") ||
-  ua.includes("WebView");
-
-if (!isApp) {
-  return res.status(403).json({ error: "APP_ONLY" });
-}
 
   const { code, device } = req.body || {};
   if (!code || !device) {
