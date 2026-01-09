@@ -41,8 +41,8 @@ export default async function handler(req, res) {
   }
 
   // ===== 5 minutes expiry =====
-  if (Date.now() - session.payload.t > 5 * 60 * 1000) {
-    return res.status(401).json({ error: "SESSION_EXPIRED" });
+  if (Date.now() - payload.t > 30 * 60 * 1000) {
+  return res.status(401).json({ error: "SESSION_EXPIRED" });
   }
 
   if (/curl|postman|python|wget|httpclient/i.test(ua)) {
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
     .toString("base64");
 
   res.setHeader("Set-Cookie", [
-    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
+    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=1800`
   ]);
 
   return res.status(200).json(data);
