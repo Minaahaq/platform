@@ -146,7 +146,7 @@ if (!selectedYear || !selectedSubject || !selectedTeacher || !selectedChapter) {
 
 // زر العودة
 backBtn.onclick = () => {
-  window.location.href = 'chapters.html';
+  window.location.href = 'chapters-e.html';
 };
 
 // ===== دالة الطرد الموحدة =====
@@ -214,7 +214,7 @@ async function loadLectures() {
 
     li.onclick = () => {
       localStorage.setItem('selected_lecture', JSON.stringify({ id: lec.id, name: lec.name }));
-      window.location.href = 'videos.html';
+      window.location.href = 'videos-e.html';
     };
 
     lecturesList.appendChild(li);
