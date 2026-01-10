@@ -68,7 +68,7 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
 
   // ===== routing =====
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
-  const BASE = "https://plus-teal.vercel.app";
+  const BASE = "https://platform-sigma-seven.vercel.app";
 
   let url = "";
   if (type === "years") url = `${BASE}/api/years`;
@@ -107,4 +107,4 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
   ]);
 
   return res.status(200).json(data);
-}
+      }
