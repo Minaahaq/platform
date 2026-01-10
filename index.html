@@ -175,15 +175,24 @@ async function checkCode(){
         localStorage.setItem("access_token", token);
       }
 
-      // ====== GET SESSION TOKEN ======
-const tokenRes = await fetch("/api/get-token", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    code,
-    device: getDeviceID()
-  })
-});
+     let tokenData;
+try {
+  const tokenRes = await fetch("/api/get-token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, device: getDeviceID() })
+  });
+  tokenData = await tokenRes.json();
+
+  if (tokenData.message === "SESSION_ALREADY_EXISTS") {
+    console.log("🟢 يوجد Session صالحة بالفعل، لن يتم إنشاء Session جديدة.");
+  } else if (tokenData.message === "SESSION_CREATED") {
+    console.log("✅ Session جديدة تم إنشاؤها.");
+  }
+} catch (err) {
+  console.warn("⚠ حدث خطأ أثناء الحصول على Session، سيتم تجاهله.");
+}
+
 
       /* ===== Firebase Auth ===== */
       const email = `${code}@myapp.local`;
