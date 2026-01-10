@@ -22277,6 +22277,2336 @@
                         "title": "الجزء الثاني",
                         "stream_url": "https://river-3-350.rtbcdn.ru/hls-vod/t_Isb4w3Fky7WAZoU5tOig/1768323399/3284/0x5000c500fa6e7fa1/7fb705ad03354b52930f5bfa25daec77.mp4.m3u8?i=640x360_886"
                       }
+                                       ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 48,
+        "name": "الرياضيات",
+        "image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+        "order_index": 9,
+        "is_published": true,
+        "published_at": "2025-11-16T17:26:38.013063Z",
+        "year_id": 3,
+        "created_at": "2025-11-16T17:26:38.005557Z",
+        "updated_at": "2025-12-08T21:08:11.451065Z",
+        "teachers": [
+          {
+            "id": 136,
+            "name": "م.احمد عصام",
+            "image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+            "chapter_count": 4,
+            "chapters": [
+              {
+                "id": 648,
+                "name": "باقي التفاضل والتكامل",
+                "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                "teacher_name": "م.احمد عصام",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 5,
+                "lectures": [
+                  {
+                    "id": 4003,
+                    "name": "الحصة 12",
+                    "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "chapter_name": "باقي التفاضل والتكامل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 1,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 15088,
+                        "title": "شرح سمارت"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3976,
+                    "name": "الحصة 11",
+                    "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "chapter_name": "باقي التفاضل والتكامل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14959,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-4-417.rtbcdn.ru/hls-vod/gdjiwDcfM7ZS8g_v1O2DOQ/1768408835/3346/0x5000c500e9cf5115/8edef3950cc845aab78fc9181d24a10a.mp4.m3u8?i=640x360_510"
+                      },
+                      {
+                        "id": 14960,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-5-532.rtbcdn.ru/hls-vod/Vmt-gSf5vPCHSLzOgiVuoA/1768478904/3378/0x5000c500fa774fb4/3e994c723d9245c2b1d0a6497d7866a7.mp4.m3u8?i=640x360_388"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3965,
+                    "name": "الحصة 10",
+                    "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "chapter_name": "باقي التفاضل والتكامل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14887,
+                        "title": "شرح",
+                        "stream_url": "https://river-3-314.rtbcdn.ru/hls-vod/zzT4tqJQEUvab3z4N7_txw/1768658622/3406/0x5000c500e9304be5/2141dd0cee634b188d25fcbe28a47b82.mp4.m3u8?i=640x360_350"
+                      },
+                      {
+                        "id": 14918,
+                        "title": "ملخص وحل واجب 10",
+                        "stream_url": "https://river-5-556.rtbcdn.ru/hls-vod/LGYXsHQ3ijFqqfoddXxr3Q/1768589838/3346/0x5000c500e9cf2ed0/ae23c6c8bcc543698936adbfa88045b0.mp4.m3u8?i=640x360_350"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3949,
+                    "name": "الحصة التاسعة",
+                    "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "chapter_name": "باقي التفاضل والتكامل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14792,
+                        "title": "شرح - سنتر",
+                        "stream_url": "https://river-5-551.rtbcdn.ru/hls-vod/x8_gxNEgpYRM7ShWLX1y-A/1768520543/3306/0x5000c5007447608d/611fd55225b54133862e6919d4db309a.mp4.m3u8?i=640x360_413"
+                      },
+                      {
+                        "id": 14793,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-550.rtbcdn.ru/hls-vod/UzJPXkbJRCBaE1UJxiL18g/1768650962/3374/0x5000c500fa6fff58/15cdfe2bcc1e4605b8e7d856a34da79d.mp4.m3u8?i=640x360_372"
+                      },
+                      {
+                        "id": 14886,
+                        "title": "حل الامتحان 8",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/nu-0SfAjXSYtYAFG6AyE2A/1768658652/3324/0x5000c500e9ebd90e/2da5e7f9cfdf45ba9b275b248346490f.mp4.m3u8?i=640x360_347"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3919,
+                    "name": "الحصة الثامنة",
+                    "image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "chapter_name": "باقي التفاضل والتكامل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251229_a2ee2745fd5331d143e40891de362294.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14654,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-367.rtbcdn.ru/hls-vod/fdI7OvnlSBwH6VBH2p5QVA/1768440338/3300/0x5000c50074475cf9/da2bd9f8173046839c77d83a6fa6c4f7.mp4.m3u8?i=640x360_401"
+                      },
+                      {
+                        "id": 14655,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-4-421.rtbcdn.ru/hls-vod/EwXOKMdSjgPnbjhvWbELOw/1768624001/3340/0x5000c500e9cc32bf/d9c86eba32fa4c449c41779c785e5df1.mp4.m3u8?i=640x360_415"
+                      },
+                      {
+                        "id": 14743,
+                        "title": "ملخص وحل واجب ٨ تفاضل (تزايد وتناقص الدوال)",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/nyFEu9E0CDzFsPG_I5EloA/1768476674/3318/0x5000c500e9daa5b3/9508406b1b3d43aa8e217d9e9f11fe28.mp4.m3u8?i=640x360_377"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 615,
+                "name": "الاستاتيكا",
+                "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                "teacher_name": "م.احمد عصام",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 8,
+                "lectures": [
+                  {
+                    "id": 3888,
+                    "name": "ورشة الاستاتيكا الوحدة الأولى",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 1,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14512,
+                        "title": "ورشة الوحدة الأولى استاتيكا",
+                        "stream_url": "https://river-3-346.rtbcdn.ru/hls-vod/RmiwewayBRB7KMz3L3Nb9Q/1768591955/3404/0x5000c500e97893cb/ea92aecdf0da4989b19808e8edb74230.mp4.m3u8?i=640x360_430"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3887,
+                    "name": "الحصة 7",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14510,
+                        "title": "الشرح",
+                        "stream_url": "https://river-5-512.rtbcdn.ru/hls-vod/RYT0B7ZVbpMHcjhHtUV49Q/1768415400/3314/0x5000c50074475bcc/4e407f540bb146b695e8abcbe80b762a.mp4.m3u8?i=640x360_531"
+                      },
+                      {
+                        "id": 14511,
+                        "title": "ملخص وحل الواجب",
+                        "stream_url": "https://river-3-329.rtbcdn.ru/hls-vod/qrAeIlnehnsb0vHs24LaXg/1768652372/2654/0x5000039ce8305699/b87feeb3a08f4b679203c5565cfb7391.mp4.m3u8?i=640x360_480"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3839,
+                    "name": "الحصة 6",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14390,
+                        "title": "شرح الحصة السادسة",
+                        "stream_url": "https://river-5-540.rtbcdn.ru/hls-vod/v5FHKU01O-JwzqfJ2d9BRQ/1768488406/3394/0x5000c500fa6e76a3/f5986d4ef30e464d915a7d8d08f54e95.mp4.m3u8?i=640x360_398"
+                      },
+                      {
+                        "id": 14497,
+                        "title": "ملخص وحل واجب الحصة 6 استاتيكا",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/-ALgHX98yzU2VsMzqjgo2g/1768466750/3276/0x5000c500fa775067/86bcace4812d4d7e9d4fd1cde83911c8.mp4.m3u8?i=640x360_334"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3824,
+                    "name": "الحصة 5",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14316,
+                        "title": "الحصة الخامسة ( تصوير سمارت)",
+                        "stream_url": "https://river-5-557.rtbcdn.ru/hls-vod/fpIx7nc7frVZfnWwyEgknw/1768486031/3386/0x5000c500e878ecee/5370917498094d848640341751b09496.mp4.m3u8?i=640x360_473"
+                      },
+                      {
+                        "id": 14496,
+                        "title": "حل واجب الحصة 5 استاتيكا",
+                        "stream_url": "https://river-3-316.rtbcdn.ru/hls-vod/HVLP6r9mHw_zFGQiV8ACVQ/1768581872/3412/0x5000c500fa910ba5/811aace4de6e4bae898ab4f957242aa4.mp4.m3u8?i=640x360_317"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3802,
+                    "name": "الحصة 4",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14190,
+                        "title": "شرح تصوير سنتر",
+                        "stream_url": "https://river-3-368.rtbcdn.ru/hls-vod/kwfRr8zFl5LX7m5yP-GYUw/1768609860/3292/0x5000c500fa6ffeef/421b02cbc339475daa902d04f56635b7.mp4.m3u8?i=640x360_407"
+                      },
+                      {
+                        "id": 14495,
+                        "title": "ملخص وحل الواجب الحصة 4 استاتيكا",
+                        "stream_url": "https://river-3-371.rtbcdn.ru/hls-vod/fs--GkACt4B1AGLYwWdNxg/1768551043/2656/0x5000039ce838031d/e578980329cf494aa047cdf74d4dfda8.mp4.m3u8?i=640x360_469"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3767,
+                    "name": "الحصة 3",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14080,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-313.rtbcdn.ru/hls-vod/ifyj3NqwWzczi_YCe-oV1w/1768602059/3330/0x5000c500e90f7ff4/0c8a5a2a8e454ee4aea8a658b1359f88.mp4.m3u8?i=640x360_529"
+                      },
+                      {
+                        "id": 14081,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-3-336.rtbcdn.ru/hls-vod/VeDTn-Z-2kTOspfg4tSnEA/1768652094/3264/0x5000c500e9ea3ec8/2cd59afdf2cc47ec9d16da1c7a48a22f.mp4.m3u8?i=640x360_452"
+                      },
+                      {
+                        "id": 14082,
+                        "title": "الملخص وحل الواجب",
+                        "stream_url": "https://river-3-351.rtbcdn.ru/hls-vod/_JXZ8q01YYY5YAALY7IADg/1768444514/3292/0x5000c500fa6ffeef/3c9990c2da774d498888034250f986f3.mp4.m3u8?i=640x360_548"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3766,
+                    "name": "الحصة 2",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14078,
+                        "title": "استاتيكا 2 شرح سمارت",
+                        "stream_url": "https://river-3-343.rtbcdn.ru/hls-vod/DrK3EBOzKyu7623Xepa82g/1768421762/2658/0x5000039ce868e835/ac3e116096cf46dab65284c657423781.mp4.m3u8?i=640x360_539"
+                      },
+                      {
+                        "id": 14079,
+                        "title": "الملخص وحل الواجب",
+                        "stream_url": "https://river-4-416.rtbcdn.ru/hls-vod/t85XXE0O7XjSVCMjFTEMNw/1768651976/3262/0x5000c500e9ebba6a/652f16847af54e3b8f841670cdf6b844.mp4.m3u8?i=640x360_431"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3765,
+                    "name": "الحصة 1",
+                    "image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "chapter_name": "الاستاتيكا",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d8d4c8bb786220f18234c260b231bdfe83a05e435459.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14075,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-360.rtbcdn.ru/hls-vod/CcJr8Nnj6hkCaTSdcPTUzA/1768617419/3334/0x5000c500fa802d8e/b532c20a4cc44a879e96545abd7acc47.mp4.m3u8?i=640x360_461"
+                      },
+                      {
+                        "id": 14076,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-5-536.rtbcdn.ru/hls-vod/X63lCaXbQNRIboP8424sUw/1768516044/3312/0x5000c500e9ee20b3/8cc7c62ac01d4f358dedd3e6be70de54.mp4.m3u8?i=640x360_434"
+                      },
+                      {
+                        "id": 14077,
+                        "title": "الملخص وحل الواجب",
+                        "stream_url": "https://river-3-354.rtbcdn.ru/hls-vod/Pjsw1m6SSOI4pyObNEHBPw/1768422590/2718/0x5000039ce868f1a9/543012aebd2b430a817f5c01a15a93fd.mp4.m3u8?i=640x360_522"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 614,
+                "name": "التفاضل",
+                "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                "teacher_name": "م.احمد عصام",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 8,
+                "lectures": [
+                  {
+                    "id": 3764,
+                    "name": "الورشة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 1,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14074,
+                        "title": "ورشة الوحدة الأولى تفاضل",
+                        "stream_url": "https://river-5-550.rtbcdn.ru/hls-vod/thf17ojWBh-eiHq3U0-f6Q/1768649390/3274/0x5000c500e9cf80d0/e3c3cbf7266d4ac185b02b31c2f0b8c6.mp4.m3u8?i=640x360_440"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3763,
+                    "name": "الحصة السابعة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14072,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-379.rtbcdn.ru/hls-vod/YSBAwpokbxaWp0soB-amcQ/1768474954/2730/0x5000039ce8707725/6c4b1bc81b2148fc84227e431bc2ece1.mp4.m3u8?i=640x360_481"
+                      },
+                      {
+                        "id": 14073,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/gVsezVgeHzO7OonT8BRoAA/1768618647/3352/0x5000c500e9ebf089/80bf7d0a550945e9a2c14111cb12eb69.mp4.m3u8?i=640x360_376"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3762,
+                    "name": "الحصة السادسة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14070,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-3103.rtbcdn.ru/hls-vod/9XjEXp6hJXeOwruQwLnh_A/1768437393/2682/0x5000039ce83a2471/4720ee27542d45818b4b4dabc8d32127.mp4.m3u8?i=640x360_522"
+                      },
+                      {
+                        "id": 14071,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-522.rtbcdn.ru/hls-vod/TaWnHMhnt-YJYevEQAOmkg/1768497444/3264/0x5000c500e9e89cad/1f5801ea1c8d43b8ad1d37967866a3bf.mp4.m3u8?i=640x360_425"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3761,
+                    "name": "الحصة الخامسة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14066,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-3-346.rtbcdn.ru/hls-vod/McOBDYP2KHD5Xaapc96gKA/1768601902/3320/0x5000c500e9ebd501/d199e8bca51045d2a6a7b740cf17fa42.mp4.m3u8?i=640x360_433"
+                      },
+                      {
+                        "id": 14067,
+                        "title": "حل الامتحان الرابع",
+                        "stream_url": "https://river-3-341.rtbcdn.ru/hls-vod/LNJwtcJLmaIZgVCRreiRFQ/1768514032/3372/0x5000c500fa6e56fe/97c23cbd2a4f4d32882f188f5ed43cfd.mp4.m3u8?i=640x360_429"
+                      },
+                      {
+                        "id": 14068,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-514.rtbcdn.ru/hls-vod/TSNqAj0GiPGk2LtCxV3-HQ/1768566323/3348/0x5000c500fa80a5a5/1a607605a90d480980709f2606b34c83.mp4.m3u8?i=640x360_348"
+                      },
+                      {
+                        "id": 14069,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-3-341.rtbcdn.ru/hls-vod/iC1vb969Cty8Rrt2qGNl_Q/1768556819/3390/0x5000c500fa775518/949597a77eeb43fc9ba773df9c3d886c.mp4.m3u8?i=640x360_613"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3760,
+                    "name": "الحصة الرابعة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14063,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-5-517.rtbcdn.ru/hls-vod/KOgMLwBXdbuW09CVNrT6zw/1768426248/3352/0x5000c500e9cf5664/56719d811def4fd18f49f18abd73d94e.mp4.m3u8?i=640x360_491"
+                      },
+                      {
+                        "id": 14064,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-3-379.rtbcdn.ru/hls-vod/lRH4x-p1xkAfJImTpSF0uA/1768500944/2710/0x5000039ce8382ebd/e796b345163846278b4c648829358a36.mp4.m3u8?i=640x360_372"
+                      },
+                      {
+                        "id": 14065,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-4-417.rtbcdn.ru/hls-vod/aoZVos1wChR_6MsHjjQe-g/1768554627/3266/0x5000c500e9d03264/176adade6792463bac995fd9420e7014.mp4.m3u8?i=640x360_413"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3759,
+                    "name": "المحاضرة الثالثة",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14059,
+                        "title": "شرح سمارت",
+                        "stream_url": "https://river-4-424.rtbcdn.ru/hls-vod/yWfARRFKOFJrE_0-PJTyVg/1768462577/3344/0x5000c500e9cf3111/65397628709a47ecbaae84acf573a7bb.mp4.m3u8?i=640x360_508"
+                      },
+                      {
+                        "id": 14060,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-3-366.rtbcdn.ru/hls-vod/r0-5JUivjU4NIFPWPqoS0w/1768500481/2732/0x5000039ce83bf611/f273d5c15a60429bbc764dda98120223.mp4.m3u8?i=640x360_801"
+                      },
+                      {
+                        "id": 14061,
+                        "title": "حل الإمتحان الثاني",
+                        "stream_url": "https://river-3-379.rtbcdn.ru/hls-vod/TYUaqq_Sjt9UUFepvNylaA/1768658900/2652/0x5000039ce8690331/0f9a17dda0594dbeb771866493919efc.mp4.m3u8?i=640x360_824"
+                      },
+                      {
+                        "id": 14062,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-538.rtbcdn.ru/hls-vod/y7bQgn1sZJyeK1NWYbqTPg/1768490269/2648/0x5000039ce838b66d/944fc5024f0f4b3daa055b405e798bb7.mp4.m3u8?i=640x360_939"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3758,
+                    "name": "المحاضرة الثانية",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14056,
+                        "title": "الحصة الثانية تفاضل",
+                        "stream_url": "https://river-3-343.rtbcdn.ru/hls-vod/bTiMTy5nlp0cL-eYZ0VuEQ/1768431821/3314/0x5000c500e9d2072b/457cd9b370f24d20b93df2f15507270f.mp4.m3u8?i=640x360_805"
+                      },
+                      {
+                        "id": 14057,
+                        "title": "حل الامتحان الاول تفاضل",
+                        "stream_url": "https://river-5-528.rtbcdn.ru/hls-vod/NdKOM8iATrFEp4X33J0rZA/1768658919/2648/0x5000039ce83b9eb9/7d1ff094800b44d7a34badfdefb396f4.mp4.m3u8?i=640x360_794"
+                      },
+                      {
+                        "id": 14058,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/lPvKdr1MQztYVfzxiiXJ_g/1768658926/3316/0x5000c500e9e374b9/2cc6345c37de4219ae090d95018dcc99.mp4.m3u8?i=640x360_631"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3757,
+                    "name": "المحاضرة الأولى",
+                    "image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "chapter_name": "التفاضل",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/6dfc1db5626097855fc23ae241675aaf67aaaac1bf37.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14054,
+                        "title": "شرح",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/lPvKdr1MQztYVfzxiiXJ_g/1768658926/3316/0x5000c500e9e374b9/2cc6345c37de4219ae090d95018dcc99.mp4.m3u8?i=640x360_631"
+                      },
+                      {
+                        "id": 14055,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-3-367.rtbcdn.ru/hls-vod/ulpGXFV66odUu1-ZfCRUKg/1768605423/3334/0x5000c500e9cfb1a5/609eb031fe8540869cbd7c788d0d12e3.mp4.m3u8?i=640x360_629"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 613,
+                "name": "الفراغية",
+                "image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                "teacher_name": "م.احمد عصام",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 9,
+                "lectures": [
+                  {
+                    "id": 3756,
+                    "name": "الورشة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 1,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14053,
+                        "title": "ملخص وحل 50 سؤال",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/7GfoKsf1wEf6ICvBap_TUg/1768601886/3268/0x5000c500dbb8bacd/d65b105e78b04fc2b47f1f2184b22018.mp4.m3u8?i=640x360_649"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3755,
+                    "name": "الحصة الثامنة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14049,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-4-422.rtbcdn.ru/hls-vod/EBhaQIK7l9E4DvQvssShiQ/1768503975/3304/0x5000c500e9cfb3d6/79b0c19822974a2f9cf8d5957685107b.mp4.m3u8?i=640x360_778"
+                      },
+                      {
+                        "id": 14050,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-4-423.rtbcdn.ru/hls-vod/76rjyEEOZP04x1KXWYq54A/1768565274/3256/0x5000c500e9cfb373/059f85d1f03441f9a5859b70a9eb45ef.mp4.m3u8?i=640x360_986"
+                      },
+                      {
+                        "id": 14051,
+                        "title": "حل الامتحان السابع",
+                        "stream_url": "https://river-3-369.rtbcdn.ru/hls-vod/u2yFnCsM7RcMJImQq2zm1A/1768573364/3266/0x5000c500e9d03bc6/9adb5abb95ad47d3bce7d0c628bdaf7c.mp4.m3u8?i=640x360_918"
+                      },
+                      {
+                        "id": 14052,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-533.rtbcdn.ru/hls-vod/xnjJ37iOMtRJGfI5Qc1Kqw/1768658975/3364/0x5000c500fa6e7d27/8fb2d170be3b4f0b8894754a11242033.mp4.m3u8?i=640x360_751"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3754,
+                    "name": "الحصة السابعة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14045,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-5-533.rtbcdn.ru/hls-vod/M9Se2VsGdXRdCQq8ScSeWA/1768572749/3396/0x5000c500fa7775af/63b9a62cb42c4f63835c5c42b0791977.mp4.m3u8?i=640x360_703"
+                      },
+                      {
+                        "id": 14046,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-4-421.rtbcdn.ru/hls-vod/qrP6AilAG7ikmQek9-gO1g/1768589540/3332/0x5000c500e9cf527a/5e90694e56eb4686a18b5b94a0e76245.mp4.m3u8?i=640x360_978"
+                      },
+                      {
+                        "id": 14047,
+                        "title": "حل الإمتحان السادس",
+                        "stream_url": "https://river-3-354.rtbcdn.ru/hls-vod/gvX5o9k6sIdsNSfhWdC7tg/1768659003/3364/0x5000c500fa77619b/7766baa2d91949cdaecc3c2ff6adceb2.mp4.m3u8?i=640x360_796"
+                      },
+                      {
+                        "id": 14048,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-3-371.rtbcdn.ru/hls-vod/6PEN0ky71rV00AeNTvchgQ/1768504216/3364/0x5000c500fa6e48a3/20de434fb613420189463755e5973789.mp4.m3u8?i=640x360_772"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3753,
+                    "name": "الحصة السادسة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14042,
+                        "title": "شرح",
+                        "stream_url": "https://river-5-517.rtbcdn.ru/hls-vod/BI0_Z5m6XfymEGQOugAK6A/1768589499/2646/0x5000039ce83a2be1/2a8d6607d9964d9db83cdb64c62121b8.mp4.m3u8?i=640x360_880"
+                      },
+                      {
+                        "id": 14043,
+                        "title": "حل الإمتحان الخامس",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/DjP5GcHB_Z7T8LsHaZ5JXg/1768659030/3326/0x5000c500e4451143/19a439ffe7c64a35ad9db23baa70f332.mp4.m3u8?i=640x360_981"
+                      },
+                      {
+                        "id": 14044,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-3-357.rtbcdn.ru/hls-vod/MWjIzAxp5MEcInWGP7nkRg/1768659037/1859/0x5000c500e53a2cc9/420841374d404eedb9b236411fe30c93.mp4.m3u8?i=640x360_720"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3752,
+                    "name": "الحصة الخامسة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14038,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-3-349.rtbcdn.ru/hls-vod/-vewsgHFzJAhN8lZX2cb5Q/1768550843/3268/0x5000c500e41762ce/dd626da1db9f435988bda03ba7a2bf35.mp4.m3u8?i=640x360_776"
+                      },
+                      {
+                        "id": 14039,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/LreIqhHaPWKLeBUYbJXjQQ/1768416117/1887/0x5000c500e49fc6d2/73ca291b733a4aba94fba5acd786dad5.mp4.m3u8?i=640x360_668"
+                      },
+                      {
+                        "id": 14040,
+                        "title": "حل الإمتحان الرابع",
+                        "stream_url": "https://river-3-361.rtbcdn.ru/hls-vod/KDtL10-WPeugqwJbmKXgmw/1768659060/1865/0x5000c500e53917a7/e8c1b1e19ac34d5f9732d1fda02683d7.mp4.m3u8?i=640x360_1051"
+                      },
+                      {
+                        "id": 14041,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-534.rtbcdn.ru/hls-vod/7kz94ixK_zmoeqP8P1x8cQ/1768564038/3388/0x5000c500e873ab4a/5877b80da362470ab9c579ab9f1391a8.mp4.m3u8?i=640x360_663"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3751,
+                    "name": "الحصة الرابعة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14034,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-5-554.rtbcdn.ru/hls-vod/LXkSbnFiAH8PLx3lRyUU2Q/1768501321/3262/0x5000c500e9ebd509/e0ddf13c99174088aa162e37f6a54e51.mp4.m3u8?i=640x360_760"
+                      },
+                      {
+                        "id": 14035,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/2LbKTiwezI83O6FygfTNCg/1768579879/3394/0x5000c500fa6e76a3/ff201499c07e4dbeaa0fccf7bd411816.mp4.m3u8?i=640x360_810"
+                      },
+                      {
+                        "id": 14036,
+                        "title": "حل الإمتحان الثالث",
+                        "stream_url": "https://river-4-424.rtbcdn.ru/hls-vod/0V2xRJVNRP9qQ2AZfoViXw/1768659092/3302/0x5000c500e9cf1f18/164fedd9a4c545faa67b34971ae3e010.mp4.m3u8?i=640x360_801"
+                      },
+                      {
+                        "id": 14037,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-4-423.rtbcdn.ru/hls-vod/IXkSDC45urVkbyESTyrw3Q/1768477176/3330/0x5000c500db0e7194/8117c6b94e184d5a816ff3d81e89e30d.mp4.m3u8?i=640x360_541"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3750,
+                    "name": "الحصة الثالثة",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14031,
+                        "title": "الشرح",
+                        "stream_url": "https://river-4-423.rtbcdn.ru/hls-vod/IXkSDC45urVkbyESTyrw3Q/1768477176/3330/0x5000c500db0e7194/8117c6b94e184d5a816ff3d81e89e30d.mp4.m3u8?i=640x360_541"
+                      },
+                      {
+                        "id": 14032,
+                        "title": "حل الإمتحان الثاني",
+                        "stream_url": "https://river-3-343.rtbcdn.ru/hls-vod/-DAmMf3ZgaEySbiuT0-8bg/1768659110/3264/0x5000c500e9ebf961/2e5cc79550b846d28a0597dee06ea5ed.mp4.m3u8?i=640x360_930"
+                      },
+                      {
+                        "id": 14033,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-5-517.rtbcdn.ru/hls-vod/hmv1zcD2MECbZHSkRLBbsA/1768422900/3354/0x5000c500e9cf1f9e/e7b5e9ee1f88419896df022ca4fecd0d.mp4.m3u8?i=640x360_651"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3749,
+                    "name": "الحصة الثانية",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 1,
+                    "videos": [
+                      {
+                        "id": 14027,
+                        "title": "شرح سمارت بورد",
+                        "stream_url": "https://river-3-340.rtbcdn.ru/hls-vod/LPrVNON1MuqtxG78MsK9og/1768551807/3328/0x5000c500e9cf3986/51aadd56b8504509af5ef61afc35bebb.mp4.m3u8?i=640x360_879"
+                      },
+                      {
+                        "id": 14028,
+                        "title": "شرح سنتر",
+                        "stream_url": "https://river-5-528.rtbcdn.ru/hls-vod/PpRgxuoSFBGN0oktraEEQg/1768659134/3410/0x5000c500e978a357/303cfb769fe64e83b59bafc9c042f920.mp4.m3u8?i=640x360_1043"
+                      },
+                      {
+                        "id": 14029,
+                        "title": "حل الإمتحان 1",
+                        "stream_url": "https://river-5-538.rtbcdn.ru/hls-vod/2bGM-7nW-lC2pumvgJPXbQ/1768659142/3348/0x5000c500fa80ae31/53162b6536134b7cac81f03ebad1c0c1.mp4.m3u8?i=640x360_773"
+                      },
+                      {
+                        "id": 14030,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-4-417.rtbcdn.ru/hls-vod/GEK9Xi2M64yypjALSTcRyw/1768477947/3298/0x5000c500e9cf2ca8/8266df1d9647486990821d1ced403d40.mp4.m3u8?i=640x360_650"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3748,
+                    "name": "الحصة الأولى",
+                    "image_url": "https://files.coursatk.online/images/questions/c7c2d997e57f7db889e47b9f7f905f1a34f9c037d9ef.jpg",
+                    "chapter_name": "الفراغية",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/bcffa474379aeb876350bf45454971826232400f8d86.jpg",
+                    "teacher_name": "م.احمد عصام",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/954b4af4a74f55705aa828d1e05adf6a84a41c5a5fba.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14024,
+                        "title": "شرح - سنتر",
+                        "stream_url": "https://river-3-367.rtbcdn.ru/hls-vod/5kscjdCCiLJi0XQCUK5DMQ/1768567590/1840/0x5000c500dc410138/3066ccf29ff04b43ae9eac36c9215423.mp4.m3u8?i=640x360_531"
+                      },
+                      {
+                        "id": 14025,
+                        "title": "شرح - سمارت بورد",
+                        "stream_url": "https://river-5-512.rtbcdn.ru/hls-vod/xRBFeGdHzwn3C8btXvFIVA/1768576620/3372/0x5000c500fa775ff7/8e0602902aac4e0da7644695ca7d4bab.mp4.m3u8?i=640x360_519"
+                      },
+                      {
+                        "id": 14026,
+                        "title": "حل الواجب",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/E1Pm4o-zdiX9UL3ESZulWg/1768659174/3344/0x5000c500e9cf3e73/5c1625b93be44113b68f21c5fee6b4ce.mp4.m3u8?i=640x360_535"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 137,
+            "name": "م. لطفي زهران",
+            "image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+            "chapter_count": 6,
+            "chapters": [
+              {
+                "id": 650,
+                "name": "عسكر في اللامعسكر",
+                "image_url": "https://files.coursatk.online/images/content/20260102_e329cdbf26ec06bab48b0b4834b23a79.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 2,
+                "lectures": [
+                  {
+                    "id": 4000,
+                    "name": "معسكر التفاضل",
+                    "image_url": "https://files.coursatk.online/images/content/20260102_e329cdbf26ec06bab48b0b4834b23a79.jpg",
+                    "chapter_name": "عسكر في اللامعسكر",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20260102_e329cdbf26ec06bab48b0b4834b23a79.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 5,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 15086,
+                        "title": "معسكر شرح وحل تدريبات فرع التفاضل (الوحدة الأولى)",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/sCtKNFA4W_vVxh6V6pdDRA/1768423118/3290/0x5000c500fa78948a/1c675b2e1dcc47a8a1e2094ecec08f01.mp4.m3u8?i=640x360_283"
+                      },
+                      {
+                        "id": 15165,
+                        "title": "تحليل كويز(واجب)معسكر التفاضل(الوحدة الأولى)",
+                        "stream_url": "https://river-5-554.rtbcdn.ru/hls-vod/dY6hjzoPuY5lHfkp0GyEKA/1768419368/3324/0x5000c500e9ebba54/aaf8849c612e46ad853beed22f40d7da.mp4.m3u8?i=640x360_296"
+                      },
+                      {
+                        "id": 15166,
+                        "title": "معسكر شرح فرع التفاضل (الوحدة التانية)",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/WgrcED7i3iLgMr2EjH6PeA/1768415286/3296/0x5000c500e9cf557b/618d4ce2cecb4e38af33d7f46ca70848.mp4.m3u8?i=640x360_519"
+                      },
+                      {
+                        "id": 15167,
+                        "title": "معسكر حل تدريبات فرع التفاضل (الوحدة التانية)",
+                        "stream_url": "https://river-3-350.rtbcdn.ru/hls-vod/GjS8X35AC3hMv9gNi1Rbzw/1768421225/3268/0x5000c500e412fe51/4babd5fc8a3d46ae86d9c03cee4869e0.mp4.m3u8?i=640x360_263"
+                      },
+                      {
+                        "id": 15168,
+                        "title": "تحليل كويز(واجب)معسكر التفاضل(الوحدة الثانية)",
+                        "stream_url": "https://river-3-361.rtbcdn.ru/hls-vod/yAFVrUFPIwrgeWMXUTMHWA/1768429107/3326/0x5000c500c7c5bc3d/1be3083554a44b8f8f53dd1436b6127c.mp4.m3u8?i=640x360_264"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3991,
+                    "name": "معسكر الفراغية",
+                    "image_url": "https://files.coursatk.online/images/content/20260102_e329cdbf26ec06bab48b0b4834b23a79.jpg",
+                    "chapter_name": "عسكر في اللامعسكر",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20260102_e329cdbf26ec06bab48b0b4834b23a79.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 15051,
+                        "title": " معسكر شرح فرع الفراغية",
+                        "stream_url": "https://river-3-343.rtbcdn.ru/hls-vod/ow1orv0br1uzZLALGiU9Bg/1768518729/3334/0x5000c500fa8032ee/b184d50653474fb4b3c5e2dd9e391798.mp4.m3u8?i=640x360_281"
+                      },
+                      {
+                        "id": 15052,
+                        "title": "حل تدريبات معسكر فرع الفراغية",
+                        "stream_url": "https://river-3-336.rtbcdn.ru/hls-vod/vLCg_fJfFpwUuFuYMAn0IQ/1768562816/3286/0x5000c500fa778ce1/935607162e374e1a8dbc598ff5f32f5b.mp4.m3u8?i=640x360_286"
+                      },
+                      {
+                        "id": 15085,
+                        "title": "تحليل كويز(واجب)معسكر الهندسة الفراغية(تحت الضغط)🏕",
+                        "stream_url": "https://river-5-549.rtbcdn.ru/hls-vod/UvvvOfl8JhtkJMjUED_h0A/1768456122/3368/0x5000c500fa77f805/3f90bf78d40f4fdcaf1492ae843ed48a.mp4.m3u8?i=640x360_324"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 641,
+                "name": "الشهر الخامس",
+                "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 7,
+                "lectures": [
+                  {
+                    "id": 3990,
+                    "name": "الأوضاع النسبيه لمستويين في الفراغ",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 15043,
+                        "title": "شرح وحل تدريبات الأوضاع النسبيه لمستويين",
+                        "stream_url": "https://river-3-363.rtbcdn.ru/hls-vod/ZAhvd3J0tAMSp7FC4BVBcw/1768572453/3402/0x5000c500fa6e8fcc/bce51242a1d8452b93168d29c19f6a04.mp4.m3u8?i=640x360_307"
+                      },
+                      {
+                        "id": 15044,
+                        "title": "تحليل كويز(واجب)الأوضاع النسبيه لمستويين في الفراغ",
+                        "stream_url": "https://river-5-556.rtbcdn.ru/hls-vod/pNLpNHNJQ9Md1dIknXpzUQ/1768659249/2748/0x5000c500dbba8d93/b4641c5e162a44ff8036746ae41d9c14.mp4.m3u8?i=640x360_248"
+                      },
+                      {
+                        "id": 15045,
+                        "title": "حل أسئلة المقالي الأوضاع النسبيه لمستويين في الفراغ",
+                        "stream_url": "https://river-3-371.rtbcdn.ru/hls-vod/QBA7oM4Wstx-SiKmzaPx4A/1768657060/3378/0x5000c500fa776064/d215df3ff1f044b792d72f136e09a592.mp4.m3u8?i=640x360_337"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3971,
+                    "name": "معادلة المستوى في الفراغ",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14929,
+                        "title": "شرح وحل تدريبات معادلة المستوى في الفراغ",
+                        "stream_url": "https://river-5-513.rtbcdn.ru/hls-vod/09hd5Sy9VDUiq7EU06tb4Q/1768497562/3390/0x5000c500fa782af4/41e03cfc76234bc39aa48a547423e0be.mp4.m3u8?i=640x360_306"
+                      },
+                      {
+                        "id": 14930,
+                        "title": "حل تدريبات علي معادلة المستوى في الفراغ",
+                        "stream_url": "https://river-3-346.rtbcdn.ru/hls-vod/7RkGGKAvdv6Kx8werD9OOA/1768653633/3402/0x5000c500fa774f72/1fac1df4a7e5460a931e6586d601a42e.mp4.m3u8?i=640x360_261"
+                      },
+                      {
+                        "id": 15042,
+                        "title": "تحليل أسئلة المقالي معادلة المستوى في الفراغ",
+                        "stream_url": "https://river-5-523.rtbcdn.ru/hls-vod/_VGHnWZsFD1s-dNx8qZ2Wg/1768653655/3330/0x5000c500db0e64f5/5020acc8567343bfbe0a328309762ebf.mp4.m3u8?i=640x360_315"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3970,
+                    "name": "معادلة المستقيم في الفراغ",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14926,
+                        "title": "شرح وحل تدريبات معادلة المستقيم في الفراغ",
+                        "stream_url": "https://river-3-366.rtbcdn.ru/hls-vod/G9MXnEYg7MTIWl7AFBG3HQ/1768505373/3364/0x5000c500fa77821c/754bc6e19c1146a4a61184e8aadb3c85.mp4.m3u8?i=640x360_285"
+                      },
+                      {
+                        "id": 14927,
+                        "title": "تحليل كويز(واجب)معادلة المستقيم في الفراغ"
+                      },
+                      {
+                        "id": 14928,
+                        "title": "تحليل أسئلة المقالي معادلة المستقيم في الفراغ",
+                        "stream_url": "https://river-3-345.rtbcdn.ru/hls-vod/7CsYYaAnV5JULDsALh47Lw/1768659299/3394/0x5000c500fa6e7377/a687172dfa6144bc836d8bccd440b0bf.mp4.m3u8?i=640x360_320"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3956,
+                    "name": "الضرب الإتجاهي والثلاثي القياسي",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14826,
+                        "title": "شرح وحل تدريبات الضرب الإتجاهي والثلاثي القياسي",
+                        "stream_url": "https://river-5-554.rtbcdn.ru/hls-vod/hLoMgWfEZYVZhwgpYOWcDg/1768402366/3360/0x5000c500fa77757d/62065ee860614153820c3306f335a4ab.mp4.m3u8?i=640x360_361"
+                      },
+                      {
+                        "id": 14923,
+                        "title": "تحليل كويز(واجب)الضرب الإتجاهي والثلاثي القياسي",
+                        "stream_url": "https://river-5-548.rtbcdn.ru/hls-vod/sbiz0DlOY2n5_BmMpd43Gw/1768659309/3338/0x5000c500e9ebf7d0/d8dcd170650846318e44fad4f48ae39c.mp4.m3u8?i=640x360_338"
+                      },
+                      {
+                        "id": 14931,
+                        "title": "تحليل أسئلة المقالي الضرب الإتجاهي والثلاثي القياسي",
+                        "stream_url": "https://river-3-369.rtbcdn.ru/hls-vod/RDPondpC5CwDBwT-IntGBw/1768657213/3310/0x5000c50074475c42/01a52d52a8c84875b2fa8d0094ff7436.mp4.m3u8?i=640x360_330"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3955,
+                    "name": "الضرب القياسي لمتجهين",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14823,
+                        "title": "شرح وحل تدريبات الضرب القياسي لمتجهين",
+                        "stream_url": "https://river-3-371.rtbcdn.ru/hls-vod/0rgWTUWpS4BysTXUG5DSNg/1768453600/3360/0x5000c500fa6ea277/38cf2948142f4388bb26d1724d1157dc.mp4.m3u8?i=640x360_261"
+                      },
+                      {
+                        "id": 14824,
+                        "title": "تحليل كويز(واجب)الضرب القياسي لمتجهين",
+                        "stream_url": "https://river-5-554.rtbcdn.ru/hls-vod/GFan4tAPUAWWd4Lt6xrvCg/1768420313/3338/0x5000c500e9ebd0f7/1b1c51638bcc46b0b0c52efab45ac3e5.mp4.m3u8?i=640x360_228"
+                      },
+                      {
+                        "id": 14825,
+                        "title": "تحليل أسئلة المقالي الضرب القياسي لمتجهين",
+                        "stream_url": "https://river-5-535.rtbcdn.ru/hls-vod/8bFRgaqm17LbGeNceg8Nfw/1768659331/3282/0x5000c500fa78bb83/e6ee110c1f9042ec9e853efc1a840da3.mp4.m3u8?i=640x360_359"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3918,
+                    "name": "المتجهات في الفراغ",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14653,
+                        "title": "شرح وحل تدريبات المتجهات في الفراغ",
+                        "stream_url": "https://river-5-523.rtbcdn.ru/hls-vod/-IUQrXAUEhda1y4PLWo4iA/1768532414/3318/0x5000c500e9cf588a/aa4f0d72989c45fc8da28ce6173e3649.mp4.m3u8?i=640x360_282"
+                      },
+                      {
+                        "id": 14656,
+                        "title": "تحليل كويز(واجب)المتجهات في الفراغ",
+                        "stream_url": "https://river-5-558.rtbcdn.ru/hls-vod/aYhdHMRUm2WOFe6WcFm8ag/1768448009/3332/0x5000c500e9ea3fd4/febb552574dc4ba9beea439a8a6dbafe.mp4.m3u8?i=640x360_273"
+                      },
+                      {
+                        "id": 14657,
+                        "title": "حل الشامل الإسبوعي(التفاضل والتكامل والجبر)",
+                        "stream_url": "https://river-3-354.rtbcdn.ru/hls-vod/FWHcLiMHVUs7yCjnf0KKqw/1768659348/3272/0x5000c500e9dc1b2d/b1ad13ce5ee64e9c8fa3e576210c28bf.mp4.m3u8?i=640x360_259"
+                      },
+                      {
+                        "id": 14822,
+                        "title": "حل أسئلة المقالي المتجهات في الفراغ",
+                        "stream_url": "https://river-3-379.rtbcdn.ru/hls-vod/pmUk6-WNMtKuDToxp_c9eg/1768659356/3408/0x5000c500e93060b1/8a4c239c77174552bc2ff4f9ff615c24.mp4.m3u8?i=640x360_364"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3917,
+                    "name": "النظام الإحداثي المتعامد في ثلاثة أبعاد",
+                    "image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "chapter_name": "الشهر الخامس",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/20251214_1f0e2146674d98084df23da1af9a275f.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14650,
+                        "title": "شرح وحل تدريبات النظام الإحداثي المتعامد في ثلاثة أبعاد",
+                        "stream_url": "https://river-3-314.rtbcdn.ru/hls-vod/JPy3JT6YOHYih57dltbGSw/1768545032/3414/0x5000c500fa90daf0/c41c9e5e04bb4f0e851bf0732204f8c2.mp4.m3u8?i=640x360_295"
+                      },
+                      {
+                        "id": 14651,
+                        "title": "تحليل كويز(واجب)النظام الإحداثي المتعامد في ثلاثة أبعاد",
+                        "stream_url": "https://river-3-368.rtbcdn.ru/hls-vod/DjazCRxNZd1QnLboZhzSZg/1768416691/3266/0x5000c500e9d0392d/cd83e2122d594656b122a4fcb2037755.mp4.m3u8?i=640x360_271"
+                      },
+                      {
+                        "id": 14652,
+                        "title": "حل أسئلة المقالي النظام الإحداثي المتعامد في ثلاثة أبعاد",
+                        "stream_url": "https://river-3-347.rtbcdn.ru/hls-vod/Nsu19yGKq7G5XCdhwm9j0w/1768659374/3302/0x5000c500e9cf2310/44b026bc0ded48c481a0e7a65a9a45d1.mp4.m3u8?i=640x360_341"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 619,
+                "name": "الشهر الرابع",
+                "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 9,
+                "lectures": [
+                  {
+                    "id": 3842,
+                    "name": "ورشة الجبر",
+                    "image_url": "https://files.coursatk.online/images/content/20251207_2c11ffeaea2ce91f4c6fac16a0ef17b2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 3,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14408,
+                        "title": "الجزء الأول"
+                      },
+                      {
+                        "id": 14409,
+                        "title": "الجزء الثاني",
+                        "stream_url": "https://river-3-360.rtbcdn.ru/hls-vod/71ZqYtcPCNsD0X4F_fw2Xw/1768484029/3406/0x5000c500e97885b5/80f713d6bffd47a1841b813342af668e.mp4.m3u8?i=640x360_263"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3829,
+                    "name": "الجذور التكعيبة للواحد الصحيح",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14336,
+                        "title": "شرح الجذور التكعيبية للواحد الصحيح",
+                        "stream_url": "https://river-3-362.rtbcdn.ru/hls-vod/EV-3xjqabgKp321OTijDEw/1768557560/2718/0x5000039ce840c0ed/38e1ef454a3c497da3d25e2d90bd46bf.mp4.m3u8?i=640x360_246"
+                      },
+                      {
+                        "id": 14406,
+                        "title": "حل كويز(واجب)الجذور التكعيبية للواحد الصحيح",
+                        "stream_url": "https://river-5-536.rtbcdn.ru/hls-vod/bz-iRMzaCWFGbw969vTBIg/1768659411/3390/0x5000c500fa774ea7/549ab5b8c7024907a06241486090f7e5.mp4.m3u8?i=640x360_301"
+                      },
+                      {
+                        "id": 14407,
+                        "title": "حل أسئلة المقالي الجذور التكعيبية للواحد الصحيح",
+                        "stream_url": "https://river-4-425.rtbcdn.ru/hls-vod/5EsToiDcQGrcmyNABW6S4Q/1768659418/3274/0x5000c500e9d37e54/fcc75401c75546fa9287313a22f40f05.mp4.m3u8?i=640x360_282"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3828,
+                    "name": "نظرية ديموافر",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14333,
+                        "title": "شرح نظرية ديموافر مستر لطفي",
+                        "stream_url": "https://river-3-349.rtbcdn.ru/hls-vod/reRCos5Bbu23LNpcE3UfoA/1768659426/3340/0x5000c500e986c478/5729b35bfe3a454da06a5c5fcc0badaf.mp4.m3u8?i=640x360_352"
+                      },
+                      {
+                        "id": 14334,
+                        "title": "حل كويز(واجب)نظرية ديموافر مستر لطفى",
+                        "stream_url": "https://river-5-512.rtbcdn.ru/hls-vod/qfuW0wBp0kfS4cT6zBbu5g/1768659434/3400/0x5000c500fa776340/8e97a772dd53466396e70c8a9769573e.mp4.m3u8?i=640x360_253"
+                      },
+                      {
+                        "id": 14335,
+                        "title": "حل أسئلة المقالي نظرية ديموافر",
+                        "stream_url": "https://river-3-340.rtbcdn.ru/hls-vod/EIt7OXan8bGv2HpjR_trkw/1768659442/3326/0x5000c500dc37bfcf/ebdb9d74bef54f628da4b63103afd356.mp4.m3u8?i=640x360_335"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3795,
+                    "name": "الصورة الأسية للعدد المركب(صورة أويلر )",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14177,
+                        "title": "شرح الصورة الأسية للعدد المركب",
+                        "stream_url": "https://river-3-357.rtbcdn.ru/hls-vod/pPlzAXtJ2MxnVrLwKD5fIg/1768403982/3394/0x5000c500fa6e8d98/beaa5eb282cc4d45b3b0e533455b4556.mp4.m3u8?i=640x360_267"
+                      },
+                      {
+                        "id": 14178,
+                        "title": "حل كويز(واجب)الصورة الأسية للعدد المركب(صورة أويلر )",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/-b1gB7T5xC52NdK8NAurYg/1768522039/3314/0x5000c500e9bd7ab5/e43be84ecd574839b86fe81b693f3f32.mp4.m3u8?i=640x360_307"
+                      },
+                      {
+                        "id": 14179,
+                        "title": "الاعداد المركبة بالاله الحاسبة",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/-b1gB7T5xC52NdK8NAurYg/1768522039/3314/0x5000c500e9bd7ab5/e43be84ecd574839b86fe81b693f3f32.mp4/segment-1-v1-a1.ts"
+                      },
+                      {
+                        "id": 14332,
+                        "title": "حل شامل الإسبوع(تفاضل وتكامل دور أول 21)عام وأزهر",
+                        "stream_url": "https://river-3-357.rtbcdn.ru/hls-vod/9wyWhvXyW0ae3SgIli8dHQ/1768659467/3328/0x5000c500e9cf3986/ecc2782b05bc4688878782415b282aae.mp4.m3u8?i=640x360_320"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3794,
+                    "name": "الصورة المثلثية للعدد المركب",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 5,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14172,
+                        "title": "شرح الصورة المثلثية للعدد المركب",
+                        "stream_url": "https://river-3-367.rtbcdn.ru/hls-vod/dy02s31TOauARRaeOp7E-A/1768482380/3346/0x5000c500e9cc0c29/70755ee2cf924323a56dd6ecd945030e.mp4.m3u8?i=640x360_289"
+                      },
+                      {
+                        "id": 14173,
+                        "title": "حل تدريبات الصورة المثلثية للعدد المركب",
+                        "stream_url": "https://river-3-316.rtbcdn.ru/hls-vod/W-lt7RoI8H6A5qgnnN3UpQ/1768643532/3352/0x5000c500e9ed7fa1/4ae9ae51360f4460a1f1b4e5d2961ef7.mp4.m3u8?i=640x360_268"
+                      },
+                      {
+                        "id": 14174,
+                        "title": "حل كويز(واجب)الصورة المثلثية للعدد المركب",
+                        "stream_url": "https://river-3-3102.rtbcdn.ru/hls-vod/m2nTtMwco2_MWeE1g2UOgw/1768659488/3348/0x5000c500fa80560d/7bd72e94c3a94e999708369dcbabeda4.mp4.m3u8?i=640x360_247"
+                      },
+                      {
+                        "id": 14175,
+                        "title": "حل أسئلة المقالي الصورة المثلثية للعدد المركب",
+                        "stream_url": "https://river-5-556.rtbcdn.ru/hls-vod/Nso4ymoC3URCoSxrjrhr4A/1768659496/3364/0x5000c500fa7764a0/dbc366a5f74f4ee3b3c5e4b3abf27a91.mp4.m3u8?i=640x360_363"
+                      },
+                      {
+                        "id": 14176,
+                        "title": "حل شامل الإسبوع الثاني(تفاضل وتكامل)دور 22 (عام وأزهر)",
+                        "stream_url": "https://river-5-558.rtbcdn.ru/hls-vod/tot9aM7e0pJLOfoDDmt-Tw/1768659504/3306/0x5000c500e977d074/28b8eddac41143e6b423d261e224aa1f.mp4.m3u8?i=640x360_251"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3793,
+                    "name": "النسبة بين حدين متتاليين",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14168,
+                        "title": "شرح وحل تدريبات النسبة بين حدين متتاليين من مفكوك ذات الحدين",
+                        "stream_url": "https://river-3-316.rtbcdn.ru/hls-vod/GpW6lHOycLAUmghJ-nlpGg/1768503685/3388/0x5000c500e85530bc/ed3e755d11e74b31bec9f8021ef08712.mp4.m3u8?i=640x360_283"
+                      },
+                      {
+                        "id": 14169,
+                        "title": "حل كويز(واجب )النسبة بين حدين متتاليين من مفكوك ذات الحدين",
+                        "stream_url": "https://river-3-345.rtbcdn.ru/hls-vod/33ffSeFavnNlJ43GiCpeeg/1768482313/3386/0x5000c500e873c4b4/10977d1c321e42ce9e090afb9f4f970e.mp4.m3u8?i=640x360_254"
+                      },
+                      {
+                        "id": 14170,
+                        "title": "حل أسئلة المقالي النسبة بين حدين متتاليين من مفكوك ذات الحدين",
+                        "stream_url": "https://river-3-345.rtbcdn.ru/hls-vod/33ffSeFavnNlJ43GiCpeeg/1768482313/3386/0x5000c500e873c4b4/10977d1c321e42ce9e090afb9f4f970e.mp4.m3u8?i=640x360_254"
+                      },
+                      {
+                        "id": 14171,
+                        "title": "حل أسئلة مستويات عليا النسبة بين حدين متتاليين",
+                        "stream_url": "https://river-5-535.rtbcdn.ru/hls-vod/u1jpU4pezWojqHau0c1BvQ/1768659530/3282/0x5000c500fa7787b2/104562eeb9784d38bf55e90d11904a01.mp4.m3u8?i=640x360_417"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3792,
+                    "name": "الحد المشتمل علي س أس ك",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14164,
+                        "title": "شرح إيجاد الحد المشتمل علي س أس ك في مفكوك ذات الحدين",
+                        "stream_url": "https://river-4-417.rtbcdn.ru/hls-vod/cNAvScJWlMscVrVkXFsEWA/1768576045/3258/0x5000c500e9cffdf6/42c0d9f5d5da42aea020fc8d0c74033e.mp4.m3u8?i=640x360_284"
+                      },
+                      {
+                        "id": 14165,
+                        "title": "حل كويز(واجب)إيجاد الحد المشتمل علي س اُس ك في مفكوك ذات الحدين",
+                        "stream_url": "https://river-3-316.rtbcdn.ru/hls-vod/1O96Ou2f1OIHP7b-6Ip-7A/1768548632/2654/0x5000039ce8382f81/587b1d2a49164ab3bbe85d6e56182365.mp4.m3u8?i=640x360_255"
+                      },
+                      {
+                        "id": 14166,
+                        "title": "حل أسئلة المقالي إيجاد الحد المشتمل علي س اُس ك في مفكوك ذات الحدين",
+                        "stream_url": "https://river-3-314.rtbcdn.ru/hls-vod/UCuCQP3d1SrGFWNi1v61PA/1768659553/3386/0x5000c500e87308a1/237d9c1d6f9049aa86dda3667ce99835.mp4.m3u8?i=640x360_367"
+                      },
+                      {
+                        "id": 14167,
+                        "title": "حل أسئلة المستويات عليا إيجاد الحد المشتمل علي س أس ك"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3791,
+                    "name": "ذات الحدين",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14160,
+                        "title": "شرح وحل تدريبات نظرية ذات الحدين بأس صحيح موجب"
+                      },
+                      {
+                        "id": 14161,
+                        "title": "حل كويز(واجب)نظرية ذات الحدين"
+                      },
+                      {
+                        "id": 14162,
+                        "title": "حل أسئلة المقالي الإضافية نظرية ذات الحدين"
+                      },
+                      {
+                        "id": 14163,
+                        "title": "حل أسئلة مستويات عليا نظرية ذات الحدين"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3790,
+                    "name": "التباديل والتوافيق",
+                    "image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "chapter_name": "الشهر الرابع",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/d56ccb245e069b95ecbff81a08d0a6dac27541f042c2.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14157,
+                        "title": "شرح وحل التباديل والتوافيق"
+                      },
+                      {
+                        "id": 14158,
+                        "title": "حل كويز(واجب)التباديل والتوافيق",
+                        "stream_url": "https://river-3-364.rtbcdn.ru/hls-vod/KszmKzIMPu78LV64xN7DrQ/1768566346/2872/0x5000c500e882c8e0/f6040255948444b396fe02569baf976e.mp4.m3u8?i=640x360_290"
+                      },
+                      {
+                        "id": 14159,
+                        "title": "حل أسئلة المقالي التباديل والتوافيق",
+                        "stream_url": "https://river-3-370.rtbcdn.ru/hls-vod/5Cpno-cKXC7Gl0lB2ozbYw/1768566357/3292/0x5000c500fa774fa7/19486d5b405d4f2980b81eab7e6487c3.mp4.m3u8?i=640x360_306"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 618,
+                "name": "الشهر الثالث",
+                "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 6,
+                "lectures": [
+                  {
+                    "id": 3789,
+                    "name": "ورشة التكامل",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14154,
+                        "title": "ورشة ملخص فرع التكامل بالكامل",
+                        "stream_url": "https://river-3-362.rtbcdn.ru/hls-vod/2Tju4BpcEzym4Lp7ajUuTQ/1768600474/2872/0x5000c500e8837efa/dd20862d2af34198bec2ed2046798f3c.mp4.m3u8?i=640x360_258"
+                      },
+                      {
+                        "id": 14155,
+                        "title": "حل تدريبات ورشة فرع التكامل",
+                        "stream_url": "https://river-3-301.rtbcdn.ru/hls-vod/5LE1m-A9ZRjLw6fN2w7eXA/1768446182/3350/0x5000c500e9e376aa/49240d798af04657ad5e001c459d1a2a.mp4.m3u8?i=640x360_269"
+                      },
+                      {
+                        "id": 14156,
+                        "title": "حل امتحانات",
+                        "stream_url": "https://river-5-534.rtbcdn.ru/hls-vod/Fd4iXyR5FjETHnJH7j4qCw/1768646504/3398/0x5000c500fa6e9a53/e8f34c9aeb6646a8834023b610d379fc.mp4.m3u8?i=640x360_258"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3788,
+                    "name": "تطبيقات على التكامل المحدد(الجزء الثاني)",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 1,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14153,
+                        "title": "شرح وحل تدريبات تطبيقات علي التكامل المحدد(الجزء الثاني)",
+                        "stream_url": "https://river-3-359.rtbcdn.ru/hls-vod/LBjx8UAJ1mXkj9_zoyUgQw/1768486633/2652/0x5000039ce87033dd/08a23dd6c824447e959f3367ad480a24.mp4.m3u8?i=640x360_283"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3787,
+                    "name": "تطبيقات علي التكامل المحدد(الجزء الأول)",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14151,
+                        "title": "شرح وحل تدريبات تطبيقات علي التكامل المحدد(الجزء الأول)",
+                        "stream_url": "https://river-5-532.rtbcdn.ru/hls-vod/LoKgVa6KRLRe3A5LZCDt0g/1768467923/3408/0x5000c500e93129d4/0dae1ba95f514c12956aaf77f4f08c00.mp4.m3u8?i=640x360_283"
+                      },
+                      {
+                        "id": 14152,
+                        "title": "حل كويز(واجب)تطبيقات علي التكامل المحدد(الجزء الأول )",
+                        "stream_url": "https://river-3-336.rtbcdn.ru/hls-vod/B9uuqko4XLv8FUFxQh2p3g/1768486323/2674/0x5000039ce83a5221/0e04bfaf28cb46d0a982f35af2b75b34.mp4.m3u8?i=640x360_263"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3786,
+                    "name": "المحاضرة الثالثة",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14148,
+                        "title": "شرح وحل تدريبات التكامل المحدد",
+                        "stream_url": "https://river-5-551.rtbcdn.ru/hls-vod/djMeGBhuobD--6WMBsXMkw/1768525726/3258/0x5000c500e9ebf060/dddfd87b141e4714996d5aec09ee87e4.mp4.m3u8?i=640x360_247"
+                      },
+                      {
+                        "id": 14149,
+                        "title": "حل كويز(واجب )التكامل المحدد",
+                        "stream_url": "https://river-3-3103.rtbcdn.ru/hls-vod/GFo_SNQn3GPcgGCWDnAyBg/1768655375/3408/0x5000c500c7e3086b/a37f9d9bc4d84160a3b1ce9d7809812b.mp4.m3u8?i=640x360_264"
+                      },
+                      {
+                        "id": 14150,
+                        "title": "حل أسئلة المقالي التكامل المحدد",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/yEcMqpJbyXK2nAZdj1FwCg/1768659720/2738/0x5000039ce84099a9/70c93d92ec4d4112897fcb9bf279dee7.mp4.m3u8?i=640x360_304"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3785,
+                    "name": "المحاضرة الثانية",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14145,
+                        "title": "شرح طرق التكامل",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/EaXGwsOYS_j0d1ThZrS1NQ/1768576104/3404/0x5000c500e9789cd4/257f007c02d94fc59e32d1024896b810.mp4.m3u8?i=640x360_454"
+                      },
+                      {
+                        "id": 14146,
+                        "title": "حل كويز(واجب)طرق التكامل",
+                        "stream_url": "https://river-3-358.rtbcdn.ru/hls-vod/RbyRSxJKai5DDDwj4Nq2vw/1768568046/3392/0x5000c500fa787a49/92b3951a8b3e4d2b99d09d92963e632c.mp4.m3u8?i=640x360_273"
+                      },
+                      {
+                        "id": 14147,
+                        "title": "حل أسئلة المقالي طرق التكامل",
+                        "stream_url": "https://river-3-358.rtbcdn.ru/hls-vod/9WOEInlVpAl8RV4j5_mK9A/1768500410/3376/0x5000c500fa6e5eda/6952d469c441411eb70ac2b10f7d0b69.mp4.m3u8?i=640x360_310"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3784,
+                    "name": "المحاضرة الأولى",
+                    "image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "chapter_name": "الشهر الثالث",
+                    "chapter_image_url": "https://files.coursatk.online/images/content/b722bd5f51d643bb73caff8c24445c816f21b98dcc55.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14142,
+                        "title": "تمهيدي الفرع وشرح وحل تدريبات تكامل الدوال الأسية",
+                        "stream_url": "https://river-3-360.rtbcdn.ru/hls-vod/jVBCRpVY9CiPAj3r0_38JA/1768621275/3384/0x5000c500fa78b31f/f7e4ce5023194410b5710260c30f35c7.mp4.m3u8?i=640x360_475"
+                      },
+                      {
+                        "id": 14143,
+                        "title": "حل كويز(واجب)تكامل الدوال الأسية واللوغارتمية",
+                        "stream_url": "https://river-5-512.rtbcdn.ru/hls-vod/eUDaMlKGerlwKMes5O4k8g/1768659759/3306/0x5000c50074475d6d/7f3bd7f173314ea7b3d11e11ebd832f5.mp4.m3u8?i=640x360_425"
+                      },
+                      {
+                        "id": 14144,
+                        "title": "حل اسئلة المقالي",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/03lwq1a861zi-46oFzA5dw/1768473608/3322/0x5000c500e9daa5d8/df93b25b2201424db8428fde51c8ba09.mp4.m3u8?i=640x360_548"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 617,
+                "name": "الشهر الثاني",
+                "image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 8,
+                "lectures": [
+                  {
+                    "id": 3783,
+                    "name": "الورشة",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14140,
+                        "title": "شرح ورشة الوحدة الثانية(تفاضل)",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/4xXKoNvdRqsbv66jCepCUA/1768659775/3302/0x5000c500e9d37bac/23a159c6583d42ef95acdf5144f963f2.mp4.m3u8?i=640x360_899"
+                      },
+                      {
+                        "id": 14141,
+                        "title": "حل ورشة الوحدة الثانية(تفاضل)",
+                        "stream_url": "https://river-5-538.rtbcdn.ru/hls-vod/r13uOzss2h-JVC9oPZNw5A/1768592738/3386/0x5000c500e873de41/8b489b03856b4956b4045e19d610b323.mp4.m3u8?i=640x360_450"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3782,
+                    "name": "تطبيقات القيم العظمي والصغري 2",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14137,
+                        "title": "شرح وحل تقبيقات القيم العظمي والصغري (الجزء الثاني)",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/lJ19uaQf2oUpgmhMVhF8BQ/1768473609/3310/0x5000c50074476d09/249a7ac6a89f46c699bfcc919cf5f393.mp4.m3u8?i=640x360_475"
+                      },
+                      {
+                        "id": 14138,
+                        "title": "حل كويز (تطبيقات القيم العظمي والصغري)(الجزء الثاني)",
+                        "stream_url": "https://river-3-363.rtbcdn.ru/hls-vod/R4q9KKZCf3U9UHz7SGnTsQ/1768412551/2644/0x5000039ce83a1735/6d3afbf05b8a488db531c251bd4870ed.mp4.m3u8?i=640x360_401"
+                      },
+                      {
+                        "id": 14139,
+                        "title": "حل اسئلة المقالي تطبيقات القيم العظمي والصغري",
+                        "stream_url": "https://river-5-533.rtbcdn.ru/hls-vod/GkFzynMlZDJgnrlr1Jcfdw/1768415863/3414/0x5000c500fa90b9e5/4a47f7937cf54c9886e62d88621754f7.mp4.m3u8?i=640x360_656"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3781,
+                    "name": "تطبيقات القيم العظمي والصغري(الجزء الأول)",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14134,
+                        "title": "شرح وحل تطبيقات القيم العظمي والصغري(الجزء الأول)"
+                      },
+                      {
+                        "id": 14135,
+                        "title": "حل كويز (تطبيقات القيم العظمي والصغري (الجزء الأول)"
+                      },
+                      {
+                        "id": 14136,
+                        "title": "حل اسئلة مستويات عليا(تطبيقات القيم العظمي والصغري (الجزء الأول)"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3780,
+                    "name": "دراسة المنحنيات (الجزء الثاني)",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14131,
+                        "title": "شرح دراسة المنحنيات (الجزء الثاني)"
+                      },
+                      {
+                        "id": 14132,
+                        "title": "حل كويز(دراسة المنحنيات)الجزء الثاني",
+                        "stream_url": "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"
+                      },
+                      {
+                        "id": 14133,
+                        "title": "حل اسئلة المقالي دراسة المنحنيات(الجزء الثاني)",
+                        "stream_url": "https://river-3-361.rtbcdn.ru/hls-vod/HrxGWBxnu1RQFmsrFXo6uQ/1768659872/3384/0x5000c500fa77553d/fc051b15f0d44df884491288c7a23b1b.mp4.m3u8?i=640x360_557"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3779,
+                    "name": " دراسة المنحنيات(الجزء الأول)",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 2,
+                    "videos": [
+                      {
+                        "id": 14128,
+                        "title": "شرح وحل دراسة المنحنيات(الجزء الأول)مستر لطفي",
+                        "stream_url": "https://river-5-512.rtbcdn.ru/hls-vod/ydnFpu52qDaxah05ZjvO5A/1768462336/1784/0x5000c500dc5d9c67/7a8a7f37f8894fa39485d7f7116aaf88.mp4.m3u8?i=640x360_987"
+                      },
+                      {
+                        "id": 14129,
+                        "title": "حل كويز(دراسة المنحنيات)مستر لطفي",
+                        "stream_url": "https://river-3-314.rtbcdn.ru/hls-vod/K9hV01uPuS_qO9oVxknBhw/1768659887/3314/0x5000c50074475e02/6bda3915ccb54e839277391844a2db97.mp4.m3u8?i=640x360_436"
+                      },
+                      {
+                        "id": 14130,
+                        "title": "حل اسئلة المقالي دراسة المنحنيات",
+                        "stream_url": "https://river-3-346.rtbcdn.ru/hls-vod/p6_YCH-1WvGtarl1OpXAfQ/1768659894/3382/0x5000c500fa77fbaa/871f1379350f4be382b7dadf5b88b5c4.mp4.m3u8?i=640x360_616"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3778,
+                    "name": "القيم العظمى والصغرى 2",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 2,
+                    "videos": [
+                      {
+                        "id": 14125,
+                        "title": "شرح وحل تدريبات القيم العظمي والصغري(الجزء الثاني)",
+                        "stream_url": "https://river-3-311.rtbcdn.ru/hls-vod/uIpRF5cqI8USVjVjN1Fjrg/1768637005/3378/0x5000c500fa6e8e1e/3bbfd5478ace4338b4fe6c256b4e13d3.mp4.m3u8?i=640x360_480"
+                      },
+                      {
+                        "id": 14126,
+                        "title": "حل(كويز)القيم العظمي والصغري(الجزء الثاني )",
+                        "stream_url": "https://river-5-554.rtbcdn.ru/hls-vod/LkiYKVywmQJ70h0Mvg9dLg/1768659907/3412/0x5000c500fa915f28/45a59cd5729449c9b619701662841896.mp4.m3u8?i=640x360_427"
+                      },
+                      {
+                        "id": 14127,
+                        "title": "حل أسئلة المقالي القيم العظمي والصغري (الجزء الثاني )",
+                        "stream_url": "https://river-3-3102.rtbcdn.ru/hls-vod/hgua9kuM9eQKbq_d83FKvQ/1768659915/3330/0x5000c500db0e395a/def9faf2269e46eaaced7cc142cba4dc.mp4.m3u8?i=640x360_466"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3777,
+                    "name": " القيم العظمي والصغري",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 4,
+                    "videos": [
+                      {
+                        "id": 14122,
+                        "title": "شرح وحل القيم العظمي والصغري(الجزء الأول )",
+                        "stream_url": "https://river-3-352.rtbcdn.ru/hls-vod/0xoRgrTPr2xmolX3xaOg8g/1768618548/3312/0x5000c500e9eb5ba1/b5a66056ef6a41e8a272c05e279aca5b.mp4.m3u8?i=640x360_512"
+                      },
+                      {
+                        "id": 14123,
+                        "title": "حل كويز(واجب)القيم العظمي والصغري(الجزء الأول)",
+                        "stream_url": "https://river-4-416.rtbcdn.ru/hls-vod/HYInUdY1pTjp5J9x---Xcw/1768659928/3338/0x5000c500e9ec31cf/c7a51f672dda43caac1b5edc1e6ce237.mp4.m3u8?i=640x360_450"
+                      },
+                      {
+                        "id": 14124,
+                        "title": "حل أسئلة المقالي القيم العظمي والصغري (الجزء الأول )",
+                        "stream_url": "https://river-3-366.rtbcdn.ru/hls-vod/TuMus-Eb5z4QEPAdlw9wCQ/1768659934/3394/0x5000c500fa6e74d6/47295705c25f48e0891b213b9ccd2771.mp4.m3u8?i=640x360_537"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3776,
+                    "name": "تزايد وتناقص الدوال",
+                    "image_url": "https://files.coursatk.online/images/questions/90a9b1ef5d48a305baa8ce7a907db2d41d22a2a41983.jpg",
+                    "chapter_name": "الشهر الثاني",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/3f55da169a9d302138fd7c5d938cdc100c4987ae3833.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 4,
+                    "pdf_count": 0,
+                    "exam_count": 2,
+                    "videos": [
+                      {
+                        "id": 14118,
+                        "title": "شرح وحل تزايد وتناقص الدوال",
+                        "stream_url": "https://river-5-534.rtbcdn.ru/hls-vod/GC96B8D8D9dyS-XlhDVXgw/1768658889/3362/0x5000c500fa6f3a08/b43ebbd2861c436e8fe147133ccf9c6c.mp4.m3u8?i=640x360_511"
+                      },
+                      {
+                        "id": 14119,
+                        "title": "حل واجب تزايد وتناقص الدوال",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/wqheGmzkRx3FTZvP6k483A/1768659948/3324/0x5000c500e9ebba54/30d072f9d4bf40b28f598b59b811fafb.mp4.m3u8?i=640x360_439"
+                      },
+                      {
+                        "id": 14120,
+                        "title": "حل أسئلة المقالي تزايد وتناقص الدوال",
+                        "stream_url": "https://river-5-546.rtbcdn.ru/hls-vod/1AQ0gbWyp0cmXbePn23iDA/1768659955/3272/0x5000c500e9ee6038/7e66bf7538f248fb9939694a5bbd7556.mp4.m3u8?i=640x360_462"
+                      },
+                      {
+                        "id": 14121,
+                        "title": "حل اسئلة مستويات عليا تزايد وتناقص الدوال",
+                        "stream_url": "https://river-3-375.rtbcdn.ru/hls-vod/R2T9RaMPuDuHhMfj7E3oCg/1768659961/3322/0x5000c500e9d38090/5d66ada4e5044c6ba4e83fa6b3af45ca.mp4.m3u8?i=640x360_574"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": 616,
+                "name": "الشهر الأول",
+                "image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                "teacher_name": "م. لطفي زهران",
+                "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                "subject_name": "الرياضيات",
+                "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                "lecture_count": 8,
+                "lectures": [
+                  {
+                    "id": 3775,
+                    "name": "ورشة الوحدة الأولى(تفاضل)🎰🔥",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14116,
+                        "title": "شرح ورشة الوحدة الأولى(تفاضل)",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/NOv9lsm2QiCBQ4cmT5y4Mg/1768464261/3346/0x5000c500e9cf2ced/ee76b827880f46d6858a60303419a7f5.mp4.m3u8?i=640x360_462"
+                      },
+                      {
+                        "id": 14117,
+                        "title": "حل أسئلة ورشة الوحدة الأولى(تفاضل)",
+                        "stream_url": "https://river-3-330.rtbcdn.ru/hls-vod/Flk5CnQmvCDkb1YzfenOpA/1768645845/3304/0x5000c500e9e376a8/8d50782b19dd48c68873f30859ae4b0b.mp4.m3u8?i=640x360_433"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3774,
+                    "name": "المعدلات الزمنية المرتبطة",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 6,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14110,
+                        "title": "شرح المعدلات الزمنية المرتبطة(الجزء الأول)",
+                        "stream_url": "https://river-5-538.rtbcdn.ru/hls-vod/V2ZecRSNVj1HfwStepuHrQ/1768659983/3336/0x5000c500e9ebe92a/43a231858df1450a9c6f53bda5fa96c4.mp4.m3u8?i=640x360_484"
+                      },
+                      {
+                        "id": 14111,
+                        "title": "حل تدريبات المعدلات الزمنية المرتبطة(الجزء الأول)",
+                        "stream_url": "https://river-3-316.rtbcdn.ru/hls-vod/Kc4T43i_YRmSueSwmpbDTw/1768659990/3412/0x5000c500fa916dfa/bec62499b82a44659f369144c4401d13.mp4.m3u8?i=640x360_296"
+                      },
+                      {
+                        "id": 14112,
+                        "title": "المعدلات الزمنية المرتبطة(الجزء الثاني)",
+                        "stream_url": "https://river-3-351.rtbcdn.ru/hls-vod/KOSR-WouSllRNj7cBjdgaA/1768462166/3316/0x5000c500e9cf5575/3d39852716824c178d72a74cc8484e13.mp4.m3u8?i=640x360_322"
+                      },
+                      {
+                        "id": 14113,
+                        "title": "حل كويز(واجب)المعدلات الزمنية المرتبطة",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/c_FDkpw06JdV6wCeY-LQtA/1768660003/3322/0x5000c500e9df325a/4f6d2777c32949559a448c33415cef66.mp4.m3u8?i=640x360_405"
+                      },
+                      {
+                        "id": 14114,
+                        "title": "حل اسئلة المقالي المعدلات الزمنية المرتبطة",
+                        "stream_url": "https://river-4-424.rtbcdn.ru/hls-vod/-1Ag9DbqtVYHmKNl6wJlbQ/1768660009/1893/0x5000c500e5391406/25bc8fb40d4341bea2d6b7021fa31d68.mp4.m3u8?i=640x360_717"
+                      },
+                      {
+                        "id": 14115,
+                        "title": "حل اسئلة مستويات عليا المعدلات الزمنية المرتبطة",
+                        "stream_url": "https://river-3-342.rtbcdn.ru/hls-vod/0nJ70FrE1yF0PE6pxCe2dg/1768660016/3382/0x5000c500fa776f37/fd0c09feaf084877aa44dbc9aa3e3243.mp4.m3u8?i=640x360_539"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3773,
+                    "name": "مشتقات الدوال الاسية واللوغارتميه",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 5,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14105,
+                        "title": "شرح مشتقات الدوال الاسية واللوغارتمية",
+                        "stream_url": "https://river-3-314.rtbcdn.ru/hls-vod/k0jdNMvhLES35zJrF_cU8A/1768569978/3270/0x5000c500e3c3d9e5/9103847c36a64447bf6b35629304e271.mp4.m3u8?i=640x360_433"
+                      },
+                      {
+                        "id": 14106,
+                        "title": "حل تدريبات مشتقات الدوال الاسية واللوغارتمية"
+                      },
+                      {
+                        "id": 14107,
+                        "title": "حل كويز(واجب)مشتقات الدوال الاسية واللوغارتمية",
+                        "stream_url": "https://river-5-528.rtbcdn.ru/hls-vod/FOg-huspgUqpCnntA5I8kg/1768660043/2217/0x5000c500e7519825/45aeb1d183314307ac50d8891dda897c.mp4.m3u8?i=640x360_293"
+                      },
+                      {
+                        "id": 14108,
+                        "title": "حل اسئلة المقالي مشتقات الدوال الاسية واللوغارتمية",
+                        "stream_url": "https://river-3-378.rtbcdn.ru/hls-vod/ksMybNbRtpxAj93ojQzSng/1768660051/3360/0x5000c500fa77c415/ecbf6b7a263a4d4d80660972e4beb8f2.mp4.m3u8?i=640x360_649"
+                      },
+                      {
+                        "id": 14109,
+                        "title": "حل اسئلة مستويات عليا مشتقات الدوال الاسية واللوغارتمية",
+                        "stream_url": "https://river-5-558.rtbcdn.ru/hls-vod/XO75yjY0Opj5r75DdbSaxA/1768660057/3386/0x5000c500e8739de0/514c48ad3e7c4d50883bdb1a056584a8.mp4.m3u8?i=640x360_752"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3772,
+                    "name": "معادلة المماس والعمودي",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 2,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14103,
+                        "title": "شرح معادلة المماس والعمودي",
+                        "stream_url": "https://river-3-365.rtbcdn.ru/hls-vod/xHOLQxE35SpSuhiEL9JscQ/1768421028/3364/0x5000c500fa6e7367/759feddb858a4d37ba49cb9e2ae0397c.mp4.m3u8?i=640x360_426"
+                      },
+                      {
+                        "id": 14104,
+                        "title": "حل المقالي الإضافي متطلبات معادلة المماس والعمودي",
+                        "stream_url": "https://river-3-379.rtbcdn.ru/hls-vod/cJtc8tOkiX82MTRgoODS8w/1768488734/3350/0x5000c500e9ebdc35/800a968635904bf6b3fb12cb893a01c9.mp4.m3u8?i=640x360_514"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3771,
+                    "name": "المشتقات العليا للدالة",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 5,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14098,
+                        "title": "شرح المشتقات العليا للدالة",
+                        "stream_url": "https://river-5-535.rtbcdn.ru/hls-vod/yHsXiikjotyF-wFQnh-V3g/1768657512/3370/0x5000c500fa7775ad/dc55943529f24a00b1e5999f976908f5.mp4.m3u8?i=640x360_466"
+                      },
+                      {
+                        "id": 14099,
+                        "title": "حل تدريبات المشتقات العليا للدالة",
+                        "stream_url": "https://river-3-361.rtbcdn.ru/hls-vod/w4G6ZdwqZfNwdf4xKbZ8eg/1768660087/1905/0x5000c500e53c7a42/4fbc4901dd3c4dc4853616693cfc9b95.mp4.m3u8?i=640x360_459"
+                      },
+                      {
+                        "id": 14100,
+                        "title": "حل كويز (واجب)المشتقات العليا",
+                        "stream_url": "https://river-3-340.rtbcdn.ru/hls-vod/tUeSdnA1FZIHq3HkDy8nJQ/1768517598/3406/0x5000c500e9789838/640d9503301649518478014d45911757.mp4.m3u8?i=640x360_429"
+                      },
+                      {
+                        "id": 14101,
+                        "title": "حل اسئله المقالي المشتقات العليا للدالة",
+                        "stream_url": "https://river-4-422.rtbcdn.ru/hls-vod/hqSnaIx3w2TXAEKIAkJtVw/1768660099/2706/0x5000039ce863c3d5/dc68f0412d584a9c95ee3f262c1f6880.mp4.m3u8?i=640x360_542"
+                      },
+                      {
+                        "id": 14102,
+                        "title": "حل اسئلة المقالي الإضافي (المشتقات العليا للدالة)",
+                        "stream_url": "https://river-5-547.rtbcdn.ru/hls-vod/wc5hqs8QZjwg1jwzAYNdLg/1768660106/3400/0x5000c500fa77f7a4/075b5cae164c4331bc4ab562aa054a45.mp4.m3u8?i=640x360_528"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3770,
+                    "name": "الإشتقاق الضمني والبارامتري",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 6,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14092,
+                        "title": "شرح الإشتقاق الضمني والبارامتري",
+                        "stream_url": "https://river-5-556.rtbcdn.ru/hls-vod/YyskTLXGtPDAfhcP39iVgQ/1768523108/3386/0x5000c500e874e117/03aa6d04606f4a51b0b82cdaeb75fc10.mp4.m3u8?i=640x360_587"
+                      },
+                      {
+                        "id": 14093,
+                        "title": "حل تدريبات الإشتقاق الضمني والبارامتري",
+                        "stream_url": "https://river-5-551.rtbcdn.ru/hls-vod/A9zRVrHnS8IXXrZ6PvuhJg/1768640446/2724/0x5000039ce838394d/95f2f6ef9ac54a96b582af524d6c23cc.mp4.m3u8?i=640x360_502"
+                      },
+                      {
+                        "id": 14094,
+                        "title": "حل كويز (واجب) الإشتقاق الضمني والبارامتري",
+                        "stream_url": "https://river-3-317.rtbcdn.ru/hls-vod/sLJtGMHokhU9FWG31ab6jQ/1768660127/3286/0x5000c500fa775e73/5fa87841821c4ef29b88317a997afd27.mp4.m3u8?i=640x360_376"
+                      },
+                      {
+                        "id": 14095,
+                        "title": "حل واجب أسئلة المقالي الإشتقاق الضمني والبارامتري",
+                        "stream_url": "https://river-5-549.rtbcdn.ru/hls-vod/bu-QZyU0Kt5HKEMOWLNICA/1768660135/3360/0x5000c500fa6e82a4/8ae6d8f6fa1c48228526c306daedc89b.mp4.m3u8?i=640x360_467"
+                      },
+                      {
+                        "id": 14096,
+                        "title": "حل أسئلة المقالي الإضافي (الإشتقاق الضمني والبارامتري)",
+                        "stream_url": "https://river-5-513.rtbcdn.ru/hls-vod/Z881d_WorplILd07M7IZYw/1768660142/3304/0x5000c500e9cfbe4b/3ef206d91e1b4923a1f6a175bbbe6822.mp4.m3u8?i=640x360_499"
+                      },
+                      {
+                        "id": 14097,
+                        "title": "حل أسئلة مستويات الأسئلة العليا الإشتقاق الضمني والبارامتري",
+                        "stream_url": "https://river-5-522.rtbcdn.ru/hls-vod/Ets8BktJrNdzKAXXdadBug/1768660152/3316/0x5000c500e9e37799/9decd1caa20945839257176848556817.mp4.m3u8?i=640x360_531"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3769,
+                    "name": "اشتقاق الدوال المثلثية(متطلبات قبلية)",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 3,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14089,
+                        "title": "شرح اشتقاق الدوال المثلثية",
+                        "stream_url": "https://river-3-367.rtbcdn.ru/hls-vod/EljJmfNcBe2BGJdqC29fQg/1768500109/3362/0x5000c500fa6ffeb2/6e8a1725c72d499a810f4bab25d2f534.mp4.m3u8?i=640x360_665"
+                      },
+                      {
+                        "id": 14090,
+                        "title": "حل تدريبات اشتقاق الدوال المثلثية",
+                        "stream_url": "https://river-4-422.rtbcdn.ru/hls-vod/3SKQc4-8sjPCQfzwaQqn0g/1768462001/3258/0x5000c500e6eddb23/fde8bab309dc4a04985b584f6a8099c1.mp4.m3u8?i=640x360_596"
+                      },
+                      {
+                        "id": 14091,
+                        "title": "حل كويز(واجب)اشتقاق الدوال المثلثية",
+                        "stream_url": "https://river-3-317.rtbcdn.ru/hls-vod/gfELR4kkQ4vgTXb7OhQ6Dw/1768607924/3262/0x5000c500e9ebd51a/dad179d21456490980c59ef721923c3f.mp4.m3u8?i=640x360_440"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 3768,
+                    "name": "التأسيس",
+                    "image_url": "https://files.coursatk.online/images/questions/fbb68e5105dc4375f573c24d953c0d73155f7d117d47.jpg",
+                    "chapter_name": "الشهر الأول",
+                    "chapter_image_url": "https://files.coursatk.online/images/questions/e02a95234f2a98dfc287a99917e7b6b25a33da7f8db7.jpg",
+                    "teacher_name": "م. لطفي زهران",
+                    "teacher_image_url": "https://files.coursatk.online/images/questions/e058a83e533993956c70599fb7d611f340ae22be9503.jpg",
+                    "subject_name": "الرياضيات",
+                    "subject_image_url": "https://files.coursatk.online/images/content/20251208_91237ab21a72265528f432057f5f625e.jpg",
+                    "video_count": 6,
+                    "pdf_count": 0,
+                    "exam_count": 0,
+                    "videos": [
+                      {
+                        "id": 14083,
+                        "title": "محاضرة رقم (1) تراكمي",
+                        "stream_url": "https://river-4-420.rtbcdn.ru/hls-vod/pCfF4GNP_a7jdI7rrnqvEg/1768660181/3332/0x5000c500e9e376b8/54dfcf5b7f2543c0a6a905bd26cf311f.mp4.m3u8?i=640x360_518"
+                      },
+                      {
+                        "id": 14084,
+                        "title": "محاضرة رقم (2) تراكمي",
+                        "stream_url": "https://river-5-528.rtbcdn.ru/hls-vod/c2boQp-sBYCqhxmihnNfhw/1768660189/2714/0x5000039ce869eb05/0b61f85b4fc34085a8b785a256abfaa1.mp4.m3u8?i=640x360_434"
+                      },
+                      {
+                        "id": 14085,
+                        "title": "محاضرة رقم (3) تراكمي",
+                        "stream_url": "https://river-5-537.rtbcdn.ru/hls-vod/VM5vZJeyHEUAOkJDsCtXkg/1768660197/3284/0x5000c500fa6ea052/6c795384d29b42c8a22c3c83f48af8b3.mp4.m3u8?i=640x360_488"
+                      },
+                      {
+                        "id": 14086,
+                        "title": "محاضرة رقم (4) تراكمي",
+                        "stream_url": "https://river-3-350.rtbcdn.ru/hls-vod/JRYlEdS_zmTfyC0p0P3Ynw/1768660206/3284/0x5000c500fa6e3769/9cd407bc75d848bfaf46bac4fa16ce5d.mp4.m3u8?i=640x360_799"
+                      },
+                      {
+                        "id": 14087,
+                        "title": "محاضرة رقم (5) تراكمي",
+                        "stream_url": "https://river-4-421.rtbcdn.ru/hls-vod/c63GRpKbj8TApiySu2YyRQ/1768608426/3268/0x5000c500db7665f6/33f1430282ec430f9f682152361df3d0.mp4.m3u8?i=640x360_459"
+                      },
+                      {
+                        "id": 14088,
+                        "title": "محاضرة رقم (6) تراكمي",
+                        "stream_url": "https://river-5-513.rtbcdn.ru/hls-vod/c-vwrt_5OBcem3tBJBctCg/1768489000/3360/0x5000c500fa775d9e/9c12af0436274b05b03062d25ef36589.mp4.m3u8?i=640x360_384"
+                      }
                     ]
                   }
                 ]
