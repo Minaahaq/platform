@@ -6,6 +6,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
   }
 
+  const fetchSite = req.headers["sec-fetch-site"];
+
+if (fetchSite !== "same-origin") {
+  return res.status(404).send("Not Found");
+}
   // ===== session =====
   const cookie = req.headers.cookie || "";
   const match = cookie.match(/session=([^;]+)/);
@@ -75,11 +80,12 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
   else return res.status(400).json({ error: "INVALID_TYPE" });
 
   const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Secure-Proxy/1.0",
-      "x-api-key": process.env.API_KEY
-    }
-  });
+  headers: {
+    "User-Agent": "Secure-Proxy/1.0",
+    "x-api-key": process.env.API_KEY,
+    "x-internal-proxy": process.env.PROXY_SECRET
+  }
+});
 
   if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
   const data = await response.json();
@@ -101,4 +107,4 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
   ]);
 
   return res.status(200).json(data);
-}
+                                 }
