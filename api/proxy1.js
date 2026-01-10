@@ -107,4 +107,4 @@ if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
   ]);
 
   return res.status(200).json(data);
-                                 }
+}
