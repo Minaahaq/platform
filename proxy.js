@@ -6,6 +6,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
   }
 
+  const fetchSite = req.headers["sec-fetch-site"];
+  if (fetchSite !== "same-origin") {
+    return res.status(404).send("Not Found");
+  }
+
   // ===== session =====
   const cookie = req.headers.cookie || "";
   const match = cookie.match(/session=([^;]+)/);
@@ -13,7 +18,9 @@ export default async function handler(req, res) {
 
   let session;
   try {
-    session = JSON.parse(Buffer.from(match[1], "base64").toString("utf8"));
+    session = JSON.parse(
+      Buffer.from(match[1], "base64").toString("utf8")
+    );
   } catch {
     return res.status(401).json({ error: "BAD_SESSION" });
   }
@@ -21,44 +28,47 @@ export default async function handler(req, res) {
   const SECRET = process.env.SESSION_SECRET;
   if (!SECRET) return res.status(500).json({ error: "NO_SECRET" });
 
-  // ===== verify =====
+  // ===== verify signature =====
   const expectedSig = crypto
     .createHmac("sha256", SECRET)
     .update(JSON.stringify(session.payload))
     .digest("hex");
 
   if (session.sig !== expectedSig) {
-    return res.status(401).json({ error: "SESSION_INVALID" });
+    return res.status(401).json({ error: "UNAUTHORIZED" });
   }
 
   const ua = req.headers["user-agent"] || "";
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.socket.remoteAddress;
 
-  if (session.payload.ua !== ua || session.payload.i !== ip) {
+  // ===== device check (بدون IP) =====
+  if (session.payload.ua !== ua) {
     return res.status(401).json({ error: "DEVICE_MISMATCH" });
   }
 
-  // ===== 5 minutes expiry =====
-  if (Date.now() - session.payload.t > 5 * 60 * 1000) {
+  // ===== expiry 30 days =====
+  if (Date.now() - session.payload.t > 30 * 24 * 60 * 60 * 1000) {
     return res.status(401).json({ error: "SESSION_EXPIRED" });
   }
 
+  // ===== block tools =====
   if (/curl|postman|python|wget|httpclient/i.test(ua)) {
     return res.status(403).json({ error: "BLOCKED_CLIENT" });
   }
 
-  // ===== rate limit =====
+  // ===== rate limit (بالـ session بدل IP) =====
   const now = Date.now();
   handler.r = handler.r || new Map();
-  const list = handler.r.get(ip) || [];
+
+  const key = session.payload.d; // device id
+  const list = handler.r.get(key) || [];
   const recent = list.filter(t => now - t < 30000);
-  if (recent.length >= 20) {
+
+  if (recent.length >= 25) {
     return res.status(429).json({ error: "TOO_MANY_REQUESTS" });
   }
+
   recent.push(now);
-  handler.r.set(ip, recent);
+  handler.r.set(key, recent);
 
   // ===== routing =====
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
@@ -76,14 +86,18 @@ export default async function handler(req, res) {
   const response = await fetch(url, {
     headers: {
       "User-Agent": "Secure-Proxy/1.0",
-      "x-api-key": process.env.API_KEY
+      "x-api-key": process.env.API_KEY,
+      "x-internal-proxy": process.env.PROXY_SECRET
     }
   });
 
-  if (!response.ok) return res.status(502).json({ error: "UPSTREAM_ERROR" });
+  if (!response.ok) {
+    return res.status(502).json({ error: "UPSTREAM_ERROR" });
+  }
+
   const data = await response.json();
 
-  // ===== renew session (auto) =====
+  // ===== renew session =====
   session.payload.t = Date.now();
 
   const newSig = crypto
@@ -96,7 +110,7 @@ export default async function handler(req, res) {
     .toString("base64");
 
   res.setHeader("Set-Cookie", [
-    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=300`
+    `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000`
   ]);
 
   return res.status(200).json(data);
