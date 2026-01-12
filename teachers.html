@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <script src="check_code.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>المدرسون - منصة THE BEST</title>
@@ -218,10 +219,7 @@
     <li>⏳....𝑳𝒐𝒂𝒅𝒊𝒏𝒈</li>
   </ul>
   
- <script src="app.js"></script>  <!-- أو المسار المناسب للملف -->
-
-  <script src="check_code.js"></script>
-
+ 
   
 <script type="module">
 const teachersList = document.getElementById('teachers-list');
@@ -235,9 +233,8 @@ const subjectImages = {
   "English": "https://www2.0zz0.com/2025/11/03/16/386429473.jpg",
   "جيولوجيا": "https://www2.0zz0.com/2025/11/03/22/343667596.jpg",
   "الرياضيات": "https://www2.0zz0.com/2025/11/03/22/428968592.jpg",
-  "Le français": "https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjqxKy6jIGSAxVCUqQEHVtqCCYQh-wKegQIKRAE&url=https%3A%2F%2Fwww.gulfpicasso.com%2Ftext-to-image%2Fgallery%2F98fbd0af-2a2c-463f-9024-12b429eb0065&usg=AOvVaw0KMCh_G4CRIVdFM0ddk-IN&opi=89978449"
+  "ادبي": "https://www2.0zz0.com/2025/10/01/19/580067879.jpeg"
 };
-
 
 // جلب المادة المختارة والسنة
 const selectedSubject = JSON.parse(localStorage.getItem("selected_subject"));
