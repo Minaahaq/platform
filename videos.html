@@ -288,7 +288,7 @@ async function loadVideos() {
     `/api/proxy?type=videos&yearId=${selectedYear.id}&subjectId=${selectedSubject.id}&teacherId=${selectedTeacher.id}&chapterId=${selectedChapter.id}&lectureId=${selectedLecture.id}`
   );
 
-  if (!data || !data.videos) {
+  if (!res || !res.videos) {
     showToast("❌ حدث خطأ أثناء تحميل الفيديوهات", "error");
     return;
   }
