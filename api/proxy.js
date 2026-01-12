@@ -1,5 +1,7 @@
 import crypto from "crypto";
 
+const DATA_TTL = 10 * 1000; // الداتا صالحة 10 ثواني
+
 export default async function handler(req, res) {
 
   if (!["GET", "POST"].includes(req.method)) {
@@ -40,7 +42,7 @@ export default async function handler(req, res) {
 
   const ua = req.headers["user-agent"] || "";
 
-  // ===== device check (بدون IP) =====
+  // ===== device check =====
   if (session.payload.ua !== ua) {
     return res.status(401).json({ error: "DEVICE_MISMATCH" });
   }
@@ -55,11 +57,11 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "BLOCKED_CLIENT" });
   }
 
-  // ===== rate limit (بالـ session بدل IP) =====
+  // ===== rate limit =====
   const now = Date.now();
   handler.r = handler.r || new Map();
 
-  const key = session.payload.d; // device id
+  const key = session.payload.d;
   const list = handler.r.get(key) || [];
   const recent = list.filter(t => now - t < 30000);
 
@@ -72,7 +74,7 @@ export default async function handler(req, res) {
 
   // ===== routing =====
   const { type, yearId, subjectId, teacherId, chapterId, lectureId } = req.query;
-  const BASE = "https://platform-sigma-seven.vercel.app";
+  const BASE = "https://test1-psi-nine-91.vercel.app";
 
   let url = "";
   if (type === "years") url = `${BASE}/api/years`;
@@ -97,6 +99,25 @@ export default async function handler(req, res) {
 
   const data = await response.json();
 
+  // ===== Time-Bound Token =====
+  const exp = Date.now() + DATA_TTL;
+
+  const tokenPayload = {
+    sid: session.payload.sid,
+    exp,
+    type,
+    lectureId: lectureId || null
+  };
+
+  const tokenSig = crypto
+    .createHmac("sha256", SECRET)
+    .update(JSON.stringify(tokenPayload))
+    .digest("hex");
+
+  const accessToken = Buffer.from(
+    JSON.stringify({ tokenPayload, tokenSig })
+  ).toString("base64");
+
   // ===== renew session =====
   session.payload.t = Date.now();
 
@@ -113,5 +134,9 @@ export default async function handler(req, res) {
     `session=${newSession}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=2592000`
   ]);
 
-  return res.status(200).json(data);
-}
+  return res.status(200).json({
+    data,
+    _token: accessToken,
+    _expiresIn: DATA_TTL
+  });
+    }
