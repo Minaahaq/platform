@@ -17,7 +17,10 @@ export default async function handler(req, res) {
 
   const ua = req.headers["user-agent"] || "";
 
- 
+  // السماح فقط للتطبيق أو WebView
+  if (!(/AppCreator24|wv|WebView/i.test(ua))) {
+    return res.status(403).json({ error: "APP_ONLY" });
+  }
 
   // ===== فحص Session حالية =====
   const cookies = req.headers.cookie || "";
