@@ -6,6 +6,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "METHOD_NOT_ALLOWED" });
   }
 
+  if (req.headers["x-preload"] === "true") {
+  return res.status(403).json({ error: "PRELOADING_BLOCKED" });
+}
+
+
   const fetchSite = req.headers["sec-fetch-site"];
   if (fetchSite !== "same-origin") {
     return res.status(404).send("Not Found");
