@@ -1,250 +1,1813 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول | الثانوية بلس بريميوم</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0b1020" />
+    <title>MINA CODE ACADEMY — Firebase</title>
 
-  body {
-    font-family: 'Cairo', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #3f1f85;
-    overflow: hidden;
-    position: relative;
-  }
+    <!-- Firebase SDKs (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js">
+    </script>
 
-  /* Login Box */
-  .login-box {
-    position: relative;
-    background: #1a0a3d;
-    border-radius: 25px;
-    padding: 50px 35px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    text-align: center;
-    margin: auto;
-  }
+    <style>
+        /* ── reset & base ── */
+        :root {
+            --bg: #080b14;
+            --panel: #101625;
+            --panel2: #151d2f;
+            --text: #f5f7ff;
+            --muted: #9ba7bf;
+            --line: #24304a;
+            --primary: #7c5cff;
+            --primary2: #00d4ff;
+            --success: #26d07c;
+            --danger: #ff5d73;
+            --warn: #ffbf47;
+            --shadow: 0 18px 55px #0007;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            background: radial-gradient(circle at 80% 0, #19234a 0, transparent 32%), var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+            transition: background .3s;
+        }
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+        button {
+            cursor: pointer;
+            border: 0;
+        }
+        .app {
+            min-height: 100vh;
+        }
 
-  .login-box h2 {
-    color: #ffcb42;
-    font-size: 32px;
-    margin-bottom: 15px;
-  }
-  .login-box p {
-    color: #eee;
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  .login-box input {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    border: 2px solid #ffcb42;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    font-size: 18px;
-    text-align: center;
-    outline: none;
-    transition: 0.3s;
-  }
-  .login-box input:focus {
-    border-color: #fff;
-    box-shadow: 0 0 10px #ffcb42;
-    background: rgba(255,255,255,0.15);
-  }
-  .login-box button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 12px;
-    background: #ffcb42;
-    color: #3f1f85;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  .login-box button:hover {
-    background: #ff9f00;
-  }
+        /* ── topbar ── */
+        .topbar {
+            height: 72px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: #0b1020d9;
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 18px;
+        }
+        .brand {
+            font-weight: 900;
+            letter-spacing: .4px;
+            white-space: nowrap;
+        }
+        .brand b {
+            color: #9c86ff;
+        }
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+        .menu {
+            display: none;
+            background: var(--panel);
+            color: var(--text);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .search {
+            flex: 1;
+            max-width: 520px;
+            margin: auto;
+            position: relative;
+        }
+        .search input {
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 11px 42px 11px 14px;
+            border-radius: 14px;
+            outline: none;
+        }
+        .search span {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            color: var(--muted);
+        }
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .iconbtn,
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+        }
+        .avatar {
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            border: 0;
+            color: #fff;
+        }
 
- .info-details {
-  color: #ffd976;            /* ذهبي احترافي */
-  font-size: 18px;
-  margin-top: 12px;
-  line-height: 1.9;
-  background: rgba(255, 217, 118, 0.08); /* خلفية ذهبية شفافة */
-  padding: 12px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 217, 118, 0.25);
-  backdrop-filter: blur(3px);
-}
-.info-details b {
-  color: #ffe9a3;           /* لون أفتح لعناصر الـ <b> */
-} 
+        /* ── sidebar ── */
+        .shell {
+            display: flex;
+        }
+        .sidebar {
+            width: 240px;
+            position: fixed;
+            top: 72px;
+            bottom: 0;
+            padding: 18px 14px;
+            background: #0b1020ee;
+            border-left: 1px solid var(--line);
+            overflow: auto;
+            z-index: 20;
+            transition: transform .25s ease;
+        }
+        .navtitle {
+            font-size: 11px;
+            color: #65728d;
+            margin: 14px 10px 8px;
+        }
+        .navbtn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--muted);
+            background: transparent;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: right;
+            margin: 3px 0;
+            border: 0;
+            font-size: 14px;
+        }
+        .navbtn:hover,
+        .navbtn.active {
+            background: linear-gradient(90deg, #7c5cff22, transparent);
+            color: #fff;
+        }
+        .teacher-nav {
+            border-top: 1px solid var(--line);
+            margin-top: 12px;
+            padding-top: 12px;
+        }
 
-  /* Loader */
-  .loader {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,203,66,0.3);
-    border-top-color: #ffcb42;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    vertical-align: middle;
-    margin-left: 5px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+        /* ── main ── */
+        .main {
+            margin-right: 240px;
+            width: calc(100% - 240px);
+            padding: 26px;
+            max-width: 1500px;
+            margin-left: auto;
+        }
+        .page {
+            animation: fade .3s ease;
+        }
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
-  .result { margin-top: 15px; font-size: 16px; line-height: 1.6; }
-  .success { color: #4ade80; }
-  .error { color: #f87171; }
+        /* ── hero ── */
+        .hero {
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: linear-gradient(135deg, #151c32, #0e1424);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .hero:after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: #7c5cff33;
+            filter: blur(35px);
+            left: -100px;
+            top: -120px;
+        }
+        .eyebrow {
+            color: #a995ff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .hero h1 {
+            font-size: clamp(25px, 4vw, 42px);
+            margin: 8px 0;
+        }
+        .hero p {
+            color: var(--muted);
+            margin: 0 0 20px;
+        }
+        .hero-stat {
+            min-width: 210px;
+            align-self: center;
+            position: relative;
+            z-index: 1;
+        }
 
-</style>
+        /* ── buttons ── */
+        .btn {
+            padding: 11px 16px;
+            border-radius: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), #5b8cff);
+            font-weight: 800;
+            border: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn.secondary {
+            background: var(--panel2);
+            border: 1px solid var(--line);
+        }
+        .btn.success {
+            background: var(--success);
+            color: #06150d;
+        }
+
+        /* ── progress ── */
+        .progress {
+            height: 9px;
+            background: #252f47;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress i {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary2));
+            border-radius: inherit;
+            transition: width .7s;
+        }
+
+        /* ── grid / cards ── */
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+        .stats {
+            grid-template-columns: repeat(5, minmax(130px, 1fr));
+            margin: 20px 0;
+        }
+        .card {
+            background: linear-gradient(145deg, #121a2b, #0e1422);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 10px 35px #0003;
+        }
+        .stat .label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .stat .value {
+            font-size: 25px;
+            font-weight: 900;
+            margin-top: 7px;
+        }
+        .section {
+            margin-top: 26px;
+        }
+        .sectionhead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+        .section h2 {
+            font-size: 19px;
+            margin: 0;
+        }
+        .muted {
+            color: var(--muted);
+        }
+
+        /* ── courses ── */
+        .course-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .course {
+            position: relative;
+            overflow: hidden;
+        }
+        .course .courseicon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            background: #7c5cff22;
+            font-size: 25px;
+        }
+        .course h3 {
+            margin: 14px 0 6px;
+        }
+        .course p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--muted);
+            min-height: 42px;
+        }
+        .tags {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+        .tag {
+            font-size: 11px;
+            padding: 5px 8px;
+            border-radius: 8px;
+            background: #ffffff08;
+            color: var(--muted);
+            border: 1px solid var(--line);
+        }
+        .continue {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ── lessons / tasks ── */
+        .list {
+            display: grid;
+            gap: 10px;
+        }
+        .lessonrow,
+        .taskrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: #0c1322;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            cursor: default;
+        }
+        .lessonnum {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #ffffff08;
+            color: #b8c3da;
+        }
+        .lessonrow.done .lessonnum {
+            background: #26d07c22;
+            color: var(--success);
+        }
+        .lessonrow.current {
+            border-color: #7c5cff88;
+        }
+        .grow {
+            flex: 1;
+        }
+        .pill {
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 99px;
+            background: #ffffff09;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .pill.success {
+            color: var(--success);
+            background: #26d07c18;
+        }
+        .pill.warn {
+            color: var(--warn);
+            background: #ffbf4718;
+        }
+        .pill.danger {
+            color: var(--danger);
+            background: #ff5d7318;
+        }
+
+        /* ── lesson layout ── */
+        .lesson-layout {
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            gap: 16px;
+        }
+        .lesson-side {
+            height: max-content;
+            position: sticky;
+            top: 90px;
+        }
+        .video {
+            height: 290px;
+            border-radius: 18px;
+            border: 1px solid var(--line);
+            background: radial-gradient(circle, #1c2850, #080d18);
+            display: grid;
+            place-items: center;
+            margin: 15px 0;
+            color: #b9c4db;
+        }
+        .play {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #7c5cff;
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 25px;
+        }
+
+        /* ── code blocks ── */
+        .code {
+            direction: ltr;
+            text-align: left;
+            background: #080c15;
+            border: 1px solid #29344d;
+            border-radius: 14px;
+            overflow: auto;
+            margin: 12px 0;
+        }
+        .codehead {
+            padding: 8px 12px;
+            color: #8491ac;
+            background: #0d1422;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code pre {
+            margin: 0;
+            padding: 16px;
+            color: #d9e3ff;
+            font: 14px/1.7 "SFMono-Regular", Consolas, monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* ── tables ── */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            text-align: right;
+        }
+        .table th {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* ── editor ── */
+        .editor {
+            direction: ltr;
+            text-align: left;
+            width: 100%;
+            min-height: 260px;
+            resize: vertical;
+            background: #070b13;
+            color: #dce5ff;
+            border: 1px solid #2a3650;
+            border-radius: 14px;
+            padding: 16px;
+            font: 14px/1.7 monospace;
+            outline: none;
+        }
+        .output {
+            direction: ltr;
+            text-align: left;
+            background: #070b13;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            min-height: 80px;
+            padding: 14px;
+            white-space: pre-wrap;
+            color: #8ff0b7;
+            font: 14px/1.7 monospace;
+        }
+
+        /* ── forms ── */
+        .formgrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .field label {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 6px;
+        }
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            background: #0b1220;
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            padding: 11px;
+            color: #fff;
+            outline: none;
+        }
+        .field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* ── search results ── */
+        .searchresults {
+            position: absolute;
+            top: 52px;
+            right: 0;
+            left: 0;
+            background: #101827;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 8px;
+            z-index: 50;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        .result {
+            padding: 10px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+        .result:hover {
+            background: #ffffff08;
+        }
+
+        /* ── toast ── */
+        .toastwrap {
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            z-index: 100;
+            display: grid;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 15px;
+            background: #151d2d;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            animation: slide .3s ease;
+        }
+        @keyframes slide {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        /* ── modal ── */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: #0009;
+            backdrop-filter: blur(5px);
+            z-index: 80;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modalbox {
+            width: min(720px, 100%);
+            max-height: 90vh;
+            overflow: auto;
+            background: #101827;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .close {
+            float: left;
+            background: transparent;
+            color: #fff;
+            font-size: 28px;
+            border: 0;
+            line-height: 1;
+        }
+
+        /* ── bottom nav ── */
+        .bottomnav {
+            display: none;
+        }
+
+        /* ── chart ── */
+        .chart {
+            height: 190px;
+            display: flex;
+            align-items: end;
+            gap: 12px;
+            padding: 20px 0;
+        }
+        .bar {
+            flex: 1;
+            background: linear-gradient(#7c5cff, #00d4ff);
+            border-radius: 8px 8px 2px 2px;
+            min-height: 10px;
+            transition: height .5s;
+        }
+
+        /* ── misc ── */
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+        .locked {
+            opacity: .55;
+        }
+        .badgegrid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .badge {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .badgeicon {
+            font-size: 32px;
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            background: #ffffff08;
+            border-radius: 15px;
+        }
+
+        /* ── notifications ── */
+        .notif {
+            position: absolute;
+            left: 18px;
+            top: 58px;
+            width: 300px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 60;
+        }
+        .notif.show {
+            display: block;
+        }
+        .notifitem {
+            padding: 10px;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+
+        /* ── light theme ── */
+        .light {
+            --bg: #f4f6fb;
+            --panel: #fff;
+            --panel2: #eef1f8;
+            --text: #111827;
+            --muted: #657086;
+            --line: #dce2ee;
+            --shadow: 0 15px 40px #18213d18;
+        }
+        .light .topbar,
+        .light .sidebar {
+            background: #ffffffdd;
+        }
+        .light .card {
+            background: #fff;
+        }
+        .light .editor,
+        .light .code,
+        .light .output {
+            background: #0b1020;
+            color: #e5edff;
+        }
+        .light .field input,
+        .light .field textarea,
+        .light .field select {
+            background: #fff;
+            color: #111;
+        }
+
+        /* ── loading overlay ── */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: #080b14;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity .5s ease, visibility .5s ease;
+        }
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #loader .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--line);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        #loader p {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* ── responsive ── */
+        @media(max-width:1050px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .course-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media(max-width:760px) {
+            .topbar {
+                height: 64px;
+                padding: 0 10px;
+            }
+            .menu {
+                display: block;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar.open {
+                display: block;
+                transform: translateX(0);
+            }
+            .main {
+                margin: 0;
+                width: 100%;
+                padding: 14px 12px 82px;
+            }
+            .brand {
+                font-size: 13px;
+            }
+            .search {
+                display: none;
+            }
+            .hero {
+                display: block;
+                padding: 20px;
+            }
+            .hero-stat {
+                margin-top: 20px;
+            }
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .stat:last-child {
+                grid-column: span 2;
+            }
+            .course-grid,
+            .badgegrid {
+                grid-template-columns: 1fr;
+            }
+            .lesson-layout {
+                grid-template-columns: 1fr;
+            }
+            .lesson-side {
+                position: static;
+            }
+            .video {
+                height: 210px;
+            }
+            .formgrid {
+                grid-template-columns: 1fr;
+            }
+            .bottomnav {
+                position: fixed;
+                display: flex;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                height: 65px;
+                background: #0b1020ed;
+                backdrop-filter: blur(15px);
+                border-top: 1px solid var(--line);
+                z-index: 40;
+                justify-content: space-around;
+            }
+            .bottomnav button {
+                background: transparent;
+                color: var(--muted);
+                font-size: 10px;
+                padding: 7px;
+                border: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+            }
+            .bottomnav button b {
+                font-size: 18px;
+                margin-bottom: 2px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .notif {
+                width: 260px;
+                left: 10px;
+                top: 56px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="login-box">
-  <h2>🔐 تسجيل الدخول</h2>
-  <p>من فضلك أدخل رمز الدخول الخاص بك</p>
-  <input type="text" id="code" placeholder="أدخل الكود المكون من ٩ أرقام" maxlength="9">
-  <button id="loginBtn">تسجيل الدخول</button>
-  <div class="result" id="result"></div>
-</div>
-
- 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database-compat.js"></script>
-
-<script>
-const API = "https://script.google.com/macros/s/AKfycbxvLzKTlm_X51PGatqyiv1CPVm7W6uhKGeeCTKsSqOa3Dn9Rh9x5LU8t6zneTkCwRVz/exec";
-const firebaseConfig = {apiKey:"AIzaSyDqkS7udZdgZqKWkw2Wvdx0aWbjU8EfCg8",authDomain:"drosk-622f6.firebaseapp.com",databaseURL:"https://drosk-622f6-default-rtdb.firebaseio.com",projectId:"drosk-622f6",storageBucket:"drosk-622f6.appspot.com",messagingSenderId:"765071631440",appId:"1:765071631440:web:a2305e478babc4534add55",measurementId:"G-2SL3D7TCQE"};
-firebase.initializeApp(firebaseConfig);
-
-function getDeviceID(){let id=localStorage.getItem("device_id");if(!id){id="dev-"+Math.random().toString(36).substr(2,8);localStorage.setItem("device_id",id);}return id;}
-function generateToken(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';let token='';for(let i=0;i<32;i++)token+=chars.charAt(Math.floor(Math.random()*chars.length));return token;}
-
-async function checkCode(){
-  const code=document.getElementById("code").value.trim();
-  const resultDiv=document.getElementById("result");
-  const btn=document.getElementById("loginBtn");
-  resultDiv.innerHTML="";
-  if(!code){resultDiv.innerHTML="<span class='error'>⚠ من فضلك أدخل الكود.</span>";return;}
-
-  btn.disabled=true;
-  btn.innerHTML=`جارٍ التحقق <span class="loader"></span>`;
-
-  try{
-    const device=getDeviceID();
-    const url=`${API}?action=check&code=${encodeURIComponent(code)}&device=${encodeURIComponent(device)}`;
-    const res=await fetch(url);
-    const data=await res.json();
-
-    if (data.result === "success") {
-  resultDiv.innerHTML = `
-    <div class="success">✅ ${data.message}</div>
-    <div class="info-details">
-      الاسم: <b>${data.name}</b><br>
-      الشعبة: <b>${data.section}</b><br>
-      الانتهاء: <b>${data.end_date}</b><br>
-      الحالة: <b>نشط</b>
+    <!-- Loading Overlay -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>🔄 جاري الاتصال بـ Firebase...</p>
+        <p style="font-size:12px;color:#4a5680;">تأكد من اتصال الإنترنت</p>
     </div>
-  `;
 
-      /* ===== حفظ البيانات ===== */
-      localStorage.setItem("user_code", code);
-      localStorage.setItem("user_data", JSON.stringify(data));
+    <!-- App Root -->
+    <div id="app"></div>
 
-      const section = (data.section || "").trim();
-      localStorage.setItem("user_section", section);
+    <!-- Toast Container -->
+    <div class="toastwrap" id="toastwrap"></div>
 
-      let token = localStorage.getItem("access_token");
-      if (!token) {
-        token = generateToken();
-        localStorage.setItem("access_token", token);
-      }
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modalbox">
+            <button class="close" onclick="closeModal()">×</button>
+            <div id="modalcontent"></div>
+        </div>
+    </div>
 
-     let tokenData;
-try {
-  const tokenRes = await fetch("/api/get-token", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code, device: getDeviceID() })
-  });
-  tokenData = await tokenRes.json();
+    <script>
+        /* ═══════════════════════════════════════════════════
+           🔥 FIREBASE CONFIG
+           ═══════════════════════════════════════════════════ */
+        const firebaseConfig = {
+            apiKey: "AIzaSyB0p0us6BuzD2ngzjhRnmUIhlOcBeRp0vQ",
+            authDomain: "tok-tak-d6e17.firebaseapp.com",
+            databaseURL: "https://tok-tak-d6e17-default-rtdb.firebaseio.com",
+            projectId: "tok-tak-d6e17",
+            storageBucket: "tok-tak-d6e17.appspot.com",
+            messagingSenderId: "547062578826",
+            appId: "1:547062578826:web:aa285cf798341be07cb773",
+            measurementId: "G-7EMKEQKPVV"
+        };
 
-  if (tokenData.message === "SESSION_ALREADY_EXISTS") {
-    console.log("🟢 يوجد Session صالحة بالفعل، لن يتم إنشاء Session جديدة.");
-  } else if (tokenData.message === "SESSION_CREATED") {
-    console.log("✅ Session جديدة تم إنشاؤها.");
-  }
-} catch (err) {
-  console.warn("⚠ حدث خطأ أثناء الحصول على Session، سيتم تجاهله.");
-}
+        /* ═══════════════════════════════════════════════════
+           DATA & DEFAULTS
+           ═══════════════════════════════════════════════════ */
+        const CONFIG = {
+            name: "MINA CODE ACADEMY",
+            version: "1.0",
+            defaultName: "Mina",
+            xp: { lesson: 10, task: 30, quiz: 20, perfect: 50 }
+        };
 
+        const DATA = {
+            courses: [
+                { id: 1, name: "أساسيات البرمجة", icon: "💻", desc: "ابدأ من الصفر وتعلم التفكير البرمجي خطوة بخطوة.",
+                    difficulty: "Beginner", lessons: 10, tasks: 7, progress: 68 },
+                { id: 2, name: "Python Fundamentals", icon: "🐍", desc: "أساسيات Python والمتغيرات والشروط والحلقات والدوال.",
+                    difficulty: "Beginner", lessons: 10, tasks: 7, progress: 34 },
+                { id: 3, name: "Problem Solving", icon: "🧠", desc: "طور طريقة تفكيرك وحل المسائل البرمجية بكفاءة.",
+                    difficulty: "Intermediate", lessons: 10, tasks: 6, progress: 12 }
+            ],
+            lessons: Array.from({ length: 30 }, (_, i) => ({
+                id: i + 1,
+                course: Math.floor(i / 10) + 1,
+                unit: Math.floor(i / 3) + 1,
+                title: ["مقدمة في البرمجة", "Variables", "Data Types", "Operators", "Conditions", "Loops", "Functions",
+                    "Lists", "Maps", "Mini Project"
+                ][i % 10],
+                duration: 8 + (i % 6),
+                difficulty: i % 3 ? "Easy" : "Medium",
+                content: "في الدرس ده هنتعلم الفكرة الأساسية بطريقة عملية، وبعدها هنشوف مثال ونطبق بإيدنا.",
+                code: i % 2 ? 'let total = 10 + 20;\nconsole.log(total);' :
+                    'const name = "Mina";\nconsole.log(name);'
+            })),
+            tasks: Array.from({ length: 20 }, (_, i) => ({
+                id: i + 1,
+                title: ["احسب مجموع رقمين", "حدد الرقم الأكبر", "احسب متوسط الدرجات", "اعكس نصًا", "ابحث عن عنصر",
+                    "احسب مجموع List"
+                ][i % 6],
+                difficulty: ["Easy", "Medium", "Hard"][i % 3],
+                xp: 20 + (i % 3) * 10,
+                desc: "اكتب حلًا للمشكلة ثم اختبره على الحالات المعطاة.",
+                starter: 'console.log("Mina");',
+                expected: "Mina"
+            })),
+            quizzes: Array.from({ length: 30 }, (_, i) => ({
+                id: i + 1,
+                question: "ما ناتج الكود التالي؟",
+                code: 'console.log(2 + 3);',
+                options: ["2", "3", "5", "23"],
+                correct: 2,
+                explanation: "لأن العملية الحسابية تتم قبل الطباعة.",
+                xp: 20
+            })),
+            examples: Array.from({ length: 15 }, (_, i) => ({
+                id: i + 1,
+                title: `Code Example ${i+1}`,
+                code: i % 2 ? 'const age = 17;\nconsole.log(age);' : 'const name = "Mina";\nconsole.log(name);'
+            })),
+            badges: [
+                ["🎯", "First Lesson", "أكملت أول درس"],
+                ["💻", "First Code", "شغلت أول كود"],
+                ["🔥", "7 Days Streak", "حافظت على 7 أيام"],
+                ["🏆", "10 Tasks", "أكملت 10 مهام"],
+                ["🚀", "1000 XP", "وصلت إلى 1000 XP"],
+                ["🧠", "Problem Solver", "حللت تحديات"],
+                ["📚", "Course Starter", "بدأت أول كورس"],
+                ["⚡", "Fast Learner", "تعلمت بسرعة"],
+                ["🔬", "Code Explorer", "جربت Code Lab"],
+                ["👑", "Code Master", "أسطورة الكود"]
+            ],
+            students: [
+                ["Mina", 1240, 4, 18],
+                ["Ahmed", 1120, 4, 16],
+                ["Gamal", 980, 3, 15],
+                ["John", 850, 3, 12],
+                ["Sara", 720, 2, 10]
+            ],
+            notifications: ["🔔 تم إضافة Task جديد.", "🎯 حصلت على Badge جديد.", "🔥 حافظت على الـStreak.",
+                "📚 تم نشر درس جديد."
+            ]
+        };
 
-      /* ===== Firebase Auth ===== */
-      const email = `${code}@myapp.local`;
-      const password = code;
+        const defaults = {
+            studentName: "Mina",
+            theme: "dark",
+            xp: 1240,
+            level: 4,
+            completedLessons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            completedTasks: Array.from({ length: 18 }, (_, i) => i + 1),
+            savedCodes: [],
+            quizResults: {},
+            streak: 7,
+            badges: ["First Lesson", "First Code", "7 Days Streak", "10 Tasks", "1000 XP"],
+            notifications: DATA.notifications,
+            teacherItems: []
+        };
 
-      try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-      } catch (e) {
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
-      }
+        /* ═══════════════════════════════════════════════════
+           STATE
+           ═══════════════════════════════════════════════════ */
+        let S = { ...defaults };
+        let currentUser = null;
+        let userDataRef = null;
+        let _saving = false;
+        let _initialLoadDone = false;
 
-      /* ===== تحويل حسب الشعبة (مُصحَّح) ===== */
-      let targetPage = "year.html";
+        /* ═══════════════════════════════════════════════════
+           FIREBASE INIT
+           ═══════════════════════════════════════════════════ */
+        let firebaseInitialized = false;
 
-      if (section.includes("علمي علوم")) {
-        targetPage = "year.html";
-      } else if (section.includes("أدبي")) {
-        targetPage = "year-e.html";
-      } else if (section.includes("علمي رياضة")) {
-        targetPage = "year.html";
-      }
+        function initFirebase() {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                firebaseInitialized = true;
+                return true;
+            } catch (e) {
+                console.warn("Firebase init error:", e);
+                return false;
+            }
+        }
 
-      setTimeout(() => {
-        window.location.href = targetPage;
-      }, 1000);
+        /* ═══════════════════════════════════════════════════
+           UTILITIES
+           ═══════════════════════════════════════════════════ */
+        const $ = s => document.querySelector(s);
+        const $$ = s => [...document.querySelectorAll(s)];
 
-    } else {
-      resultDiv.innerHTML = `<span class='error'>${data.message}</span>`;
-    }
+        function esc(x) {
+            return String(x ?? "").replace(/[&<>"']/g, m => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            } [m]));
+        }
 
-  } catch (err) {
-    console.error(err);
-    resultDiv.innerHTML = "<span class='error'>⚠ حدث خطأ أثناء الاتصال بالخادم.</span>";
-  }
+        function toast(msg) {
+            const e = document.createElement("div");
+            e.className = "toast";
+            e.textContent = msg;
+            const w = $("#toastwrap");
+            if (w) w.append(e);
+            setTimeout(() => e.remove(), 2800);
+        }
 
-  btn.disabled = false;
-  btn.innerHTML = "تسجيل الدخول";
- }
+        function pct() {
+            return Math.round((S.completedLessons.length / 40) * 100);
+        }
 
-document.getElementById("loginBtn").addEventListener("click",checkCode);
-document.getElementById("code").addEventListener("keypress",e=>{if(e.key==="Enter") checkCode();});
+        function levelName() {
+            return ["", "Beginner", "Coder", "Problem Solver", "Developer", "Code Master"][S.level] || "Code Master";
+        }
 
+        function statusLesson(id) {
+            return S.completedLessons.includes(id) ? "done" : id === S.completedLessons.length + 1 ? "current" : "locked";
+        }
 
-// ⭐⭐⭐ تمت إضافة الخاصية المطلوبة فقط ⭐⭐⭐
-// عند فتح الصفحة → لو في كود محفوظ ضعه تلقائيًا في الخانة
-window.onload = function() {
-  const savedCode = localStorage.getItem("user_code");
-  if (savedCode) {
-    document.getElementById("code").value = savedCode;
-  }
-};
-</script>
+        function nav(route, label) {
+            location.hash = route;
+            render();
+        }
 
+        function closeModal() {
+            $("#modal")?.classList.remove("show");
+        }
+
+        function copyCode(code) {
+            navigator.clipboard?.writeText(code).then(() => toast("✓ تم نسخ الكود")).catch(() => toast("انسخ الكود يدويًا"));
+        }
+
+        /* ═══════════════════════════════════════════════════
+           SAVE / LOAD (Firebase + localStorage cache)
+           ═══════════════════════════════════════════════════ */
+        function save() {
+            if (_saving) return;
+            // Always save to localStorage as cache
+            try {
+                localStorage.setItem("minaAcademyState", JSON.stringify(S));
+            } catch (_) {}
+
+            if (!firebaseInitialized || !currentUser || !userDataRef) return;
+
+            _saving = true;
+            // Clone S, remove any non-serializable bits
+            const data = { ...S };
+            userDataRef.update(data)
+                .then(() => { _saving = false; })
+                .catch(err => {
+                    console.warn("Firebase save error:", err);
+                    _saving = false;
+                });
+        }
+
+        function loadFromFirebase(snapshot) {
+            const data = snapshot.val();
+            if (data && typeof data === 'object') {
+                // Merge with defaults, but keep existing S values as fallback
+                const merged = { ...defaults, ...S, ...data };
+                Object.assign(S, merged);
+                // If we have local storage data and Firebase doesn't have _migrated flag, migrate
+                const localRaw = localStorage.getItem("minaAcademyState");
+                if (localRaw && !data._migrated) {
+                    try {
+                        const local = JSON.parse(localRaw);
+                        Object.assign(S, local);
+                        // Mark as migrated and re-save
+                        const toSave = { ...S, _migrated: true };
+                        userDataRef.update(toSave);
+                        localStorage.removeItem("minaAcademyState");
+                    } catch (_) {}
+                }
+            } else {
+                // No data in Firebase — use defaults + localStorage
+                const localRaw = localStorage.getItem("minaAcademyState");
+                if (localRaw) {
+                    try {
+                        const local = JSON.parse(localRaw);
+                        Object.assign(S, defaults, local);
+                    } catch (_) { Object.assign(S, defaults); }
+                } else {
+                    Object.assign(S, defaults);
+                }
+                // Save to Firebase
+                const toSave = { ...S, _migrated: true };
+                userDataRef.set(toSave);
+            }
+            _initialLoadDone = true;
+            hideLoader();
+            if (!location.hash) location.hash = "#dashboard";
+            render();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           AUTH
+           ═══════════════════════════════════════════════════ */
+        function signInAnonymously() {
+            if (!firebaseInitialized) {
+                // Fallback: use localStorage only
+                fallbackToLocal();
+                return;
+            }
+            const auth = firebase.auth();
+            auth.signInAnonymously()
+                .then(cred => {
+                    currentUser = cred.user;
+                    userDataRef = firebase.database().ref('users/' + currentUser.uid);
+                    // Listen for real-time updates
+                    userDataRef.on('value', snap => {
+                        if (_saving) return;
+                        loadFromFirebase(snap);
+                    });
+                })
+                .catch(err => {
+                    console.warn("Anonymous auth error:", err);
+                    fallbackToLocal();
+                });
+        }
+
+        function fallbackToLocal() {
+            toast("⚠️ تعذر الاتصال بـ Firebase — البيانات محلية");
+            const localRaw = localStorage.getItem("minaAcademyState");
+            if (localRaw) {
+                try { Object.assign(S, defaults, JSON.parse(localRaw)); } catch (_) { Object.assign(S, defaults); }
+            } else {
+                Object.assign(S, defaults);
+            }
+            _initialLoadDone = true;
+            hideLoader();
+            if (!location.hash) location.hash = "#dashboard";
+            render();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           LOADER
+           ═══════════════════════════════════════════════════ */
+        function hideLoader() {
+            const el = $("#loader");
+            if (el) el.classList.add("hidden");
+        }
+
+        /* ═══════════════════════════════════════════════════
+           ROUTER
+           ═══════════════════════════════════════════════════ */
+        function route() {
+            return location.hash.slice(1) || "dashboard";
+        }
+
+        function render() {
+            if (!_initialLoadDone) return;
+            const r = route(),
+                parts = r.split("/"),
+                view = parts[0];
+            let content;
+            switch (view) {
+                case "dashboard":
+                    content = dashboard();
+                    break;
+                case "courses":
+                    content = courses();
+                    break;
+                case "course":
+                    content = course(+parts[1] || 1);
+                    break;
+                case "lesson":
+                    content = lesson(+parts[1] || 1);
+                    break;
+                case "tasks":
+                    content = tasks();
+                    break;
+                case "task":
+                    content = task(+parts[1] || 1);
+                    break;
+                case "quiz":
+                    content = quiz(+parts[1] || 1);
+                    break;
+                case "code-lab":
+                    content = codeLab();
+                    break;
+                case "achievements":
+                    content = achievements();
+                    break;
+                case "leaderboard":
+                    content = leaderboard();
+                    break;
+                case "profile":
+                    content = profile();
+                    break;
+                case "teacher":
+                    content = teacher();
+                    break;
+                case "content":
+                    content = contentManager();
+                    break;
+                default:
+                    content = dashboard();
+            }
+            $("#app").innerHTML = layout(content, view);
+            bindGlobal();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           LAYOUT
+           ═══════════════════════════════════════════════════ */
+        function layout(content, view) {
+            return `<div class="app">
+            <header class="topbar">
+              <button class="menu" onclick="toggleDrawer()">☰</button>
+              <div class="brand"><b>&lt;/&gt; MINA CODE</b><small>ACADEMY</small></div>
+              <div class="search">
+                <span>⌕</span>
+                <input id="search" placeholder="ابحث في الكورسات والدروس والمهام..." autocomplete="off" />
+                <div class="searchresults" id="searchresults"></div>
+              </div>
+              <div class="actions">
+                <button class="iconbtn" onclick="toggleNotif()">🔔</button>
+                <button class="avatar" onclick="nav('profile','')">${esc(S.studentName[0])}</button>
+              </div>
+              <div class="notif" id="notif">${S.notifications.slice(0,5).map(x=>`<div class="notifitem">${esc(x)}</div>`).join("")}</div>
+            </header>
+            <div class="shell">
+              <aside class="sidebar" id="sidebar">
+                ${navItems(view)}
+                <div class="teacher-nav">
+                  <button class="navbtn" onclick="nav('teacher')">👨‍🏫 Teacher Mode</button>
+                  <button class="navbtn" onclick="resetDemo()">♻️ Reset Demo</button>
+                </div>
+              </aside>
+              <main class="main">
+                <div class="page">${content}</div>
+              </main>
+            </div>
+            <nav class="bottomnav">${navItems(view, true)}</nav>
+          </div>`;
+        }
+
+        function navItems(view, bottom = false) {
+            const arr = [
+                ["dashboard", "⌂", "الرئيسية"],
+                ["courses", "▣", "الكورسات"],
+                ["tasks", "✓", "المهام"],
+                ["quiz/1", "?", "الاختبارات"],
+                ["code-lab", "</>", "Code Lab"],
+                ["achievements", "★", "الإنجازات"],
+                ["profile", "●", "الملف"]
+            ];
+            const current = view.split("/")[0];
+            return arr.map(a =>
+                `<button class="navbtn ${current===a[0].split("/")[0]?"active":""}" onclick="nav('${a[0]}')">${bottom?`<b>${a[1]}</b>`:a[1]} ${bottom?"":a[2]}</button>`
+            ).join("");
+        }
+
+        function bindGlobal() {
+            const input = $("#search");
+            if (input) input.oninput = () => search(input.value);
+            // Close sidebar on nav item click (mobile)
+            $$(".sidebar .navbtn").forEach(b => {
+                b.onclick = () => {
+                    const sb = $("#sidebar");
+                    if (sb && window.innerWidth <= 760) sb.classList.remove("open");
+                };
+            });
+        }
+
+        function toggleDrawer() {
+            const sb = $("#sidebar");
+            if (sb) sb.classList.toggle("open");
+        }
+
+        function toggleNotif() {
+            $("#notif")?.classList.toggle("show");
+        }
+
+        function resetDemo() {
+            if (confirm("إعادة بيانات Demo؟")) {
+                localStorage.removeItem("minaAcademyState");
+                if (currentUser && userDataRef) {
+                    userDataRef.set({ ...defaults, _migrated: true });
+                }
+                Object.assign(S, defaults);
+                save();
+                render();
+                toast("✓ تم إعادة تعيين البيانات");
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════
+           DASHBOARD
+           ═══════════════════════════════════════════════════ */
+        function dashboard() {
+            return `<section class="hero">
+            <div>
+              <div class="eyebrow">MINA CODE ACADEMY</div>
+              <h1>أهلاً يا ${esc(S.studentName)} 👋</h1>
+              <p>جاهز تكمل رحلة تعلم البرمجة؟ خطوة صغيرة كل يوم = مطور أقوى.</p>
+              <button class="btn" onclick="nav('lesson/${S.completedLessons.length+1<=30?S.completedLessons.length+1:1}')">▶ أكمل التعلم</button>
+            </div>
+            <div class="hero-stat">
+              <div class="sectionhead"><b>تقدمك العام</b><b>${pct()}%</b></div>
+              <div class="progress"><i style="width:${pct()}%"></i></div>
+              <p class="muted">استمر! أنت قريب من المستوى التالي.</p>
+            </div>
+          </section>
+          <div class="grid stats">
+            ${stat("⚡","XP",`${S.xp.toLocaleString()} XP`)}
+            ${stat("◈","Level",`Level ${S.level}`)}
+            ${stat("✓","Tasks",`${S.completedTasks.length} / 25`)}
+            ${stat("📚","Lessons",`${S.completedLessons.length} / 40`)}
+            ${stat("🔥","Streak",`${S.streak} أيام`)}
+          </div>
+          <section class="section">
+            <div class="sectionhead"><h2>Continue Learning</h2><button class="btn secondary" onclick="nav('courses')">كل الكورسات</button></div>
+            <div class="card">
+              <div style="display:flex;gap:15px;align-items:center">
+                <div class="courseicon">💻</div>
+                <div class="grow"><b>أساسيات البرمجة</b><div class="muted">آخر درس: ${DATA.lessons[S.completedLessons.length]?.title||"Loops"}</div></div>
+                <b>${pct()}%</b>
+              </div>
+              <div class="progress" style="margin:16px 0"><i style="width:${pct()}%"></i></div>
+              <button class="btn" onclick="nav('lesson/${S.completedLessons.length+1<=30?S.completedLessons.length+1:1}')">متابعة الدرس</button>
+            </div>
+          </section>
+          <section class="section">
+            <div class="sectionhead"><h2>الكورسات المقترحة</h2></div>
+            <div class="grid course-grid">${DATA.courses.map(courseCard).join("")}</div>
+          </section>`;
+        }
+
+        function stat(icon, label, value) {
+            return `<div class="card stat"><div style="font-size:20px">${icon}</div><div class="label">${label}</div><div class="value">${value}</div></div>`;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           COURSES
+           ═══════════════════════════════════════════════════ */
+        function courses() {
+            return `<div class="sectionhead"><div><h1>الكورسات</h1><p class="muted">اختار مسارك وابدأ التطبيق.</p></div></div><div class="grid course-grid">${DATA.courses.map(courseCard).join("")}</div>`;
+        }
+
+        function courseCard(c) {
+            return `<div class="card course">
+            <div class="courseicon">${c.icon}</div>
+            <h3>${c.name}</h3>
+            <p>${c.desc}</p>
+            <div class="tags"><span class="tag">${c.difficulty}</span><span class="tag">10 Lessons</span><span class="tag">${c.tasks} Tasks</span></div>
+            <div class="sectionhead"><span class="muted">Progress</span><b>${c.progress}%</b></div>
+            <div class="progress"><i style="width:${c.progress}%"></i></div>
+            <div class="continue" style="margin-top:14px"><span class="muted">📚 ${c.lessons} درس</span><button class="btn" onclick="nav('course/${c.id}')">فتح الكورس</button></div>
+          </div>`;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           COURSE / LESSON
+           ═══════════════════════════════════════════════════ */
+        function course(id) {
+            const c = DATA.courses.find(x => x.id === id) || DATA.courses[0];
+            const ls = DATA.lessons.filter(x => x.course === id);
+            return `<div class="card hero" style="margin-bottom:16px">
+            <div><div class="eyebrow">${c.difficulty}</div><h1>${c.icon} ${c.name}</h1><p>${c.desc}</p></div>
+            <div class="hero-stat"><b>${c.progress}% Complete</b><div class="progress" style="margin-top:10px"><i style="width:${c.progress}%"></i></div></div>
+          </div>
+          <div class="card"><h2>Course Curriculum</h2>
+            ${ls.map(l=>`<div class="lessonrow ${statusLesson(l.id)}" onclick="${statusLesson(l.id)==="locked"?"toast('🔒 أكمل الدروس السابقة أولًا')":"nav('lesson/'+l.id)"}">
+              <div class="lessonnum">${statusLesson(l.id)==="done"?"✓":l.id}</div>
+              <div class="grow"><b>${esc(l.title)}</b><div class="muted">${l.duration} دقيقة • ${l.difficulty}</div></div>
+              <span class="pill ${statusLesson(l.id)==="done"?"success":statusLesson(l.id)==="current"?"warn":""}">${statusLesson(l.id)==="done"?"Completed":statusLesson(l.id)==="current"?"Current":"Locked"}</span>
+            </div>`).join("")}
+          </div>`;
+        }
+
+        function lesson(id) {
+            const l = DATA.lessons.find(x => x.id === id) || DATA.lessons[0];
+            const done = S.completedLessons.includes(id);
+            return `<div class="lesson-layout">
+            <aside class="card lesson-side">
+              <b>أساسيات البرمجة</b>
+              <div class="progress" style="margin:12px 0"><i style="width:${pct()}%"></i></div>
+              <small class="muted">${pct()}% مكتمل</small>
+              <div class="list" style="margin-top:15px">
+                ${DATA.lessons.slice(Math.max(0,l.id-3),Math.min(30,l.id+3)).map(x=>`<button class="navbtn ${x.id===id?"active":""}" onclick="nav('lesson/${x.id}')">${x.id}. ${x.title}</button>`).join("")}
+              </div>
+            </aside>
+            <article class="card">
+              <div class="eyebrow">LESSON ${String(l.id).padStart(2,"0")}</div>
+              <h1>${esc(l.title)}</h1>
+              <p class="muted">${l.duration} دقيقة • ${l.difficulty}</p>
+              <div class="video"><div class="play">▶</div></div>
+              <h2>شرح الدرس</h2>
+              <p style="line-height:2">${l.content} هنا تقدر تقرأ الشرح وتطبق المثال بنفسك، وبعدها تنتقل للمهمة والاختبار.</p>
+              <h2>Code Example</h2>
+              ${codeBlock(l.code)}
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn secondary" onclick="copyCode(${JSON.stringify(l.code)})">📋 Copy</button>
+                <button class="btn secondary" onclick="openLab(${JSON.stringify(l.code)})">▶ Try Code</button>
+                <button class="btn secondary" onclick="saveCode(${JSON.stringify(l.code)})">⭐ Save</button>
+              </div>
+              <div class="card" style="margin-top:18px;background:#0b1220">
+                <h3>🎯 Task</h3>
+                <p class="muted">جرب كتابة كود يطبع اسمك في Code Lab.</p>
+                <button class="btn" onclick="nav('task/${l.id}')">ابدأ المهمة</button>
+              </div>
+              <div style="margin-top:18px">
+                ${done?`<span class="pill success">✓ الدرس مكتمل</span>`:`<button class="btn success" onclick="completeLesson(${id})">✓ إكمال الدرس +10 XP</button>`}
+              </div>
+            </article>
+          </div>`;
+        }
+
+        function codeBlock(code) {
+            return `<div class="code">
+            <div class="codehead"><span>JavaScript</span><button class="btn secondary" style="padding:5px 9px" onclick="copyCode(${JSON.stringify(code)})">Copy</button></div>
+            <pre>${esc(code)}</pre>
+          </div>`;
+        }
+
+        function completeLesson(id) {
+            if (!S.completedLessons.includes(id)) {
+                S.completedLessons.push(id);
+                addXP(CONFIG.xp.lesson);
+                if (!S.badges.includes("First Lesson")) S.badges.push("First Lesson");
+                save();
+                render();
+                toast("✓ تم إكمال الدرس");
+            }
+        }
+
+        function openLab(code) {
+            location.hash = "code-lab";
+            render();
+            setTimeout(() => {
+                const ed = $("#editor");
+                if (ed) ed.value = code;
+            }, 50);
+        }
+
+        function saveCode(code) {
+            if (!S.savedCodes.includes(code)) {
+                S.savedCodes.push(code);
+                save();
+                toast("✓ تم حفظ الكود");
+            } else {
+                toast("الكود محفوظ بالفعل");
+            }
+        }
+
+        function addXP(n) {
+            S.xp += n;
+            S.level = Math.min(5, Math.floor(S.xp / 300) + 1);
+            save();
+            toast(`🎉 حصلت على ${n} XP`);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           TASKS
+           ═══════════════════════════════════════════════════ */
+        function tasks() {
+            return `<div class="sectionhead"><div><h1>المهام</h1><p class="muted">اتعلم بالممارسة، مش بالمشاهدة بس.</p></div><div class="tags"><span class="tag">الكل</span><span class="tag">Easy</span><span class="tag">Medium</span><span class="tag">Hard</span></div></div>
+          <div class="list">${DATA.tasks.map(t=>`<div class="card taskrow">
+            <div class="lessonnum">#${String(t.id).padStart(3,"0")}</div>
+            <div class="grow"><b>${esc(t.title)}</b><div class="muted">${esc(t.desc)}</div><div class="tags"><span class="pill ${t.difficulty==="Easy"?"success":t.difficulty==="Hard"?"danger":"warn"}">${t.difficulty}</span><span class="pill">+${t.xp} XP</span></div></div>
+            <span class="pill ${S.completedTasks.includes(t.id)?"success":""}">${S.completedTasks.includes(t.id)?"Completed":"Pending"}</span>
+            <button class="btn" onclick="nav('task/${t.id}')">ابدأ المهمة</button>
+          </div>`).join("")}</div>`;
+        }
+
+        function task(id) {
+            const t = DATA.tasks.find(x => x.id === id) || DATA.tasks[0];
+            return `<div class="card">
+            <div class="eyebrow">TASK #${String(t.id).padStart(3,"0")}</div>
+            <h1>${t.title}</h1>
+            <div class="tags"><span class="pill">${t.difficulty}</span><span class="pill">+${t.xp} XP</span></div>
+            <h3>Problem</h3>
+            <p class="muted">${t.desc}</p>
+            <h3>Example</h3>
+            <div class="card"><b>Input:</b> 2, 3<br><b>Output:</b> 5</div>
+            <h3>Code Editor</h3>
+            <textarea class="editor" id="taskEditor">${esc(t.starter)}</textarea>
+            <div style="display:flex;gap:8px;margin:10px 0">
+              <button class="btn" onclick="runJS('taskEditor','taskOutput')">▶ Run</button>
+              <button class="btn secondary" onclick="submitTask(${id})">Submit</button>
+            </div>
+            <h3>Test Results</h3>
+            <div class="output" id="taskOutput">اضغط Run لرؤية النتيجة...</div>
+          </div>`;
+        }
+
+        function submitTask(id) {
+            const t = DATA.tasks.find(x => x.id === id);
+            if (!S.completedTasks.includes(id)) {
+                S.completedTasks.push(id);
+                addXP(t.xp);
+                if (S.completedTasks.length === 10 && !S.badges.includes("10 Tasks")) S.badges.push("10 Tasks");
+                if (!S.badges.includes("Problem Solver")) S.badges.push("Problem Solver");
+                save();
+            }
+            toast("✓ 2 / 3 Tests Passed — تم تسجيل المهمة");
+            render();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           QUIZ
+           ═══════════════════════════════════════════════════ */
+        function quiz(id) {
+            const q = DATA.quizzes.find(x => x.id === id) || DATA.quizzes[0];
+            const prev = S.quizResults[id];
+            return `<div class="card">
+            <div class="eyebrow">QUIZ #${String(id).padStart(2,"0")}</div>
+            <h1>${q.question}</h1>
+            ${codeBlock(q.code)}
+            <div class="list">${q.options.map((o,i)=>`<button class="card" style="text-align:right" onclick="answerQuiz(${id},${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>
+            ${prev!==undefined?`<div class="card" style="margin-top:16px"><b>${prev?"✓ Correct":"✗ Wrong"}</b><p class="muted">${q.explanation}</p><span class="pill">Score: ${prev?100:0}</span></div>`:""}
+            <div class="sectionhead" style="margin-top:18px">
+              <button class="btn secondary" onclick="nav('quiz/${Math.max(1,id-1)}')">السابق</button>
+              <button class="btn" onclick="nav('quiz/${Math.min(30,id+1)}')">التالي</button>
+            </div>
+          </div>`;
+        }
+
+        function answerQuiz(id, i) {
+            const q = DATA.quizzes.find(x => x.id === id);
+            if (S.quizResults[id] !== undefined) return toast("الاختبار اتجاوب قبل كده");
+            const ok = i === q.correct;
+            S.quizResults[id] = ok;
+            addXP(ok ? CONFIG.xp.quiz : 0);
+            toast(ok ? "✓ إجابة صحيحة +20 XP" : "❌ إجابة غير صحيحة");
+            save();
+            render();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           CODE LAB
+           ═══════════════════════════════════════════════════ */
+        function codeLab() {
+            return `<div class="sectionhead"><div><h1>Code Lab ⚡</h1><p class="muted">بيئة JavaScript تجريبية داخل المتصفح — بدون Backend.</p></div><span class="pill">Sandbox Demo</span></div>
+          <div class="card">
+            <textarea class="editor" id="editor">const name = "Mina";\nconsole.log(name);</textarea>
+            <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
+              <button class="btn" onclick="runJS('editor','output')">▶ Run</button>
+              <button class="btn secondary" onclick="saveEditor()">💾 Save</button>
+              <button class="btn secondary" onclick="$('#editor').value='';$('#output').textContent=''">🧹 Clear</button>
+            </div>
+            <h3>Output</h3>
+            <div class="output" id="output">جاهز للتشغيل...</div>
+            <small class="muted">Demo يدعم JavaScript فقط. لا يوجد وصول مباشر لـ document أو localStorage أو الشبكة داخل التنفيذ.</small>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <h3>⭐ Saved Codes</h3>
+            ${S.savedCodes.length?S.savedCodes.map(x=>codeBlock(x)).join(""):`<div class="empty">لسه مفيش أكواد محفوظة.</div>`}
+          </div>`;
+        }
+
+        function runJS(editorId, outId) {
+            const code = $("#" + editorId).value;
+            const out = $("#" + outId);
+            try {
+                const logs = [];
+                const sandboxConsole = {
+                    log: (...a) => logs.push(a.map(x => typeof x === "object" ? JSON.stringify(x) : String(x)).join(" ")),
+                    warn: (...a) => logs.push("⚠ " + a.join(" ")),
+                    error: (...a) => logs.push("❌ " + a.join(" "))
+                };
+                const fn = new Function("console", "window", "document", "localStorage", "fetch",
+                    `"use strict";${code}`
+                );
+                fn(sandboxConsole, undefined, undefined, undefined, undefined);
+                out.textContent = logs.join("\n") || "✓ تم التنفيذ بدون Output";
+                if (!S.badges.includes("First Code")) S.badges.push("First Code");
+                save();
+            } catch (e) {
+                out.textContent = "Error: " + e.message;
+            }
+        }
+
+        function saveEditor() {
+            const code = $("#editor")?.value || "";
+            saveCode(code);
+            if (!S.badges.includes("Code Explorer")) S.badges.push("Code Explorer");
+            save();
+        }
+
+        /* ═══════════════════════════════════════════════════
+           ACHIEVEMENTS
+           ═══════════════════════════════════════════════════ */
+        function achievements() {
+            return `<div class="sectionhead"><div><h1>الإنجازات 🏆</h1><p class="muted">كل خطوة ليها قيمة.</p></div></div>
+          <div class="grid badgegrid">${DATA.badges.map(b=>{
+            const got=S.badges.includes(b[1]);
+            return `<div class="card badge ${got?"":"locked"}"><div class="badgeicon">${b[0]}</div><div><b>${b[1]}</b><div class="muted">${b[2]}</div><span class="pill ${got?"success":""}">${got?"Unlocked":"Locked"}</span></div></div>`
+          }).join("")}</div>`;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           LEADERBOARD / PROFILE
+           ═══════════════════════════════════════════════════ */
+        function leaderboard() {
+            const rows = [...DATA.students].sort((a, b) => b[1] - a[1]);
+            return `<div class="card"><div class="sectionhead"><div><h1>Leaderboard 🏆</h1><p class="muted">ترتيب تجريبي للطلاب.</p></div></div>
+            <table class="table"><thead><tr><th>#</th><th>Student</th><th>XP</th><th>Level</th><th>Tasks</th></tr></thead><tbody>
+            ${rows.map((x,i)=>`<tr><td>${i+1}</td><td>👤 ${x[0]}</td><td>${x[1]}</td><td>Level ${x[2]}</td><td>${x[3]}</td></tr>`).join("")}
+          </tbody></table></div>`;
+        }
+
+        function profile() {
+            return `<div class="card hero"><div>
+            <div class="avatar" style="display:grid;place-items:center;width:70px;height:70px;font-size:25px">${esc(S.studentName[0])}</div>
+            <h1>${esc(S.studentName)}</h1>
+            <p class="muted">${levelName()} • ${S.xp} XP</p>
+          </div>
+          <div class="hero-stat"><b>Level ${S.level}</b><div class="progress" style="margin-top:10px"><i style="width:${(S.xp%300)/3}%"></i></div><small class="muted">${S.xp%300}/300 XP للمستوى التالي</small></div>
+        </div>
+        <div class="grid stats">
+          ${stat("🏆","Badges",S.badges.length)}
+          ${stat("📚","Courses",3)}
+          ${stat("✓","Tasks",S.completedTasks.length)}
+          ${stat("📖","Lessons",S.completedLessons.length)}
+          ${stat("🔥","Streak",S.streak)}
+        </div>
+        <div class="card"><h2>Recent Activity</h2><div class="list">${S.notifications.map(n=>`<div class="lessonrow">${n}<span class="muted">Today</span></div>`).join("")}</div></div>`;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           SEARCH
+           ═══════════════════════════════════════════════════ */
+        function search(q) {
+            const box = $("#searchresults");
+            if (!box) return;
+            if (!q.trim()) { box.style.display = "none"; return; }
+            const z = [...DATA.courses.map(x => ({ t: x.name, r: `course/${x.id}`, k: "Course" })),
+                ...DATA.lessons.map(x => ({ t: x.title, r: `lesson/${x.id}`, k: "Lesson" })),
+                ...DATA.tasks.map(x => ({ t: x.title, r: `task/${x.id}`, k: "Task" })),
+                ...DATA.examples.map(x => ({ t: x.title, r: "code-lab", k: "Code" }))
+            ].filter(x => x.t.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+            box.innerHTML = z.length ?
+                z.map(x => `<div class="result" onclick="nav('${x.r}');$('#searchresults').style.display='none'"><b>${esc(x.t)}</b><small class="muted"> • ${x.k}</small></div>`).join("") :
+                `<div class="empty" style="padding:18px">لا توجد نتائج 🔎</div>`;
+            box.style.display = "block";
+        }
+
+        /* ═══════════════════════════════════════════════════
+           TEACHER
+           ═══════════════════════════════════════════════════ */
+        function teacher() {
+            return `<div class="sectionhead"><div><h1>Teacher Dashboard 👨‍🏫</h1><p class="muted">وضع Demo — البيانات محلية داخل المتصفح.</p></div><button class="btn" onclick="nav('content')">Content Manager</button></div>
+          <div class="grid stats">
+            ${stat("👥","Students","128")}
+            ${stat("📚","Courses","3")}
+            ${stat("📖","Lessons","30")}
+            ${stat("🎯","Tasks","20")}
+            ${stat("📈","Avg Progress","67%")}
+          </div>
+          <div class="grid" style="grid-template-columns:2fr 1fr">
+            <div class="card"><h2>Student Activity</h2><div class="chart">${[55,72,42,88,64,93,75].map(h=>`<div class="bar" style="height:${h}%"></div>`).join("")}</div></div>
+            <div class="card"><h2>Recent Submissions</h2><div class="list">${["Mina • Task #18","Ahmed • Quiz #7","Gamal • Task #12","Sara • Quiz #3"].map(x=>`<div class="lessonrow">${x}<span class="pill success">New</span></div>`).join("")}</div></div>
+          </div>`;
+        }
+
+        function contentManager() {
+            return `<div class="sectionhead"><div><h1>Teacher Content Manager</h1><p class="muted">أضف محتوى Demo ويتم حفظه في Firebase.</p></div></div>
+          <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+            <button class="card" onclick="contentForm('Lesson')">📖<h3>Add Lesson</h3></button>
+            <button class="card" onclick="contentForm('Task')">🎯<h3>Add Task</h3></button>
+            <button class="card" onclick="contentForm('Quiz')">❓<h3>Add Quiz</h3></button>
+          </div>
+          <div class="card" style="margin-top:16px"><h3>Saved Teacher Items</h3>
+            ${S.teacherItems.length?S.teacherItems.map(x=>`<div class="lessonrow"><b>${esc(x.type)}</b><span class="grow">${esc(x.title)}</span><span class="pill">Local</span></div>`).join(""):`<div class="empty">لسه مفيش محتوى مضاف.</div>`}
+          </div>`;
+        }
+
+        function contentForm(type) {
+            openModal(`<h2>Add ${type}</h2>
+            <div class="formgrid">
+              <div class="field"><label>Title</label><input id="fTitle" placeholder="عنوان المحتوى"></div>
+              <div class="field"><label>Difficulty</label><select id="fDiff"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+              <div class="field" style="grid-column:1/-1"><label>Description / Question</label><textarea id="fDesc"></textarea></div>
+              <div class="field" style="grid-column:1/-1"><label>Code / Content</label><textarea id="fCode"></textarea></div>
+            </div>
+            <button class="btn" style="margin-top:12px" onclick="saveTeacher('${type}')">Save ${type}</button>`);
+        }
+
+        function saveTeacher(type) {
+            const title = $("#fTitle")?.value?.trim();
+            if (!title) return toast("اكتب العنوان");
+            S.teacherItems.push({ type, title, desc: $("#fDesc")?.value || "", code: $("#fCode")?.value || "",
+                diff: $("#fDiff")?.value || "Easy" });
+            save();
+            closeModal();
+            render();
+            toast("✓ تم حفظ المحتوى محليًا");
+        }
+
+        function openModal(html) {
+            const c = $("#modalcontent");
+            if (c) c.innerHTML = html;
+            $("#modal")?.classList.add("show");
+        }
+
+        /* ═══════════════════════════════════════════════════
+           INIT
+           ═══════════════════════════════════════════════════ */
+        function init() {
+            // Load localStorage cache first for immediate display
+            const localRaw = localStorage.getItem("minaAcademyState");
+            if (localRaw) {
+                try { Object.assign(S, defaults, JSON.parse(localRaw)); } catch (_) {}
+            }
+
+            // Initialize Firebase
+            const ok = initFirebase();
+            if (ok) {
+                signInAnonymously();
+            } else {
+                fallbackToLocal();
+            }
+
+            // Theme
+            if (S.theme === "light") document.body.classList.add("light");
+
+            // Hash change
+            window.addEventListener("hashchange", render);
+            window.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+            // If we already have data loaded from localStorage, render immediately
+            // but Firebase will update when ready
+            if (localRaw) {
+                _initialLoadDone = true;
+                hideLoader();
+                if (!location.hash) location.hash = "#dashboard";
+                render();
+            }
+        }
+
+        // Override hideLoader to also check if we've already rendered
+        const origHideLoader = hideLoader;
+        hideLoader = function() {
+            origHideLoader();
+            if (_initialLoadDone && !$("#app").innerHTML) {
+                if (!location.hash) location.hash = "#dashboard";
+                render();
+            }
+        };
+
+        // Start
+        init();
+    </script>
 </body>
 </html>
