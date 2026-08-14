@@ -2,11 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b1020" />
-    <title>MINA CODE ACADEMY — Firebase</title>
+    <title>MINA CODE ACADEMY — منصة التعلم</title>
 
-    <!-- Firebase SDKs (compat) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js">
@@ -15,7 +15,7 @@
     </script>
 
     <style>
-        /* ── reset & base ── */
+        /* ── Reset & Variables ── */
         :root {
             --bg: #080b14;
             --panel: #101625;
@@ -33,15 +33,13 @@
         * {
             box-sizing: border-box;
         }
-        html {
-            scroll-behavior: smooth;
-        }
         body {
             margin: 0;
             background: radial-gradient(circle at 80% 0, #19234a 0, transparent 32%), var(--bg);
             color: var(--text);
-            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
-            transition: background .3s;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            transition: background 0.3s;
+            min-height: 100vh;
         }
         button,
         input,
@@ -57,7 +55,7 @@
             min-height: 100vh;
         }
 
-        /* ── topbar ── */
+        /* ── Topbar ── */
         .topbar {
             height: 72px;
             position: sticky;
@@ -73,7 +71,7 @@
         }
         .brand {
             font-weight: 900;
-            letter-spacing: .4px;
+            letter-spacing: 0.4px;
             white-space: nowrap;
         }
         .brand b {
@@ -137,7 +135,7 @@
             color: #fff;
         }
 
-        /* ── sidebar ── */
+        /* ── Sidebar ── */
         .shell {
             display: flex;
         }
@@ -151,7 +149,7 @@
             border-left: 1px solid var(--line);
             overflow: auto;
             z-index: 20;
-            transition: transform .25s ease;
+            transition: transform 0.25s ease;
         }
         .navtitle {
             font-size: 11px;
@@ -177,13 +175,8 @@
             background: linear-gradient(90deg, #7c5cff22, transparent);
             color: #fff;
         }
-        .teacher-nav {
-            border-top: 1px solid var(--line);
-            margin-top: 12px;
-            padding-top: 12px;
-        }
 
-        /* ── main ── */
+        /* ── Main ── */
         .main {
             margin-right: 240px;
             width: calc(100% - 240px);
@@ -192,7 +185,7 @@
             margin-left: auto;
         }
         .page {
-            animation: fade .3s ease;
+            animation: fade 0.3s ease;
         }
         @keyframes fade {
             from {
@@ -205,7 +198,7 @@
             }
         }
 
-        /* ── hero ── */
+        /* ── Hero ── */
         .hero {
             padding: 28px;
             border: 1px solid var(--line);
@@ -248,8 +241,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* ── buttons ── */
         .btn {
             padding: 11px 16px;
             border-radius: 12px;
@@ -270,7 +261,7 @@
             color: #06150d;
         }
 
-        /* ── progress ── */
+        /* ── Progress ── */
         .progress {
             height: 9px;
             background: #252f47;
@@ -282,10 +273,10 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--primary2));
             border-radius: inherit;
-            transition: width .7s;
+            transition: width 0.7s;
         }
 
-        /* ── grid / cards ── */
+        /* ── Grid / Cards ── */
         .grid {
             display: grid;
             gap: 16px;
@@ -327,13 +318,9 @@
             color: var(--muted);
         }
 
-        /* ── courses ── */
+        /* ── Courses ── */
         .course-grid {
             grid-template-columns: repeat(3, 1fr);
-        }
-        .course {
-            position: relative;
-            overflow: hidden;
         }
         .course .courseicon {
             width: 50px;
@@ -367,13 +354,8 @@
             color: var(--muted);
             border: 1px solid var(--line);
         }
-        .continue {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
 
-        /* ── lessons / tasks ── */
+        /* ── Lessons / Tasks ── */
         .list {
             display: grid;
             gap: 10px;
@@ -424,12 +406,8 @@
             color: var(--warn);
             background: #ffbf4718;
         }
-        .pill.danger {
-            color: var(--danger);
-            background: #ff5d7318;
-        }
 
-        /* ── lesson layout ── */
+        /* ── Lesson layout ── */
         .lesson-layout {
             display: grid;
             grid-template-columns: 270px 1fr;
@@ -440,28 +418,35 @@
             position: sticky;
             top: 90px;
         }
-        .video {
-            height: 290px;
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 15px 0;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #0b1220;
+            border: 1px solid var(--line);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .video-placeholder {
+            height: 200px;
+            display: grid;
+            place-items: center;
+            background: #0b1220;
             border-radius: 18px;
             border: 1px solid var(--line);
-            background: radial-gradient(circle, #1c2850, #080d18);
-            display: grid;
-            place-items: center;
-            margin: 15px 0;
-            color: #b9c4db;
-        }
-        .play {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: #7c5cff;
-            color: #fff;
-            display: grid;
-            place-items: center;
-            font-size: 25px;
+            color: var(--muted);
         }
 
-        /* ── code blocks ── */
+        /* ── Code ── */
         .code {
             direction: ltr;
             text-align: left;
@@ -489,28 +474,12 @@
             word-break: break-all;
         }
 
-        /* ── tables ── */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .table th,
-        .table td {
-            padding: 12px;
-            border-bottom: 1px solid var(--line);
-            text-align: right;
-        }
-        .table th {
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        /* ── editor ── */
+        /* ── Editor ── */
         .editor {
             direction: ltr;
             text-align: left;
             width: 100%;
-            min-height: 260px;
+            min-height: 200px;
             resize: vertical;
             background: #070b13;
             color: #dce5ff;
@@ -533,58 +502,7 @@
             font: 14px/1.7 monospace;
         }
 
-        /* ── forms ── */
-        .formgrid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .field label {
-            display: block;
-            color: var(--muted);
-            font-size: 12px;
-            margin: 0 0 6px;
-        }
-        .field input,
-        .field textarea,
-        .field select {
-            width: 100%;
-            background: #0b1220;
-            border: 1px solid var(--line);
-            border-radius: 11px;
-            padding: 11px;
-            color: #fff;
-            outline: none;
-        }
-        .field textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        /* ── search results ── */
-        .searchresults {
-            position: absolute;
-            top: 52px;
-            right: 0;
-            left: 0;
-            background: #101827;
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 8px;
-            z-index: 50;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-        .result {
-            padding: 10px;
-            border-radius: 9px;
-            cursor: pointer;
-        }
-        .result:hover {
-            background: #ffffff08;
-        }
-
-        /* ── toast ── */
+        /* ── Toast ── */
         .toastwrap {
             position: fixed;
             left: 18px;
@@ -599,7 +517,7 @@
             border: 1px solid var(--line);
             border-radius: 12px;
             box-shadow: var(--shadow);
-            animation: slide .3s ease;
+            animation: slide 0.3s ease;
         }
         @keyframes slide {
             from {
@@ -612,7 +530,7 @@
             }
         }
 
-        /* ── modal ── */
+        /* ── Modal ── */
         .modal {
             position: fixed;
             inset: 0;
@@ -645,35 +563,19 @@
             line-height: 1;
         }
 
-        /* ── bottom nav ── */
+        /* ── Bottom nav ── */
         .bottomnav {
             display: none;
         }
 
-        /* ── chart ── */
-        .chart {
-            height: 190px;
-            display: flex;
-            align-items: end;
-            gap: 12px;
-            padding: 20px 0;
-        }
-        .bar {
-            flex: 1;
-            background: linear-gradient(#7c5cff, #00d4ff);
-            border-radius: 8px 8px 2px 2px;
-            min-height: 10px;
-            transition: height .5s;
-        }
-
-        /* ── misc ── */
+        /* ── Empty / Locked ── */
         .empty {
             text-align: center;
             padding: 40px;
             color: var(--muted);
         }
         .locked {
-            opacity: .55;
+            opacity: 0.55;
         }
         .badgegrid {
             grid-template-columns: repeat(3, 1fr);
@@ -693,60 +595,7 @@
             border-radius: 15px;
         }
 
-        /* ── notifications ── */
-        .notif {
-            position: absolute;
-            left: 18px;
-            top: 58px;
-            width: 300px;
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 15px;
-            padding: 10px;
-            box-shadow: var(--shadow);
-            display: none;
-            z-index: 60;
-        }
-        .notif.show {
-            display: block;
-        }
-        .notifitem {
-            padding: 10px;
-            border-bottom: 1px solid var(--line);
-            font-size: 13px;
-        }
-
-        /* ── light theme ── */
-        .light {
-            --bg: #f4f6fb;
-            --panel: #fff;
-            --panel2: #eef1f8;
-            --text: #111827;
-            --muted: #657086;
-            --line: #dce2ee;
-            --shadow: 0 15px 40px #18213d18;
-        }
-        .light .topbar,
-        .light .sidebar {
-            background: #ffffffdd;
-        }
-        .light .card {
-            background: #fff;
-        }
-        .light .editor,
-        .light .code,
-        .light .output {
-            background: #0b1020;
-            color: #e5edff;
-        }
-        .light .field input,
-        .light .field textarea,
-        .light .field select {
-            background: #fff;
-            color: #111;
-        }
-
-        /* ── loading overlay ── */
+        /* ── Loader ── */
         #loader {
             position: fixed;
             inset: 0;
@@ -757,34 +606,28 @@
             align-items: center;
             justify-content: center;
             gap: 20px;
-            transition: opacity .5s ease, visibility .5s ease;
+            transition: opacity 0.5s ease;
         }
         #loader.hidden {
             opacity: 0;
-            visibility: hidden;
             pointer-events: none;
         }
-        #loader .spinner {
+        .spinner {
             width: 50px;
             height: 50px;
             border: 4px solid var(--line);
             border-top-color: var(--primary);
             border-radius: 50%;
-            animation: spin .8s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
         }
-        #loader p {
-            color: var(--muted);
-            font-size: 14px;
-            margin: 0;
-        }
 
-        /* ── responsive ── */
-        @media(max-width:1050px) {
+        /* ── Responsive ── */
+        @media (max-width: 1050px) {
             .stats {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -792,7 +635,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        @media(max-width:760px) {
+        @media (max-width: 760px) {
             .topbar {
                 height: 64px;
                 padding: 0 10px;
@@ -842,12 +685,6 @@
             .lesson-side {
                 position: static;
             }
-            .video {
-                height: 210px;
-            }
-            .formgrid {
-                grid-template-columns: 1fr;
-            }
             .bottomnav {
                 position: fixed;
                 display: flex;
@@ -874,32 +711,25 @@
             }
             .bottomnav button b {
                 font-size: 18px;
-                margin-bottom: 2px;
             }
             .hero h1 {
                 font-size: 28px;
-            }
-            .notif {
-                width: 260px;
-                left: 10px;
-                top: 56px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loading Overlay -->
+    <!-- Loader -->
     <div id="loader">
         <div class="spinner"></div>
-        <p>🔄 جاري الاتصال بـ Firebase...</p>
-        <p style="font-size:12px;color:#4a5680;">تأكد من اتصال الإنترنت</p>
+        <p>🔄 جاري تحميل المنصة...</p>
     </div>
 
-    <!-- App Root -->
+    <!-- App -->
     <div id="app"></div>
 
-    <!-- Toast Container -->
+    <!-- Toast -->
     <div class="toastwrap" id="toastwrap"></div>
 
     <!-- Modal -->
@@ -912,7 +742,7 @@
 
     <script>
         /* ═══════════════════════════════════════════════════
-           🔥 FIREBASE CONFIG
+           FIREBASE CONFIG (نفس إعدادات لوحة التحكم)
            ═══════════════════════════════════════════════════ */
         const firebaseConfig = {
             apiKey: "AIzaSyB0p0us6BuzD2ngzjhRnmUIhlOcBeRp0vQ",
@@ -926,376 +756,290 @@
         };
 
         /* ═══════════════════════════════════════════════════
-           DATA & DEFAULTS
-           ═══════════════════════════════════════════════════ */
-        const CONFIG = {
-            name: "MINA CODE ACADEMY",
-            version: "1.0",
-            defaultName: "Mina",
-            xp: { lesson: 10, task: 30, quiz: 20, perfect: 50 }
-        };
-
-        const DATA = {
-            courses: [
-                { id: 1, name: "أساسيات البرمجة", icon: "💻", desc: "ابدأ من الصفر وتعلم التفكير البرمجي خطوة بخطوة.",
-                    difficulty: "Beginner", lessons: 10, tasks: 7, progress: 68 },
-                { id: 2, name: "Python Fundamentals", icon: "🐍", desc: "أساسيات Python والمتغيرات والشروط والحلقات والدوال.",
-                    difficulty: "Beginner", lessons: 10, tasks: 7, progress: 34 },
-                { id: 3, name: "Problem Solving", icon: "🧠", desc: "طور طريقة تفكيرك وحل المسائل البرمجية بكفاءة.",
-                    difficulty: "Intermediate", lessons: 10, tasks: 6, progress: 12 }
-            ],
-            lessons: Array.from({ length: 30 }, (_, i) => ({
-                id: i + 1,
-                course: Math.floor(i / 10) + 1,
-                unit: Math.floor(i / 3) + 1,
-                title: ["مقدمة في البرمجة", "Variables", "Data Types", "Operators", "Conditions", "Loops", "Functions",
-                    "Lists", "Maps", "Mini Project"
-                ][i % 10],
-                duration: 8 + (i % 6),
-                difficulty: i % 3 ? "Easy" : "Medium",
-                content: "في الدرس ده هنتعلم الفكرة الأساسية بطريقة عملية، وبعدها هنشوف مثال ونطبق بإيدنا.",
-                code: i % 2 ? 'let total = 10 + 20;\nconsole.log(total);' :
-                    'const name = "Mina";\nconsole.log(name);'
-            })),
-            tasks: Array.from({ length: 20 }, (_, i) => ({
-                id: i + 1,
-                title: ["احسب مجموع رقمين", "حدد الرقم الأكبر", "احسب متوسط الدرجات", "اعكس نصًا", "ابحث عن عنصر",
-                    "احسب مجموع List"
-                ][i % 6],
-                difficulty: ["Easy", "Medium", "Hard"][i % 3],
-                xp: 20 + (i % 3) * 10,
-                desc: "اكتب حلًا للمشكلة ثم اختبره على الحالات المعطاة.",
-                starter: 'console.log("Mina");',
-                expected: "Mina"
-            })),
-            quizzes: Array.from({ length: 30 }, (_, i) => ({
-                id: i + 1,
-                question: "ما ناتج الكود التالي؟",
-                code: 'console.log(2 + 3);',
-                options: ["2", "3", "5", "23"],
-                correct: 2,
-                explanation: "لأن العملية الحسابية تتم قبل الطباعة.",
-                xp: 20
-            })),
-            examples: Array.from({ length: 15 }, (_, i) => ({
-                id: i + 1,
-                title: `Code Example ${i+1}`,
-                code: i % 2 ? 'const age = 17;\nconsole.log(age);' : 'const name = "Mina";\nconsole.log(name);'
-            })),
-            badges: [
-                ["🎯", "First Lesson", "أكملت أول درس"],
-                ["💻", "First Code", "شغلت أول كود"],
-                ["🔥", "7 Days Streak", "حافظت على 7 أيام"],
-                ["🏆", "10 Tasks", "أكملت 10 مهام"],
-                ["🚀", "1000 XP", "وصلت إلى 1000 XP"],
-                ["🧠", "Problem Solver", "حللت تحديات"],
-                ["📚", "Course Starter", "بدأت أول كورس"],
-                ["⚡", "Fast Learner", "تعلمت بسرعة"],
-                ["🔬", "Code Explorer", "جربت Code Lab"],
-                ["👑", "Code Master", "أسطورة الكود"]
-            ],
-            students: [
-                ["Mina", 1240, 4, 18],
-                ["Ahmed", 1120, 4, 16],
-                ["Gamal", 980, 3, 15],
-                ["John", 850, 3, 12],
-                ["Sara", 720, 2, 10]
-            ],
-            notifications: ["🔔 تم إضافة Task جديد.", "🎯 حصلت على Badge جديد.", "🔥 حافظت على الـStreak.",
-                "📚 تم نشر درس جديد."
-            ]
-        };
-
-        const defaults = {
-            studentName: "Mina",
-            theme: "dark",
-            xp: 1240,
-            level: 4,
-            completedLessons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-            completedTasks: Array.from({ length: 18 }, (_, i) => i + 1),
-            savedCodes: [],
-            quizResults: {},
-            streak: 7,
-            badges: ["First Lesson", "First Code", "7 Days Streak", "10 Tasks", "1000 XP"],
-            notifications: DATA.notifications,
-            teacherItems: []
-        };
-
-        /* ═══════════════════════════════════════════════════
            STATE
            ═══════════════════════════════════════════════════ */
-        let S = { ...defaults };
+        const CONFIG = { xp: { lesson: 10, task: 30, quiz: 20 } };
+
         let currentUser = null;
-        let userDataRef = null;
-        let _saving = false;
-        let _initialLoadDone = false;
+        let userProgressRef = null;
+        let contentRef = null;
 
-        /* ═══════════════════════════════════════════════════
-           FIREBASE INIT
-           ═══════════════════════════════════════════════════ */
-        let firebaseInitialized = false;
+        // بيانات المنصة القادمة من Firebase
+        let platformContent = {
+            lessons: [], // { id, title, difficulty, duration, videoUrl, code }
+            tasks: [], // { id, title, difficulty, xp, desc, starter }
+            quizzes: [] // { id, title, questions }
+        };
 
-        function initFirebase() {
-            try {
-                firebase.initializeApp(firebaseConfig);
-                firebaseInitialized = true;
-                return true;
-            } catch (e) {
-                console.warn("Firebase init error:", e);
-                return false;
-            }
-        }
+        // تقدم المستخدم الحالي
+        let progress = {
+            studentName: 'طالب',
+            xp: 0,
+            level: 1,
+            completedLessons: [],
+            completedTasks: [],
+            quizResults: {},
+            badges: []
+        };
+
+        let _initialLoad = false;
 
         /* ═══════════════════════════════════════════════════
            UTILITIES
            ═══════════════════════════════════════════════════ */
-        const $ = s => document.querySelector(s);
-        const $$ = s => [...document.querySelectorAll(s)];
+        const $ = id => document.getElementById(id);
+        const $$ = sel => [...document.querySelectorAll(sel)];
 
-        function esc(x) {
-            return String(x ?? "").replace(/[&<>"']/g, m => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            } [m]));
+        function esc(str) {
+            return String(str ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;',
+                "'": '&#039;' } [m]));
         }
 
         function toast(msg) {
-            const e = document.createElement("div");
-            e.className = "toast";
-            e.textContent = msg;
-            const w = $("#toastwrap");
-            if (w) w.append(e);
-            setTimeout(() => e.remove(), 2800);
+            const wrap = $('toastwrap');
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.textContent = msg;
+            wrap.appendChild(el);
+            setTimeout(() => el.remove(), 2800);
         }
 
         function pct() {
-            return Math.round((S.completedLessons.length / 40) * 100);
+            const total = platformContent.lessons.length || 1;
+            return Math.round((progress.completedLessons.length / total) * 100);
         }
 
         function levelName() {
-            return ["", "Beginner", "Coder", "Problem Solver", "Developer", "Code Master"][S.level] || "Code Master";
+            const lvl = progress.level || 1;
+            return ['', 'Beginner', 'Coder', 'Problem Solver', 'Developer', 'Code Master'][lvl] || 'Code Master';
         }
 
         function statusLesson(id) {
-            return S.completedLessons.includes(id) ? "done" : id === S.completedLessons.length + 1 ? "current" : "locked";
+            if (progress.completedLessons.includes(id)) return 'done';
+            // current = أول درس غير مكتمل (ترتيب تصاعدي)
+            const sorted = platformContent.lessons.map(l => l.id).sort((a, b) => a - b);
+            const next = sorted.find(lid => !progress.completedLessons.includes(lid));
+            if (id === next) return 'current';
+            return 'locked';
         }
 
-        function nav(route, label) {
+        function nav(route) {
             location.hash = route;
             render();
         }
 
         function closeModal() {
-            $("#modal")?.classList.remove("show");
+            $('modal').classList.remove('show');
+        }
+
+        function openModal(html) {
+            $('modalcontent').innerHTML = html;
+            $('modal').classList.add('show');
         }
 
         function copyCode(code) {
-            navigator.clipboard?.writeText(code).then(() => toast("✓ تم نسخ الكود")).catch(() => toast("انسخ الكود يدويًا"));
+            navigator.clipboard?.writeText(code).then(() => toast('✓ تم نسخ الكود')).catch(() => toast('انسخ الكود يدويًا'));
+        }
+
+        function addXP(amount) {
+            progress.xp += amount;
+            progress.level = Math.min(5, Math.floor(progress.xp / 300) + 1);
+            saveProgress();
+            toast(`🎉 حصلت على ${amount} XP`);
         }
 
         /* ═══════════════════════════════════════════════════
-           SAVE / LOAD (Firebase + localStorage cache)
+           FIREBASE INIT
            ═══════════════════════════════════════════════════ */
-        function save() {
-            if (_saving) return;
-            // Always save to localStorage as cache
+        let firebaseReady = false;
+
+        function initFirebase() {
             try {
-                localStorage.setItem("minaAcademyState", JSON.stringify(S));
-            } catch (_) {}
-
-            if (!firebaseInitialized || !currentUser || !userDataRef) return;
-
-            _saving = true;
-            // Clone S, remove any non-serializable bits
-            const data = { ...S };
-            userDataRef.update(data)
-                .then(() => { _saving = false; })
-                .catch(err => {
-                    console.warn("Firebase save error:", err);
-                    _saving = false;
-                });
-        }
-
-        function loadFromFirebase(snapshot) {
-            const data = snapshot.val();
-            if (data && typeof data === 'object') {
-                // Merge with defaults, but keep existing S values as fallback
-                const merged = { ...defaults, ...S, ...data };
-                Object.assign(S, merged);
-                // If we have local storage data and Firebase doesn't have _migrated flag, migrate
-                const localRaw = localStorage.getItem("minaAcademyState");
-                if (localRaw && !data._migrated) {
-                    try {
-                        const local = JSON.parse(localRaw);
-                        Object.assign(S, local);
-                        // Mark as migrated and re-save
-                        const toSave = { ...S, _migrated: true };
-                        userDataRef.update(toSave);
-                        localStorage.removeItem("minaAcademyState");
-                    } catch (_) {}
-                }
-            } else {
-                // No data in Firebase — use defaults + localStorage
-                const localRaw = localStorage.getItem("minaAcademyState");
-                if (localRaw) {
-                    try {
-                        const local = JSON.parse(localRaw);
-                        Object.assign(S, defaults, local);
-                    } catch (_) { Object.assign(S, defaults); }
-                } else {
-                    Object.assign(S, defaults);
-                }
-                // Save to Firebase
-                const toSave = { ...S, _migrated: true };
-                userDataRef.set(toSave);
+                firebase.initializeApp(firebaseConfig);
+                firebaseReady = true;
+                return true;
+            } catch (e) {
+                console.warn('Firebase init error:', e);
+                return false;
             }
-            _initialLoadDone = true;
-            hideLoader();
-            if (!location.hash) location.hash = "#dashboard";
-            render();
         }
 
         /* ═══════════════════════════════════════════════════
-           AUTH
+           AUTH & DATA LISTENERS
            ═══════════════════════════════════════════════════ */
         function signInAnonymously() {
-            if (!firebaseInitialized) {
-                // Fallback: use localStorage only
-                fallbackToLocal();
+            if (!firebaseReady) {
+                fallbackLocal();
                 return;
             }
-            const auth = firebase.auth();
-            auth.signInAnonymously()
+            firebase.auth().signInAnonymously()
                 .then(cred => {
                     currentUser = cred.user;
-                    userDataRef = firebase.database().ref('users/' + currentUser.uid);
-                    // Listen for real-time updates
-                    userDataRef.on('value', snap => {
-                        if (_saving) return;
-                        loadFromFirebase(snap);
+                    // مرجع تقدم المستخدم
+                    userProgressRef = firebase.database().ref('users/' + currentUser.uid + '/progress');
+                    // مرجع المحتوى العام (الذي تديره لوحة التحكم)
+                    contentRef = firebase.database().ref('content');
+
+                    // استماع لتقدم المستخدم
+                    userProgressRef.on('value', snap => {
+                        const data = snap.val();
+                        if (data) {
+                            progress = { ...progress, ...data };
+                        } else {
+                            // إنشاء تقدم جديد للمستخدم
+                            const initProgress = {
+                                studentName: 'طالب',
+                                xp: 0,
+                                level: 1,
+                                completedLessons: [],
+                                completedTasks: [],
+                                quizResults: {},
+                                badges: []
+                            };
+                            userProgressRef.set(initProgress);
+                            progress = initProgress;
+                        }
+                        if (_initialLoad) render();
                     });
+
+                    // استماع للمحتوى (من لوحة التحكم)
+                    contentRef.on('value', snap => {
+                        const data = snap.val();
+                        if (data) {
+                            platformContent.lessons = data.lessons || [];
+                            platformContent.tasks = data.tasks || [];
+                            platformContent.quizzes = data.quizzes || [];
+                        } else {
+                            // إذا كان فارغاً، نضع مصفوفات فارغة
+                            platformContent.lessons = [];
+                            platformContent.tasks = [];
+                            platformContent.quizzes = [];
+                            // إنشاء هيكل فارغ في Firebase ليتمكن المسؤول من الإضافة
+                            contentRef.set({ lessons: [], tasks: [], quizzes: [] });
+                        }
+                        if (_initialLoad) {
+                            hideLoader();
+                            render();
+                        }
+                        _initialLoad = true;
+                    });
+
                 })
                 .catch(err => {
-                    console.warn("Anonymous auth error:", err);
-                    fallbackToLocal();
+                    console.warn('Auth error:', err);
+                    fallbackLocal();
                 });
         }
 
-        function fallbackToLocal() {
-            toast("⚠️ تعذر الاتصال بـ Firebase — البيانات محلية");
-            const localRaw = localStorage.getItem("minaAcademyState");
-            if (localRaw) {
-                try { Object.assign(S, defaults, JSON.parse(localRaw)); } catch (_) { Object.assign(S, defaults); }
-            } else {
-                Object.assign(S, defaults);
-            }
-            _initialLoadDone = true;
+        function fallbackLocal() {
+            toast('⚠️ وضع غير متصل — بيانات تجريبية');
+            // بيانات تجريبية بسيطة لتعمل بدون اتصال
+            platformContent = {
+                lessons: [
+                    { id: 1, title: 'مقدمة في البرمجة', difficulty: 'Easy', duration: 12, videoUrl: '',
+                        code: 'console.log("Hello")' },
+                    { id: 2, title: 'المتغيرات', difficulty: 'Easy', duration: 15, videoUrl: '',
+                    code: 'let x = 5;' }
+                ],
+                tasks: [
+                    { id: 1, title: 'اجمع رقمين', difficulty: 'Easy', xp: 30, desc: 'اكتب دالة تجمع رقمين',
+                        starter: 'function add(a,b) { return a+b; }' }
+                ],
+                quizzes: [
+                    { id: 1, title: 'اختبار أساسيات', questions: 5 }
+                ]
+            };
+            progress = {
+                studentName: 'طالب',
+                xp: 0,
+                level: 1,
+                completedLessons: [],
+                completedTasks: [],
+                quizResults: {},
+                badges: []
+            };
+            _initialLoad = true;
             hideLoader();
-            if (!location.hash) location.hash = "#dashboard";
             render();
         }
 
-        /* ═══════════════════════════════════════════════════
-           LOADER
-           ═══════════════════════════════════════════════════ */
+        function saveProgress() {
+            if (!userProgressRef) return;
+            userProgressRef.update(progress).catch(err => console.warn(err));
+        }
+
         function hideLoader() {
-            const el = $("#loader");
-            if (el) el.classList.add("hidden");
+            const el = $('loader');
+            if (el) el.classList.add('hidden');
         }
 
         /* ═══════════════════════════════════════════════════
-           ROUTER
+           ROUTER & RENDER
            ═══════════════════════════════════════════════════ */
         function route() {
-            return location.hash.slice(1) || "dashboard";
+            return location.hash.slice(1) || 'dashboard';
         }
 
         function render() {
-            if (!_initialLoadDone) return;
+            if (!_initialLoad) return;
             const r = route(),
-                parts = r.split("/"),
+                parts = r.split('/'),
                 view = parts[0];
             let content;
             switch (view) {
-                case "dashboard":
-                    content = dashboard();
+                case 'dashboard':
+                    content = renderDashboard();
                     break;
-                case "courses":
-                    content = courses();
+                case 'courses':
+                    content = renderCourses();
                     break;
-                case "course":
-                    content = course(+parts[1] || 1);
+                case 'course':
+                    content = renderCourse(+parts[1] || 1);
                     break;
-                case "lesson":
-                    content = lesson(+parts[1] || 1);
+                case 'lesson':
+                    content = renderLesson(+parts[1] || 1);
                     break;
-                case "tasks":
-                    content = tasks();
+                case 'tasks':
+                    content = renderTasks();
                     break;
-                case "task":
-                    content = task(+parts[1] || 1);
+                case 'task':
+                    content = renderTask(+parts[1] || 1);
                     break;
-                case "quiz":
-                    content = quiz(+parts[1] || 1);
+                case 'quiz':
+                    content = renderQuiz(+parts[1] || 1);
                     break;
-                case "code-lab":
-                    content = codeLab();
+                case 'code-lab':
+                    content = renderCodeLab();
                     break;
-                case "achievements":
-                    content = achievements();
+                case 'achievements':
+                    content = renderAchievements();
                     break;
-                case "leaderboard":
-                    content = leaderboard();
-                    break;
-                case "profile":
-                    content = profile();
-                    break;
-                case "teacher":
-                    content = teacher();
-                    break;
-                case "content":
-                    content = contentManager();
+                case 'profile':
+                    content = renderProfile();
                     break;
                 default:
-                    content = dashboard();
+                    content = renderDashboard();
             }
-            $("#app").innerHTML = layout(content, view);
+            $('app').innerHTML = layout(content, view);
             bindGlobal();
         }
 
-        /* ═══════════════════════════════════════════════════
-           LAYOUT
-           ═══════════════════════════════════════════════════ */
         function layout(content, view) {
             return `<div class="app">
             <header class="topbar">
               <button class="menu" onclick="toggleDrawer()">☰</button>
               <div class="brand"><b>&lt;/&gt; MINA CODE</b><small>ACADEMY</small></div>
-              <div class="search">
-                <span>⌕</span>
-                <input id="search" placeholder="ابحث في الكورسات والدروس والمهام..." autocomplete="off" />
-                <div class="searchresults" id="searchresults"></div>
-              </div>
+              <div class="search"><span>⌕</span><input id="search" placeholder="ابحث..." autocomplete="off" /></div>
               <div class="actions">
-                <button class="iconbtn" onclick="toggleNotif()">🔔</button>
-                <button class="avatar" onclick="nav('profile','')">${esc(S.studentName[0])}</button>
+                <button class="iconbtn" onclick="toast('🔔 لا توجد إشعارات جديدة')">🔔</button>
+                <button class="avatar" onclick="nav('profile')">${esc(progress.studentName[0]||'ط')}</button>
               </div>
-              <div class="notif" id="notif">${S.notifications.slice(0,5).map(x=>`<div class="notifitem">${esc(x)}</div>`).join("")}</div>
             </header>
             <div class="shell">
               <aside class="sidebar" id="sidebar">
                 ${navItems(view)}
-                <div class="teacher-nav">
-                  <button class="navbtn" onclick="nav('teacher')">👨‍🏫 Teacher Mode</button>
-                  <button class="navbtn" onclick="resetDemo()">♻️ Reset Demo</button>
-                </div>
               </aside>
-              <main class="main">
-                <div class="page">${content}</div>
-              </main>
+              <main class="main"><div class="page">${content}</div></main>
             </div>
             <nav class="bottomnav">${navItems(view, true)}</nav>
           </div>`;
@@ -1303,93 +1047,72 @@
 
         function navItems(view, bottom = false) {
             const arr = [
-                ["dashboard", "⌂", "الرئيسية"],
-                ["courses", "▣", "الكورسات"],
-                ["tasks", "✓", "المهام"],
-                ["quiz/1", "?", "الاختبارات"],
-                ["code-lab", "</>", "Code Lab"],
-                ["achievements", "★", "الإنجازات"],
-                ["profile", "●", "الملف"]
+                ['dashboard', '⌂', 'الرئيسية'],
+                ['courses', '▣', 'الكورسات'],
+                ['tasks', '✓', 'المهام'],
+                ['code-lab', '</>', 'Code Lab'],
+                ['achievements', '★', 'الإنجازات'],
+                ['profile', '●', 'الملف']
             ];
-            const current = view.split("/")[0];
+            const current = view.split('/')[0];
             return arr.map(a =>
-                `<button class="navbtn ${current===a[0].split("/")[0]?"active":""}" onclick="nav('${a[0]}')">${bottom?`<b>${a[1]}</b>`:a[1]} ${bottom?"":a[2]}</button>`
-            ).join("");
+                `<button class="navbtn ${current===a[0]?'active':''}" onclick="nav('${a[0]}')">${bottom?`<b>${a[1]}</b>`:a[1]} ${bottom?'':a[2]}</button>`
+            ).join('');
         }
 
         function bindGlobal() {
-            const input = $("#search");
+            const input = $('search');
             if (input) input.oninput = () => search(input.value);
-            // Close sidebar on nav item click (mobile)
-            $$(".sidebar .navbtn").forEach(b => {
-                b.onclick = () => {
-                    const sb = $("#sidebar");
-                    if (sb && window.innerWidth <= 760) sb.classList.remove("open");
-                };
-            });
-        }
-
-        function toggleDrawer() {
-            const sb = $("#sidebar");
-            if (sb) sb.classList.toggle("open");
-        }
-
-        function toggleNotif() {
-            $("#notif")?.classList.toggle("show");
-        }
-
-        function resetDemo() {
-            if (confirm("إعادة بيانات Demo؟")) {
-                localStorage.removeItem("minaAcademyState");
-                if (currentUser && userDataRef) {
-                    userDataRef.set({ ...defaults, _migrated: true });
-                }
-                Object.assign(S, defaults);
-                save();
-                render();
-                toast("✓ تم إعادة تعيين البيانات");
+            if (window.innerWidth <= 760) {
+                const sb = $('sidebar');
+                if (sb) sb.classList.remove('open');
             }
         }
 
+        function toggleDrawer() {
+            const sb = $('sidebar');
+            if (sb) sb.classList.toggle('open');
+        }
+
         /* ═══════════════════════════════════════════════════
-           DASHBOARD
+           VIEWS — تعتمد على البيانات من Firebase
            ═══════════════════════════════════════════════════ */
-        function dashboard() {
+
+        // 1. Dashboard
+        function renderDashboard() {
+            const totalLessons = platformContent.lessons.length;
+            const completed = progress.completedLessons.length;
+            const p = totalLessons ? Math.round((completed / totalLessons) * 100) : 0;
+            const nextLesson = platformContent.lessons
+                .sort((a, b) => a.id - b.id)
+                .find(l => !progress.completedLessons.includes(l.id));
+
             return `<section class="hero">
             <div>
               <div class="eyebrow">MINA CODE ACADEMY</div>
-              <h1>أهلاً يا ${esc(S.studentName)} 👋</h1>
-              <p>جاهز تكمل رحلة تعلم البرمجة؟ خطوة صغيرة كل يوم = مطور أقوى.</p>
-              <button class="btn" onclick="nav('lesson/${S.completedLessons.length+1<=30?S.completedLessons.length+1:1}')">▶ أكمل التعلم</button>
+              <h1>أهلاً يا ${esc(progress.studentName)} 👋</h1>
+              <p>${totalLessons === 0 ? '📢 لا توجد دروس بعد — انتظر إضافة المسؤول للمحتوى.' : 'جاهز تكمل رحلة التعلم؟'}</p>
+              ${totalLessons > 0 ? `<button class="btn" onclick="nav('lesson/${nextLesson?.id||platformContent.lessons[0]?.id||1}')">▶ أكمل التعلم</button>` : ''}
             </div>
             <div class="hero-stat">
-              <div class="sectionhead"><b>تقدمك العام</b><b>${pct()}%</b></div>
-              <div class="progress"><i style="width:${pct()}%"></i></div>
-              <p class="muted">استمر! أنت قريب من المستوى التالي.</p>
+              <div class="sectionhead"><b>تقدمك</b><b>${p}%</b></div>
+              <div class="progress"><i style="width:${p}%"></i></div>
+              <p class="muted">${totalLessons === 0 ? 'لا توجد دروس' : `${completed} / ${totalLessons} درس مكتمل`}</p>
             </div>
           </section>
           <div class="grid stats">
-            ${stat("⚡","XP",`${S.xp.toLocaleString()} XP`)}
-            ${stat("◈","Level",`Level ${S.level}`)}
-            ${stat("✓","Tasks",`${S.completedTasks.length} / 25`)}
-            ${stat("📚","Lessons",`${S.completedLessons.length} / 40`)}
-            ${stat("🔥","Streak",`${S.streak} أيام`)}
+            ${stat('⚡','XP',`${progress.xp} XP`)}
+            ${stat('◈','Level',`Level ${progress.level}`)}
+            ${stat('✓','Tasks',`${progress.completedTasks.length} / ${platformContent.tasks.length}`)}
+            ${stat('📚','Lessons',`${progress.completedLessons.length} / ${platformContent.lessons.length}`)}
+            ${stat('🏆','Badges',progress.badges.length)}
           </div>
           <section class="section">
-            <div class="sectionhead"><h2>Continue Learning</h2><button class="btn secondary" onclick="nav('courses')">كل الكورسات</button></div>
-            <div class="card">
-              <div style="display:flex;gap:15px;align-items:center">
-                <div class="courseicon">💻</div>
-                <div class="grow"><b>أساسيات البرمجة</b><div class="muted">آخر درس: ${DATA.lessons[S.completedLessons.length]?.title||"Loops"}</div></div>
-                <b>${pct()}%</b>
-              </div>
-              <div class="progress" style="margin:16px 0"><i style="width:${pct()}%"></i></div>
-              <button class="btn" onclick="nav('lesson/${S.completedLessons.length+1<=30?S.completedLessons.length+1:1}')">متابعة الدرس</button>
+            <div class="sectionhead"><h2>📚 الدروس المتاحة</h2><button class="btn secondary" onclick="nav('courses')">عرض الكل</button></div>
+            <div class="grid course-grid">
+              ${platformContent.lessons.length === 0 ? '<div class="card empty">لا توجد دروس مضافة بعد</div>' :
+              platformContent.lessons.slice(0,3).map(lessonCard).join('')}
             </div>
-          </section>
-          <section class="section">
-            <div class="sectionhead"><h2>الكورسات المقترحة</h2></div>
-            <div class="grid course-grid">${DATA.courses.map(courseCard).join("")}</div>
           </section>`;
         }
 
@@ -1397,416 +1120,252 @@
             return `<div class="card stat"><div style="font-size:20px">${icon}</div><div class="label">${label}</div><div class="value">${value}</div></div>`;
         }
 
-        /* ═══════════════════════════════════════════════════
-           COURSES
-           ═══════════════════════════════════════════════════ */
-        function courses() {
-            return `<div class="sectionhead"><div><h1>الكورسات</h1><p class="muted">اختار مسارك وابدأ التطبيق.</p></div></div><div class="grid course-grid">${DATA.courses.map(courseCard).join("")}</div>`;
-        }
-
-        function courseCard(c) {
+        function lessonCard(l) {
+            const done = progress.completedLessons.includes(l.id);
             return `<div class="card course">
-            <div class="courseicon">${c.icon}</div>
-            <h3>${c.name}</h3>
-            <p>${c.desc}</p>
-            <div class="tags"><span class="tag">${c.difficulty}</span><span class="tag">10 Lessons</span><span class="tag">${c.tasks} Tasks</span></div>
-            <div class="sectionhead"><span class="muted">Progress</span><b>${c.progress}%</b></div>
-            <div class="progress"><i style="width:${c.progress}%"></i></div>
-            <div class="continue" style="margin-top:14px"><span class="muted">📚 ${c.lessons} درس</span><button class="btn" onclick="nav('course/${c.id}')">فتح الكورس</button></div>
+            <div class="courseicon">📖</div>
+            <h3>${esc(l.title)}</h3>
+            <p>${l.difficulty} • ${l.duration} دقيقة</p>
+            <div class="tags"><span class="tag">${l.difficulty}</span></div>
+            <div class="continue"><span class="muted">${done ? '✅ مكتمل' : '⏳ جديد'}</span>
+              <button class="btn" onclick="nav('lesson/${l.id}')">${done ? 'مراجعة' : 'ابدأ'}</button>
+            </div>
           </div>`;
         }
 
-        /* ═══════════════════════════════════════════════════
-           COURSE / LESSON
-           ═══════════════════════════════════════════════════ */
-        function course(id) {
-            const c = DATA.courses.find(x => x.id === id) || DATA.courses[0];
-            const ls = DATA.lessons.filter(x => x.course === id);
-            return `<div class="card hero" style="margin-bottom:16px">
-            <div><div class="eyebrow">${c.difficulty}</div><h1>${c.icon} ${c.name}</h1><p>${c.desc}</p></div>
-            <div class="hero-stat"><b>${c.progress}% Complete</b><div class="progress" style="margin-top:10px"><i style="width:${c.progress}%"></i></div></div>
-          </div>
-          <div class="card"><h2>Course Curriculum</h2>
-            ${ls.map(l=>`<div class="lessonrow ${statusLesson(l.id)}" onclick="${statusLesson(l.id)==="locked"?"toast('🔒 أكمل الدروس السابقة أولًا')":"nav('lesson/'+l.id)"}">
-              <div class="lessonnum">${statusLesson(l.id)==="done"?"✓":l.id}</div>
-              <div class="grow"><b>${esc(l.title)}</b><div class="muted">${l.duration} دقيقة • ${l.difficulty}</div></div>
-              <span class="pill ${statusLesson(l.id)==="done"?"success":statusLesson(l.id)==="current"?"warn":""}">${statusLesson(l.id)==="done"?"Completed":statusLesson(l.id)==="current"?"Current":"Locked"}</span>
-            </div>`).join("")}
-          </div>`;
+        // 2. Courses
+        function renderCourses() {
+            return `<div class="sectionhead"><div><h1>جميع الدروس</h1><p class="muted">${platformContent.lessons.length} درس متاح</p></div></div>
+          <div class="grid course-grid">${platformContent.lessons.length === 0 ? '<div class="card empty">📭 لا توجد دروس — تواصل مع المسؤول</div>' : platformContent.lessons.map(lessonCard).join('')}</div>`;
         }
 
-        function lesson(id) {
-            const l = DATA.lessons.find(x => x.id === id) || DATA.lessons[0];
-            const done = S.completedLessons.includes(id);
+        function renderCourse(id) {
+            const l = platformContent.lessons.find(x => x.id === id);
+            if (!l) return `<div class="card empty">⚠️ الدرس غير موجود</div>`;
+            return renderLesson(id);
+        }
+
+        // 3. Lesson
+        function renderLesson(id) {
+            const l = platformContent.lessons.find(x => x.id === id);
+            if (!l) return `<div class="card empty">⚠️ الدرس غير موجود</div>`;
+
+            const done = progress.completedLessons.includes(id);
+            const status = statusLesson(id);
+            if (status === 'locked' && !done) {
+                return `<div class="card empty">🔒 هذا الدرس مغلق — أكمل الدروس السابقة أولاً.</div>`;
+            }
+
+            const videoHtml = l.videoUrl ?
+                `<div class="video-container"><iframe src="https://www.youtube.com/embed/${extractVideoId(l.videoUrl)}" allowfullscreen></iframe></div>` :
+                `<div class="video-placeholder">🎬 لا يوجد فيديو لهذا الدرس</div>`;
+
             return `<div class="lesson-layout">
             <aside class="card lesson-side">
-              <b>أساسيات البرمجة</b>
+              <b>المحتوى</b>
               <div class="progress" style="margin:12px 0"><i style="width:${pct()}%"></i></div>
               <small class="muted">${pct()}% مكتمل</small>
               <div class="list" style="margin-top:15px">
-                ${DATA.lessons.slice(Math.max(0,l.id-3),Math.min(30,l.id+3)).map(x=>`<button class="navbtn ${x.id===id?"active":""}" onclick="nav('lesson/${x.id}')">${x.id}. ${x.title}</button>`).join("")}
+                ${platformContent.lessons.sort((a,b)=>a.id-b.id).map(x => `
+                  <button class="navbtn ${x.id===id?'active':''}" onclick="nav('lesson/${x.id}')">
+                    ${x.id}. ${x.title} ${progress.completedLessons.includes(x.id)?'✅':''}
+                  </button>
+                `).join('')}
               </div>
             </aside>
             <article class="card">
-              <div class="eyebrow">LESSON ${String(l.id).padStart(2,"0")}</div>
+              <div class="eyebrow">LESSON ${String(l.id).padStart(2,'0')}</div>
               <h1>${esc(l.title)}</h1>
               <p class="muted">${l.duration} دقيقة • ${l.difficulty}</p>
-              <div class="video"><div class="play">▶</div></div>
+              ${videoHtml}
               <h2>شرح الدرس</h2>
-              <p style="line-height:2">${l.content} هنا تقدر تقرأ الشرح وتطبق المثال بنفسك، وبعدها تنتقل للمهمة والاختبار.</p>
-              <h2>Code Example</h2>
-              ${codeBlock(l.code)}
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button class="btn secondary" onclick="copyCode(${JSON.stringify(l.code)})">📋 Copy</button>
-                <button class="btn secondary" onclick="openLab(${JSON.stringify(l.code)})">▶ Try Code</button>
-                <button class="btn secondary" onclick="saveCode(${JSON.stringify(l.code)})">⭐ Save</button>
-              </div>
-              <div class="card" style="margin-top:18px;background:#0b1220">
-                <h3>🎯 Task</h3>
-                <p class="muted">جرب كتابة كود يطبع اسمك في Code Lab.</p>
-                <button class="btn" onclick="nav('task/${l.id}')">ابدأ المهمة</button>
+              <p style="line-height:2">${l.content || 'هنا سيكون شرح الدرس. يمكن للمسؤول إضافة محتوى نصي.'}</p>
+              ${l.code ? `<h2>Code Example</h2>${codeBlock(l.code)}` : ''}
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+                ${l.code ? `<button class="btn secondary" onclick="copyCode(${JSON.stringify(l.code)})">📋 Copy</button>` : ''}
+                <button class="btn secondary" onclick="openLab('${l.code || 'console.log("مرحباً")'}')">▶ Try Code</button>
               </div>
               <div style="margin-top:18px">
-                ${done?`<span class="pill success">✓ الدرس مكتمل</span>`:`<button class="btn success" onclick="completeLesson(${id})">✓ إكمال الدرس +10 XP</button>`}
+                ${done ? `<span class="pill success">✓ الدرس مكتمل</span>` :
+                `<button class="btn success" onclick="completeLesson(${l.id})">✓ إكمال الدرس +${CONFIG.xp.lesson} XP</button>`}
               </div>
             </article>
           </div>`;
         }
 
+        function extractVideoId(url) {
+            if (!url) return '';
+            const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})(?:[&?]|$)/);
+            return match ? match[1] : '';
+        }
+
         function codeBlock(code) {
-            return `<div class="code">
-            <div class="codehead"><span>JavaScript</span><button class="btn secondary" style="padding:5px 9px" onclick="copyCode(${JSON.stringify(code)})">Copy</button></div>
-            <pre>${esc(code)}</pre>
-          </div>`;
+            return `<div class="code"><div class="codehead"><span>JavaScript</span><button class="btn secondary" style="padding:5px 9px" onclick="copyCode(${JSON.stringify(code)})">Copy</button></div><pre>${esc(code)}</pre></div>`;
         }
 
         function completeLesson(id) {
-            if (!S.completedLessons.includes(id)) {
-                S.completedLessons.push(id);
+            if (!progress.completedLessons.includes(id)) {
+                progress.completedLessons.push(id);
                 addXP(CONFIG.xp.lesson);
-                if (!S.badges.includes("First Lesson")) S.badges.push("First Lesson");
-                save();
+                if (!progress.badges.includes('First Lesson')) progress.badges.push('First Lesson');
+                saveProgress();
                 render();
-                toast("✓ تم إكمال الدرس");
+                toast('✅ تم إكمال الدرس');
             }
         }
 
         function openLab(code) {
-            location.hash = "code-lab";
+            location.hash = 'code-lab';
             render();
-            setTimeout(() => {
-                const ed = $("#editor");
-                if (ed) ed.value = code;
-            }, 50);
+            setTimeout(() => { const ed = $('editor'); if (ed) ed.value = code; }, 50);
         }
 
-        function saveCode(code) {
-            if (!S.savedCodes.includes(code)) {
-                S.savedCodes.push(code);
-                save();
-                toast("✓ تم حفظ الكود");
-            } else {
-                toast("الكود محفوظ بالفعل");
-            }
+        // 4. Tasks
+        function renderTasks() {
+            return `<div class="sectionhead"><div><h1>المهام</h1><p class="muted">طبق ما تعلمته</p></div></div>
+          <div class="list">${platformContent.tasks.length === 0 ? '<div class="card empty">🎯 لا توجد مهام حالياً</div>' :
+            platformContent.tasks.map(t => `<div class="card taskrow">
+              <div class="lessonnum">#${t.id}</div>
+              <div class="grow"><b>${esc(t.title)}</b><div class="muted">${t.difficulty} • +${t.xp} XP</div></div>
+              <span class="pill ${progress.completedTasks.includes(t.id)?'success':''}">${progress.completedTasks.includes(t.id)?'✅ Completed':'⏳ Pending'}</span>
+              <button class="btn" onclick="nav('task/${t.id}')">${progress.completedTasks.includes(t.id)?'مراجعة':'ابدأ'}</button>
+            </div>`).join('')}</div>`;
         }
 
-        function addXP(n) {
-            S.xp += n;
-            S.level = Math.min(5, Math.floor(S.xp / 300) + 1);
-            save();
-            toast(`🎉 حصلت على ${n} XP`);
-        }
-
-        /* ═══════════════════════════════════════════════════
-           TASKS
-           ═══════════════════════════════════════════════════ */
-        function tasks() {
-            return `<div class="sectionhead"><div><h1>المهام</h1><p class="muted">اتعلم بالممارسة، مش بالمشاهدة بس.</p></div><div class="tags"><span class="tag">الكل</span><span class="tag">Easy</span><span class="tag">Medium</span><span class="tag">Hard</span></div></div>
-          <div class="list">${DATA.tasks.map(t=>`<div class="card taskrow">
-            <div class="lessonnum">#${String(t.id).padStart(3,"0")}</div>
-            <div class="grow"><b>${esc(t.title)}</b><div class="muted">${esc(t.desc)}</div><div class="tags"><span class="pill ${t.difficulty==="Easy"?"success":t.difficulty==="Hard"?"danger":"warn"}">${t.difficulty}</span><span class="pill">+${t.xp} XP</span></div></div>
-            <span class="pill ${S.completedTasks.includes(t.id)?"success":""}">${S.completedTasks.includes(t.id)?"Completed":"Pending"}</span>
-            <button class="btn" onclick="nav('task/${t.id}')">ابدأ المهمة</button>
-          </div>`).join("")}</div>`;
-        }
-
-        function task(id) {
-            const t = DATA.tasks.find(x => x.id === id) || DATA.tasks[0];
+        function renderTask(id) {
+            const t = platformContent.tasks.find(x => x.id === id);
+            if (!t) return `<div class="card empty">⚠️ المهمة غير موجودة</div>`;
             return `<div class="card">
-            <div class="eyebrow">TASK #${String(t.id).padStart(3,"0")}</div>
-            <h1>${t.title}</h1>
+            <div class="eyebrow">TASK #${t.id}</div>
+            <h1>${esc(t.title)}</h1>
             <div class="tags"><span class="pill">${t.difficulty}</span><span class="pill">+${t.xp} XP</span></div>
-            <h3>Problem</h3>
-            <p class="muted">${t.desc}</p>
-            <h3>Example</h3>
-            <div class="card"><b>Input:</b> 2, 3<br><b>Output:</b> 5</div>
-            <h3>Code Editor</h3>
-            <textarea class="editor" id="taskEditor">${esc(t.starter)}</textarea>
+            <h3>المطلوب</h3>
+            <p class="muted">${t.desc || 'أكمل الكود المطلوب.'}</p>
+            <h3>المحرر</h3>
+            <textarea class="editor" id="taskEditor">${esc(t.starter || '// اكتب الكود هنا')}</textarea>
             <div style="display:flex;gap:8px;margin:10px 0">
               <button class="btn" onclick="runJS('taskEditor','taskOutput')">▶ Run</button>
-              <button class="btn secondary" onclick="submitTask(${id})">Submit</button>
+              <button class="btn secondary" onclick="submitTask(${t.id})">Submit</button>
             </div>
-            <h3>Test Results</h3>
-            <div class="output" id="taskOutput">اضغط Run لرؤية النتيجة...</div>
+            <h3>النتيجة</h3>
+            <div class="output" id="taskOutput">اضغط Run لتجربة الكود...</div>
           </div>`;
         }
 
         function submitTask(id) {
-            const t = DATA.tasks.find(x => x.id === id);
-            if (!S.completedTasks.includes(id)) {
-                S.completedTasks.push(id);
-                addXP(t.xp);
-                if (S.completedTasks.length === 10 && !S.badges.includes("10 Tasks")) S.badges.push("10 Tasks");
-                if (!S.badges.includes("Problem Solver")) S.badges.push("Problem Solver");
-                save();
+            if (!progress.completedTasks.includes(id)) {
+                const t = platformContent.tasks.find(x => x.id === id);
+                if (!t) return;
+                progress.completedTasks.push(id);
+                addXP(t.xp || 30);
+                if (progress.completedTasks.length === 5 && !progress.badges.includes('5 Tasks')) progress.badges.push(
+                    '5 Tasks');
+                if (!progress.badges.includes('Problem Solver')) progress.badges.push('Problem Solver');
+                saveProgress();
+                render();
+                toast('✅ تم تسليم المهمة');
+            } else {
+                toast('📌 المهمة مكتملة بالفعل');
             }
-            toast("✓ 2 / 3 Tests Passed — تم تسجيل المهمة");
-            render();
         }
 
-        /* ═══════════════════════════════════════════════════
-           QUIZ
-           ═══════════════════════════════════════════════════ */
-        function quiz(id) {
-            const q = DATA.quizzes.find(x => x.id === id) || DATA.quizzes[0];
-            const prev = S.quizResults[id];
-            return `<div class="card">
-            <div class="eyebrow">QUIZ #${String(id).padStart(2,"0")}</div>
-            <h1>${q.question}</h1>
-            ${codeBlock(q.code)}
-            <div class="list">${q.options.map((o,i)=>`<button class="card" style="text-align:right" onclick="answerQuiz(${id},${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("")}</div>
-            ${prev!==undefined?`<div class="card" style="margin-top:16px"><b>${prev?"✓ Correct":"✗ Wrong"}</b><p class="muted">${q.explanation}</p><span class="pill">Score: ${prev?100:0}</span></div>`:""}
-            <div class="sectionhead" style="margin-top:18px">
-              <button class="btn secondary" onclick="nav('quiz/${Math.max(1,id-1)}')">السابق</button>
-              <button class="btn" onclick="nav('quiz/${Math.min(30,id+1)}')">التالي</button>
-            </div>
-          </div>`;
-        }
-
-        function answerQuiz(id, i) {
-            const q = DATA.quizzes.find(x => x.id === id);
-            if (S.quizResults[id] !== undefined) return toast("الاختبار اتجاوب قبل كده");
-            const ok = i === q.correct;
-            S.quizResults[id] = ok;
-            addXP(ok ? CONFIG.xp.quiz : 0);
-            toast(ok ? "✓ إجابة صحيحة +20 XP" : "❌ إجابة غير صحيحة");
-            save();
-            render();
-        }
-
-        /* ═══════════════════════════════════════════════════
-           CODE LAB
-           ═══════════════════════════════════════════════════ */
-        function codeLab() {
-            return `<div class="sectionhead"><div><h1>Code Lab ⚡</h1><p class="muted">بيئة JavaScript تجريبية داخل المتصفح — بدون Backend.</p></div><span class="pill">Sandbox Demo</span></div>
+        // 5. Code Lab
+        function renderCodeLab() {
+            return `<div class="sectionhead"><div><h1>⚡ Code Lab</h1><p class="muted">بيئة تجريبية JavaScript</p></div></div>
           <div class="card">
-            <textarea class="editor" id="editor">const name = "Mina";\nconsole.log(name);</textarea>
+            <textarea class="editor" id="editor">console.log("مرحباً في Code Lab!");</textarea>
             <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
               <button class="btn" onclick="runJS('editor','output')">▶ Run</button>
-              <button class="btn secondary" onclick="saveEditor()">💾 Save</button>
               <button class="btn secondary" onclick="$('#editor').value='';$('#output').textContent=''">🧹 Clear</button>
             </div>
             <h3>Output</h3>
             <div class="output" id="output">جاهز للتشغيل...</div>
-            <small class="muted">Demo يدعم JavaScript فقط. لا يوجد وصول مباشر لـ document أو localStorage أو الشبكة داخل التنفيذ.</small>
-          </div>
-          <div class="card" style="margin-top:16px">
-            <h3>⭐ Saved Codes</h3>
-            ${S.savedCodes.length?S.savedCodes.map(x=>codeBlock(x)).join(""):`<div class="empty">لسه مفيش أكواد محفوظة.</div>`}
           </div>`;
         }
 
         function runJS(editorId, outId) {
-            const code = $("#" + editorId).value;
-            const out = $("#" + outId);
+            const code = $('#' + editorId).value;
+            const out = $('#' + outId);
             try {
                 const logs = [];
-                const sandboxConsole = {
-                    log: (...a) => logs.push(a.map(x => typeof x === "object" ? JSON.stringify(x) : String(x)).join(" ")),
-                    warn: (...a) => logs.push("⚠ " + a.join(" ")),
-                    error: (...a) => logs.push("❌ " + a.join(" "))
-                };
-                const fn = new Function("console", "window", "document", "localStorage", "fetch",
-                    `"use strict";${code}`
-                );
-                fn(sandboxConsole, undefined, undefined, undefined, undefined);
-                out.textContent = logs.join("\n") || "✓ تم التنفيذ بدون Output";
-                if (!S.badges.includes("First Code")) S.badges.push("First Code");
-                save();
+                const c = { log: (...a) => logs.push(a.map(x => typeof x === 'object' ? JSON.stringify(x) : String(x))
+                        .join(' ')) };
+                const fn = new Function('console', `"use strict";${code}`);
+                fn(c);
+                out.textContent = logs.join('\n') || '✓ تم التنفيذ';
+                if (!progress.badges.includes('First Code')) { progress.badges.push('First Code');
+                    saveProgress(); }
             } catch (e) {
-                out.textContent = "Error: " + e.message;
+                out.textContent = '❌ ' + e.message;
             }
         }
 
-        function saveEditor() {
-            const code = $("#editor")?.value || "";
-            saveCode(code);
-            if (!S.badges.includes("Code Explorer")) S.badges.push("Code Explorer");
-            save();
+        // 6. Achievements
+        function renderAchievements() {
+            const allBadges = [
+                ['🎯', 'First Lesson', 'أول درس مكتمل'],
+                ['💻', 'First Code', 'أول كود شغال'],
+                ['🔥', '7 Days Streak', '7 أيام متتالية'],
+                ['🏆', '5 Tasks', '5 مهام مكتملة'],
+                ['🚀', '1000 XP', 'وصول 1000 XP'],
+                ['🧠', 'Problem Solver', 'حل مشكلة'],
+                ['🔬', 'Code Explorer', 'جرب Code Lab']
+            ];
+            return `<div class="sectionhead"><div><h1>🏆 الإنجازات</h1></div></div>
+          <div class="grid badgegrid">${allBadges.map(b => {
+            const got = progress.badges.includes(b[1]);
+            return `<div class="card badge ${got?'':'locked'}"><div class="badgeicon">${b[0]}</div><div><b>${b[1]}</b><div class="muted">${b[2]}</div><span class="pill ${got?'success':''}">${got?'✅ مفتوح':'🔒 مغلق'}</span></div></div>`;
+          }).join('')}</div>`;
         }
 
-        /* ═══════════════════════════════════════════════════
-           ACHIEVEMENTS
-           ═══════════════════════════════════════════════════ */
-        function achievements() {
-            return `<div class="sectionhead"><div><h1>الإنجازات 🏆</h1><p class="muted">كل خطوة ليها قيمة.</p></div></div>
-          <div class="grid badgegrid">${DATA.badges.map(b=>{
-            const got=S.badges.includes(b[1]);
-            return `<div class="card badge ${got?"":"locked"}"><div class="badgeicon">${b[0]}</div><div><b>${b[1]}</b><div class="muted">${b[2]}</div><span class="pill ${got?"success":""}">${got?"Unlocked":"Locked"}</span></div></div>`
-          }).join("")}</div>`;
-        }
-
-        /* ═══════════════════════════════════════════════════
-           LEADERBOARD / PROFILE
-           ═══════════════════════════════════════════════════ */
-        function leaderboard() {
-            const rows = [...DATA.students].sort((a, b) => b[1] - a[1]);
-            return `<div class="card"><div class="sectionhead"><div><h1>Leaderboard 🏆</h1><p class="muted">ترتيب تجريبي للطلاب.</p></div></div>
-            <table class="table"><thead><tr><th>#</th><th>Student</th><th>XP</th><th>Level</th><th>Tasks</th></tr></thead><tbody>
-            ${rows.map((x,i)=>`<tr><td>${i+1}</td><td>👤 ${x[0]}</td><td>${x[1]}</td><td>Level ${x[2]}</td><td>${x[3]}</td></tr>`).join("")}
-          </tbody></table></div>`;
-        }
-
-        function profile() {
+        // 7. Profile
+        function renderProfile() {
             return `<div class="card hero"><div>
-            <div class="avatar" style="display:grid;place-items:center;width:70px;height:70px;font-size:25px">${esc(S.studentName[0])}</div>
-            <h1>${esc(S.studentName)}</h1>
-            <p class="muted">${levelName()} • ${S.xp} XP</p>
+            <div class="avatar" style="display:grid;place-items:center;width:70px;height:70px;font-size:25px">${esc(progress.studentName[0]||'ط')}</div>
+            <h1>${esc(progress.studentName)}</h1>
+            <p class="muted">${levelName()} • ${progress.xp} XP</p>
           </div>
-          <div class="hero-stat"><b>Level ${S.level}</b><div class="progress" style="margin-top:10px"><i style="width:${(S.xp%300)/3}%"></i></div><small class="muted">${S.xp%300}/300 XP للمستوى التالي</small></div>
+          <div class="hero-stat"><b>Level ${progress.level}</b><div class="progress" style="margin-top:10px"><i style="width:${(progress.xp%300)/3}%"></i></div><small class="muted">${progress.xp%300}/300 XP للمستوى التالي</small></div>
         </div>
         <div class="grid stats">
-          ${stat("🏆","Badges",S.badges.length)}
-          ${stat("📚","Courses",3)}
-          ${stat("✓","Tasks",S.completedTasks.length)}
-          ${stat("📖","Lessons",S.completedLessons.length)}
-          ${stat("🔥","Streak",S.streak)}
+          ${stat('🏆','Badges',progress.badges.length)}
+          ${stat('📚','Lessons',`${progress.completedLessons.length}/${platformContent.lessons.length}`)}
+          ${stat('✓','Tasks',`${progress.completedTasks.length}/${platformContent.tasks.length}`)}
+          ${stat('📖','Total XP',progress.xp)}
         </div>
-        <div class="card"><h2>Recent Activity</h2><div class="list">${S.notifications.map(n=>`<div class="lessonrow">${n}<span class="muted">Today</span></div>`).join("")}</div></div>`;
+        <div class="card"><h2>📊 إحصائيات سريعة</h2>
+          <p class="muted">الدروس المكتملة: ${progress.completedLessons.length} | المهام المسلمة: ${progress.completedTasks.length}</p>
+        </div>`;
         }
 
-        /* ═══════════════════════════════════════════════════
-           SEARCH
-           ═══════════════════════════════════════════════════ */
+        // 8. Search
         function search(q) {
-            const box = $("#searchresults");
-            if (!box) return;
-            if (!q.trim()) { box.style.display = "none"; return; }
-            const z = [...DATA.courses.map(x => ({ t: x.name, r: `course/${x.id}`, k: "Course" })),
-                ...DATA.lessons.map(x => ({ t: x.title, r: `lesson/${x.id}`, k: "Lesson" })),
-                ...DATA.tasks.map(x => ({ t: x.title, r: `task/${x.id}`, k: "Task" })),
-                ...DATA.examples.map(x => ({ t: x.title, r: "code-lab", k: "Code" }))
-            ].filter(x => x.t.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
-            box.innerHTML = z.length ?
-                z.map(x => `<div class="result" onclick="nav('${x.r}');$('#searchresults').style.display='none'"><b>${esc(x.t)}</b><small class="muted"> • ${x.k}</small></div>`).join("") :
-                `<div class="empty" style="padding:18px">لا توجد نتائج 🔎</div>`;
-            box.style.display = "block";
-        }
-
-        /* ═══════════════════════════════════════════════════
-           TEACHER
-           ═══════════════════════════════════════════════════ */
-        function teacher() {
-            return `<div class="sectionhead"><div><h1>Teacher Dashboard 👨‍🏫</h1><p class="muted">وضع Demo — البيانات محلية داخل المتصفح.</p></div><button class="btn" onclick="nav('content')">Content Manager</button></div>
-          <div class="grid stats">
-            ${stat("👥","Students","128")}
-            ${stat("📚","Courses","3")}
-            ${stat("📖","Lessons","30")}
-            ${stat("🎯","Tasks","20")}
-            ${stat("📈","Avg Progress","67%")}
-          </div>
-          <div class="grid" style="grid-template-columns:2fr 1fr">
-            <div class="card"><h2>Student Activity</h2><div class="chart">${[55,72,42,88,64,93,75].map(h=>`<div class="bar" style="height:${h}%"></div>`).join("")}</div></div>
-            <div class="card"><h2>Recent Submissions</h2><div class="list">${["Mina • Task #18","Ahmed • Quiz #7","Gamal • Task #12","Sara • Quiz #3"].map(x=>`<div class="lessonrow">${x}<span class="pill success">New</span></div>`).join("")}</div></div>
-          </div>`;
-        }
-
-        function contentManager() {
-            return `<div class="sectionhead"><div><h1>Teacher Content Manager</h1><p class="muted">أضف محتوى Demo ويتم حفظه في Firebase.</p></div></div>
-          <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-            <button class="card" onclick="contentForm('Lesson')">📖<h3>Add Lesson</h3></button>
-            <button class="card" onclick="contentForm('Task')">🎯<h3>Add Task</h3></button>
-            <button class="card" onclick="contentForm('Quiz')">❓<h3>Add Quiz</h3></button>
-          </div>
-          <div class="card" style="margin-top:16px"><h3>Saved Teacher Items</h3>
-            ${S.teacherItems.length?S.teacherItems.map(x=>`<div class="lessonrow"><b>${esc(x.type)}</b><span class="grow">${esc(x.title)}</span><span class="pill">Local</span></div>`).join(""):`<div class="empty">لسه مفيش محتوى مضاف.</div>`}
-          </div>`;
-        }
-
-        function contentForm(type) {
-            openModal(`<h2>Add ${type}</h2>
-            <div class="formgrid">
-              <div class="field"><label>Title</label><input id="fTitle" placeholder="عنوان المحتوى"></div>
-              <div class="field"><label>Difficulty</label><select id="fDiff"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
-              <div class="field" style="grid-column:1/-1"><label>Description / Question</label><textarea id="fDesc"></textarea></div>
-              <div class="field" style="grid-column:1/-1"><label>Code / Content</label><textarea id="fCode"></textarea></div>
-            </div>
-            <button class="btn" style="margin-top:12px" onclick="saveTeacher('${type}')">Save ${type}</button>`);
-        }
-
-        function saveTeacher(type) {
-            const title = $("#fTitle")?.value?.trim();
-            if (!title) return toast("اكتب العنوان");
-            S.teacherItems.push({ type, title, desc: $("#fDesc")?.value || "", code: $("#fCode")?.value || "",
-                diff: $("#fDiff")?.value || "Easy" });
-            save();
-            closeModal();
-            render();
-            toast("✓ تم حفظ المحتوى محليًا");
-        }
-
-        function openModal(html) {
-            const c = $("#modalcontent");
-            if (c) c.innerHTML = html;
-            $("#modal")?.classList.add("show");
+            const box = document.getElementById('search');
+            if (!q.trim()) { toast('🔎 اكتب كلمة للبحث'); return; }
+            const results = [...platformContent.lessons.filter(l => l.title.includes(q)).map(l => ({ t: l.title, r: 'lesson/' +
+                        l.id }))];
+            if (results.length) {
+                toast(`🔍 وجدت ${results.length} نتيجة: ${results.map(r=>r.t).join(', ')}`);
+            } else {
+                toast('❌ لا توجد نتائج');
+            }
         }
 
         /* ═══════════════════════════════════════════════════
            INIT
            ═══════════════════════════════════════════════════ */
         function init() {
-            // Load localStorage cache first for immediate display
-            const localRaw = localStorage.getItem("minaAcademyState");
-            if (localRaw) {
-                try { Object.assign(S, defaults, JSON.parse(localRaw)); } catch (_) {}
-            }
-
-            // Initialize Firebase
             const ok = initFirebase();
             if (ok) {
                 signInAnonymously();
             } else {
-                fallbackToLocal();
+                fallbackLocal();
             }
-
-            // Theme
-            if (S.theme === "light") document.body.classList.add("light");
-
-            // Hash change
-            window.addEventListener("hashchange", render);
-            window.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
-
-            // If we already have data loaded from localStorage, render immediately
-            // but Firebase will update when ready
-            if (localRaw) {
-                _initialLoadDone = true;
-                hideLoader();
-                if (!location.hash) location.hash = "#dashboard";
-                render();
-            }
+            window.addEventListener('hashchange', render);
+            window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
         }
 
-        // Override hideLoader to also check if we've already rendered
-        const origHideLoader = hideLoader;
-        hideLoader = function() {
-            origHideLoader();
-            if (_initialLoadDone && !$("#app").innerHTML) {
-                if (!location.hash) location.hash = "#dashboard";
-                render();
-            }
-        };
-
-        // Start
+        // بدء التشغيل
         init();
     </script>
 </body>
